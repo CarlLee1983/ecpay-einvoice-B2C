@@ -1,9 +1,12 @@
 <?php
 
+declare(strict_types=1);
+
 namespace ecPay\eInvoice;
 
 use Exception;
 use GuzzleHttp\Client;
+use GuzzleHttp\Exception\RequestException;
 
 class Request
 {
@@ -24,6 +27,13 @@ class Request
     protected $content = [];
 
     /**
+     * The HTTP client instance.
+     *
+     * @var Client
+     */
+    protected static $client;
+
+    /**
      * __construct
      *
      * @param string $url
@@ -41,13 +51,17 @@ class Request
      * @param string $url
      * @param array $content
      * @return array
+     * @throws Exception
      */
     public function send(string $url = '', array $content = []): array
     {
         try {
-            $client = new Client();
+            if (!self::$client) {
+                self::$client = new Client();
+            }
+
             $sendContent = $content ?: $this->content;
-            $response = $client->request(
+            $response = self::$client->request(
                 'POST',
                 $url ?: $this->url,
                 ['body' => json_encode($sendContent)]
@@ -56,7 +70,7 @@ class Request
             return json_decode($response->getBody(), true);
         } catch (RequestException $exception) {
             if ($exception->hasResponse()) {
-                $response = $e->getResponse();
+                $response = $exception->getResponse();
 
                 throw new Exception($response->getBody()->getContents());
             }

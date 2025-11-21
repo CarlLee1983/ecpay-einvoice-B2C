@@ -7,7 +7,7 @@ interface InvoiceInterface
     /**
      * Get the invoice content.
      *
-     * @return InvoiceInterface
+     * @return array
      */
     public function getContent(): array;
 

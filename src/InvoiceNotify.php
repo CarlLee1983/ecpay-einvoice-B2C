@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace ecPay\eInvoice;
 
 use ecPay\eInvoice\Parameter\InvoiceTagType;
@@ -9,6 +11,26 @@ use Exception;
 
 class InvoiceNotify extends Content
 {
+    /**
+     * The invoice no length.
+     */
+    const INVOICE_NO_LENGTH = 10;
+
+    /**
+     * The allowance no length.
+     */
+    const ALLOWANCE_NO_LENGTH = 16;
+
+    /**
+     * The phone max length.
+     */
+    const PHONE_MAX_LENGTH = 20;
+
+    /**
+     * The email max length.
+     */
+    const EMAIL_MAX_LENGTH = 80;
+
     /**
      * The request path.
      *
@@ -43,8 +65,8 @@ class InvoiceNotify extends Content
      */
     public function setInvoiceNo(string $invoiceNo): InvoiceInterface
     {
-        if (strlen($invoiceNo) != 10) {
-            throw new Exception('The invoice no length should be 10.');
+        if (strlen($invoiceNo) != self::INVOICE_NO_LENGTH) {
+            throw new Exception('The invoice no length should be ' . self::INVOICE_NO_LENGTH . '.');
         }
 
         $this->content['Data']['InvoiceNo'] = $invoiceNo;
@@ -60,8 +82,8 @@ class InvoiceNotify extends Content
      */
     public function setAllowanceNo(string $number): InvoiceInterface
     {
-        if (strlen($number) != 16) {
-            throw new Exception('The invoice allowance no length should be 16.');
+        if (strlen($number) != self::ALLOWANCE_NO_LENGTH) {
+            throw new Exception('The invoice allowance no length should be ' . self::ALLOWANCE_NO_LENGTH . '.');
         }
 
         $this->content['Data']['AllowanceNo'] = $number;
@@ -77,8 +99,8 @@ class InvoiceNotify extends Content
      */
     public function setPhone(string $number): InvoiceInterface
     {
-        if (strlen($number) > 20) {
-            throw new Exception('Notify phone number should be less than 21 characters');
+        if (strlen($number) > self::PHONE_MAX_LENGTH) {
+            throw new Exception('Notify phone number should be less than ' . (self::PHONE_MAX_LENGTH + 1) . ' characters');
         }
 
         $this->content['Data']['Phone'] = $number;
@@ -87,19 +109,19 @@ class InvoiceNotify extends Content
     }
 
     /**
-     * Setting allownace notify email.
+     * Setting allowance notify email.
      *
      * @param string $email
      * @return InvoiceInterface
      */
-    public function setNotifyfMail(string $email): InvoiceInterface
+    public function setNotifyMail(string $email): InvoiceInterface
     {
         if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
             throw new Exception('Invalid email format');
         }
 
-        if (strlen($email) > 80) {
-            throw new Exception('Email length must be less than 80 characters.');
+        if (strlen($email) > self::EMAIL_MAX_LENGTH) {
+            throw new Exception('Email length must be less than ' . self::EMAIL_MAX_LENGTH . ' characters.');
         }
 
         $this->content['Data']['NotifyMail'] = $email;
@@ -156,24 +178,24 @@ class InvoiceNotify extends Content
     }
 
     /**
-     * Setting Notify targer.
+     * Setting Notify target.
      *
-     * @param string $targer
+     * @param string $target
      * @return InvoiceInterface
      */
-    public function Notified(string $targer): InvoiceInterface
+    public function setNotified(string $target): InvoiceInterface
     {
-        $targerList = [
+        $targetList = [
             NotifiedType::CUSTOMER,
             NotifiedType::VENDOR,
             NotifiedType::ALL,
         ];
 
-        if (!in_array($targer, $targerList)) {
-            throw new Exception('Notify targer is invalid.');
+        if (!in_array($target, $targetList)) {
+            throw new Exception('Notify target is invalid.');
         }
 
-        $this->content['Data']['Notified'] = $targer;
+        $this->content['Data']['Notified'] = $target;
 
         return $this;
     }
@@ -182,6 +204,7 @@ class InvoiceNotify extends Content
      * Validation content.
      *
      * @return void
+     * @throws Exception
      */
     public function validation()
     {
@@ -198,12 +221,12 @@ class InvoiceNotify extends Content
                 InvoiceTagType::ALLOWANCE_VOID,
             ])) {
             if (empty($data['AllowanceNo'])) {
-                throw new Exception('Invoice tag type is allowed or allowed invalid, `AllowanceNo` shulde be set.');
+                throw new Exception('Invoice tag type is allowed or allowed invalid, `AllowanceNo` should be set.');
             }
         }
 
         if (empty($data['Phone']) && empty($data['NotifyMail'])) {
-            throw new Exception('Phone number or mail shuld be set.');
+            throw new Exception('Phone number or mail should be set.');
         }
 
         if (empty($data['Notify'])) {

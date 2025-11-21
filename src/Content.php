@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace ecPay\eInvoice;
 
 use Exception;
@@ -12,6 +14,16 @@ abstract class Content implements InvoiceInterface
      * ECPay invoice api version.
      */
     const VERSION = '3.0.0';
+
+    /**
+     * The relate number max length.
+     */
+    const RELATE_NUMBER_MAX_LENGTH = 30;
+
+    /**
+     * The RqID random string length.
+     */
+    const RQID_RANDOM_LENGTH = 5;
 
     /**
      * The request server.
@@ -56,17 +68,23 @@ abstract class Content implements InvoiceInterface
     public $response;
 
     /**
+     * The content.
+     *
+     * @var array
+     */
+    protected $content = [];
+
+    /**
      * __construct
      *
-     * @param string $server
      * @param string $merchantId
      * @param string $hashKey
      * @param string $hashIV
      */
-    public function __construct(string $server, string $merchantId = '', string $hashKey = '', string $hashIV = '')
+    public function __construct(string $merchantId = '', string $hashKey = '', string $hashIV = '')
     {
         $this->response = new Response();
-        $this->requestServer = $server;
+        // Server is no longer needed here, as it's handled by EcPayClient
 
         $this->setMerchantID($merchantId);
         $this->setHashKey($hashKey);
@@ -86,12 +104,20 @@ abstract class Content implements InvoiceInterface
 
     /**
      * Initialize invoice content.
-     *
-     * @return void
      */
     protected function initContent()
     {
         $this->content = [];
+    }
+
+    /**
+     * Get the request path.
+     *
+     * @return string
+     */
+    public function getRequestPath(): string
+    {
+        return $this->requestPath;
     }
 
     /**
@@ -143,13 +169,13 @@ abstract class Content implements InvoiceInterface
         list($usec, $sec) = explode(' ', microtime());
         $usec = str_replace('.', '', $usec);
 
-        return $sec . $this->randomString(5) . $usec . $this->randomString(5);
+        return $sec . $this->randomString(self::RQID_RANDOM_LENGTH) . $usec . $this->randomString(self::RQID_RANDOM_LENGTH);
     }
 
     /**
      * Get random string.
      *
-     * @param integer $length
+     * @param int $length
      * @return string
      */
     private function randomString($length = 32): string
@@ -164,7 +190,7 @@ abstract class Content implements InvoiceInterface
         $string = '';
 
         for ($i = 0; $i < $length; $i++) {
-            $string .= $characters[mt_rand(0, $charactersLength)];
+            $string .= $characters[random_int(0, $charactersLength)];
         }
 
         return $string;
@@ -173,26 +199,15 @@ abstract class Content implements InvoiceInterface
     /**
      * Trans php urlencode to .net encode.
      *
-     * @param string $macValue
+     * @param string $param
      * @return string
      */
     protected function transUrlencode($param): string
     {
-        $list = [
-            '%2d' => '-',
-            '%5f' => '_',
-            '%2e' => '.',
-            '%21' => '!',
-            '%2a' => '*',
-            '%28' => '(',
-            '%29' => ')',
-        ];
+        $search = ['%2d', '%5f', '%2e', '%21', '%2a', '%28', '%29'];
+        $replace = ['-', '_', '.', '!', '*', '(', ')'];
 
-        foreach ($list as $key => $value) {
-            $param = str_replace($key, $value, $param);
-        }
-
-        return $param;
+        return str_replace($search, $replace, $param);
     }
 
     /**
@@ -203,8 +218,8 @@ abstract class Content implements InvoiceInterface
      */
     public function setRelateNumber(string $relateNumber): InvoiceInterface
     {
-        if (strlen($relateNumber) > 30) {
-            throw new Exception('The invoice RelateNumber length over 30.');
+        if (strlen($relateNumber) > self::RELATE_NUMBER_MAX_LENGTH) {
+            throw new Exception('The invoice RelateNumber length over ' . self::RELATE_NUMBER_MAX_LENGTH . '.');
         }
 
         $this->content['Data']['RelateNumber'] = $relateNumber;
@@ -243,6 +258,11 @@ abstract class Content implements InvoiceInterface
 
         $content = $this->content;
         $content['Data'] = json_encode($content['Data']);
+
+        if (json_last_error() !== JSON_ERROR_NONE) {
+            throw new Exception('The invoice data format is invalid.');
+        }
+
         $content['Data'] = urlencode($content['Data']);
         $content['Data'] = $this->transUrlencode($content['Data']);
         $content['Data'] = $this->encrypt($content['Data']);
@@ -253,7 +273,7 @@ abstract class Content implements InvoiceInterface
     /**
      * Validator base parameters.
      *
-     * @return void
+     * @throws Exception
      */
     protected function validatorBaseParam()
     {
@@ -268,30 +288,6 @@ abstract class Content implements InvoiceInterface
         if (empty($this->hashIV)) {
             throw new Exception('HashIV is empty.');
         }
-    }
-
-    /**
-     * Send request.
-     *
-     * @param string $url
-     * @return array
-     */
-    public function sendRequest(): array
-    {
-        $body = (new Request($this->requestServer . $this->requestPath, $this->getContent()))->send();
-
-        if (!empty($body['Data'])) {
-            $body['Data'] = $this->decrypt($body['Data']);
-            $body['Data'] = json_decode($body['Data'], true);
-            $this->response->setData($body['Data']);
-        } else {
-            $body['Data'] = [
-                'RtnCode' => $body['TransCode'],
-                'RtnMsg' => $body['TransMsg'],
-            ];
-        }
-
-        return $body;
     }
 
     /**

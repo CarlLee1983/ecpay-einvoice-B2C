@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace ecPay\eInvoice;
 
 use ecPay\eInvoice\Parameter\CarrierType;
@@ -115,7 +117,7 @@ class Invoice extends Content
      * Set the invoice customer Phone.
      *
      * @param string $phone
-     *
+     * @return InvoiceInterface
      */
     public function setCustomerPhone(string $phone): InvoiceInterface
     {
@@ -174,7 +176,7 @@ class Invoice extends Content
     /**
      * Set the invoice donation.
      *
-     * @param string $donaion
+     * @param string $donation
      * @return InvoiceInterface
      */
     public function setDonation(string $donation): InvoiceInterface
@@ -208,7 +210,7 @@ class Invoice extends Content
     }
 
     /**
-     * Set the invoice carruer type.
+     * Set the invoice carrier type.
      *
      * @param string $type
      * @return InvoiceInterface
@@ -232,7 +234,7 @@ class Invoice extends Content
     }
 
     /**
-     * Set the invoice carruer number.
+     * Set the invoice carrier number.
      *
      * @param string $number
      * @return InvoiceInterface
@@ -260,7 +262,7 @@ class Invoice extends Content
         ];
 
         if (!in_array($type, $taxType)) {
-            throw new Excpetion('Invoice tax type format is invalid.');
+            throw new Exception('Invoice tax type format is invalid.');
         }
 
         $this->taxType = $type;
@@ -285,13 +287,13 @@ class Invoice extends Content
     /**
      * Set the invoice sales amount.
      *
-     * @param int $amount
-     *
+     * @param float|int $amount
+     * @return InvoiceInterface
      */
-    public function setSalesAmount(int $amount): InvoiceInterface
+    public function setSalesAmount($amount): InvoiceInterface
     {
         if ($amount <= 0) {
-            throw new Excpetion('Invoice sales amount is invalid.');
+            throw new Exception('Invoice sales amount is invalid.');
         }
 
         $this->content['Data']['SalesAmount'] = $amount;
@@ -320,14 +322,12 @@ class Invoice extends Content
 
             $this->items[] = [
                 'ItemName' => $item['name'],
-                'ItemCount' => (int) $item['quantity'],
+                'ItemCount' => (float) $item['quantity'],
                 'ItemWord' => $item['unit'],
-                'ItemPrice' => (int) $item['price'],
+                'ItemPrice' => (float) $item['price'],
                 'ItemTaxType' => $this->taxType,
                 'ItemAmount' => $item['quantity'] * $item['price'],
             ];
-
-            $this->content['Data']['SalesAmount'] += $item['quantity'] * $item['price'];
         }
 
         return $this;
@@ -349,97 +349,25 @@ class Invoice extends Content
      * Validation content.
      *
      * @return void
+     * @throws Exception
      */
     public function validation()
     {
         $this->validatorBaseParam();
 
-        $data = $this->content['Data'];
-
-        if (empty($data['RelateNumber'])) {
-            throw new Exception('The invoice RelateNumber is empty.');
-        }
-
-        if ($data['Print'] == PrintMark::YES) {
-            if (empty($data['CustomerName']) || empty($data['CustomerAddr'])) {
-                throw new Exception('Because print mark is yes. Customer name and address can not be empty.');
-            }
-        }
-
-        if (empty($data['CustomerPhone']) && empty($data['CustomerEmail'])) {
-            throw new Exception('You should be settings either of customer phone and email.');
-        }
-
-        if ($data['TaxType'] == TaxType::ZERO) {
-            if (empty($data['ClearanceMark'])) {
-                throw new Exception('Invoice is duty free, clearance mark can not be empty.');
-            }
-        }
-
-        if (!empty($data['CustomerIdentifier'])) {
-            if ($data['Print'] == PrintMark::NO) {
-                throw new Exception('Because custmoer identifier not empy, print mark must be Yes');
-            }
-
-            if ($data['Donation'] == Donation::YES) {
-                throw new Exception('Customer identifier not empty, donation can not be yes.');
-            }
-        }
-
-        if ($data['Donation'] == Donation::YES) {
-            if (empty($data['LoveCode'])) {
-                throw new Exception('Donation is yes, love code required.');
-            }
-
-            if ($data['Print'] == PrintMark::YES) {
-                throw new Exception('Donation is yes, invoice can not be print.');
-            }
-        }
-
-        if ($data['CarrierType'] == CarrierType::NONE && $data['CarrierNum'] != '') {
-            if ($data['CarrierNum'] != '') {
-                throw new Exception('Invoice carruer type is empty, carruer number must be empty.');
-            }
-
-            if ($data['Print'] == PrintMark::YES) {
-                throw new Exception('carruer type no empty, invoice can not be print.');
-            }
-        } else {
-            if ($data['CarrierType'] == CarrierType::MEMBER && $data['CarrierNum'] != '') {
-                throw new Exception('Invoice carruer type is member, carruer number must be empty.');
-            }
-
-            if ($data['CarrierType'] == CarrierType::CITIZEN && strlen($data['CarrierNum']) != 16) {
-                throw new Exception('Invoice carruer type is citizen, carruer number length must be 16.');
-            }
-
-            if ($data['CarrierType'] == CarrierType::CELLPHONE && strlen($data['CarrierNum']) != 8) {
-                throw new Exception('Invoice carruer type is Cellphone, carruer number length must be 8.');
-            }
-        }
-
-        $this->validatorItems();
-    }
-
-    /**
-     * The invoice items validation.
-     *
-     * @return void
-     */
-    protected function validatorItems()
-    {
-        if (empty($this->content['Data']['Items'])) {
-            throw new Exception('Invoice data items is Empty.');
-        }
-
+        // Sync SalesAmount with Items sum
         $amount = 0;
-
         foreach ($this->items as $item) {
             $amount += $item['ItemAmount'];
         }
 
-        if ($this->content['Data']['SalesAmount'] != $amount) {
-            throw new Exception('Invoice sales amount not equal items amount');
+        if (!empty($this->content['Data']['SalesAmount']) && $this->content['Data']['SalesAmount'] != $amount) {
+            throw new Exception('The calculated sales amount is not equal to the set sales amount.');
         }
+
+        $this->content['Data']['SalesAmount'] = $amount;
+
+        // Delegate validation to InvoiceValidator
+        InvoiceValidator::validate($this->content['Data'], $this->items);
     }
 }
