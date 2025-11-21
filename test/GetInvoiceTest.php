@@ -1,16 +1,20 @@
 <?php
 
-class GetInvoiceTest extends PHPUnit_Framework_TestCase
+class GetInvoiceTest extends \PHPUnit\Framework\TestCase
 {
     /**
      * Setup the test environment.
      *
      * @return void
      */
-    public function setUp()
+    protected function setUp(): void
     {
-        $this->instance = new ecPay\eInvoice\GetInvoice(
+        $this->client = new ecPay\eInvoice\EcPayClient(
             $_ENV['SERVER'],
+            $_ENV['HASH_KEY'],
+            $_ENV['HASH_IV']
+        );
+        $this->instance = new ecPay\eInvoice\GetInvoice(
             $_ENV['MERCHANT_ID'],
             $_ENV['HASH_KEY'],
             $_ENV['HASH_IV']
@@ -21,7 +25,6 @@ class GetInvoiceTest extends PHPUnit_Framework_TestCase
     {
         $relateNumber = 'YEP' . date('YmdHis');
         $invoice = new ecPay\eInvoice\Invoice(
-            $_ENV['SERVER'],
             $_ENV['MERCHANT_ID'],
             $_ENV['HASH_KEY'],
             $_ENV['HASH_IV']
@@ -37,20 +40,18 @@ class GetInvoiceTest extends PHPUnit_Framework_TestCase
                     'totalPrice' => 100,
                 ],
             ])
-            ->setSalesAmount(100)
-            ->sendRequest();
-
-        $response = $invoice->getResponse();
+            ->setSalesAmount(100);
+            
+        $response = $this->client->send($invoice);
 
         if ($response->success()) {
             $data = $response->getData();
 
             $this->instance->setRelateNumber($relateNumber)
                 ->setInvoiceNo($data['InvoiceNo'])
-                ->setInvoiceDate(date('Y-m-d', strtotime($data['InvoiceDate'])))
-                ->sendRequest();
-
-            $response = $this->instance->getResponse();
+                ->setInvoiceDate(date('Y-m-d', strtotime($data['InvoiceDate'])));
+                
+            $response = $this->client->send($this->instance);
 
             $this->assertTrue($response->success());
         }

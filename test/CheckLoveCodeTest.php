@@ -1,16 +1,20 @@
 <?php
 
-class CheckLoveCodeTest extends PHPUnit_Framework_TestCase
+class CheckLoveCodeTest extends \PHPUnit\Framework\TestCase
 {
     /**
      * Setup the test environment.
      *
      * @return void
      */
-    public function setUp()
+    protected function setUp(): void
     {
-        $this->instance = new ecPay\eInvoice\CheckLoveCode(
+        $this->client = new ecPay\eInvoice\EcPayClient(
             $_ENV['SERVER'],
+            $_ENV['HASH_KEY'],
+            $_ENV['HASH_IV']
+        );
+        $this->instance = new ecPay\eInvoice\CheckLoveCode(
             $_ENV['MERCHANT_ID'],
             $_ENV['HASH_KEY'],
             $_ENV['HASH_IV']
@@ -19,9 +23,8 @@ class CheckLoveCodeTest extends PHPUnit_Framework_TestCase
 
     public function testQuickCheck()
     {
-        $this->instance->setLoveCode($_ENV['LOVECODE'])->sendRequest();
-
-        $response = $this->instance->getResponse();
+        $this->instance->setLoveCode($_ENV['LOVECODE']);
+        $response = $this->client->send($this->instance);
 
         $this->assertTrue($response->success());
     }

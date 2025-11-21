@@ -1,16 +1,20 @@
 <?php
 
-class CheckBarcodeTest extends PHPUnit_Framework_TestCase
+class CheckBarcodeTest extends \PHPUnit\Framework\TestCase
 {
     /**
      * Setup the test environment.
      *
      * @return void
      */
-    public function setUp()
+    protected function setUp(): void
     {
-        $this->instance = new ecPay\eInvoice\CheckBarcode(
+        $this->client = new ecPay\eInvoice\EcPayClient(
             $_ENV['SERVER'],
+            $_ENV['HASH_KEY'],
+            $_ENV['HASH_IV']
+        );
+        $this->instance = new ecPay\eInvoice\CheckBarcode(
             $_ENV['MERCHANT_ID'],
             $_ENV['HASH_KEY'],
             $_ENV['HASH_IV']
@@ -19,9 +23,8 @@ class CheckBarcodeTest extends PHPUnit_Framework_TestCase
 
     public function testQuickCheck()
     {
-        $this->instance->setBarcode($_ENV['BARCODE'])->sendRequest();
-
-        $response = $this->instance->getResponse();
+        $this->instance->setBarcode($_ENV['BARCODE']);
+        $response = $this->client->send($this->instance);
 
         $this->assertTrue($response->success());
     }

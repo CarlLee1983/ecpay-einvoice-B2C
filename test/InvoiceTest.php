@@ -1,16 +1,20 @@
 <?php
 
-class InvoiceTest extends PHPUnit_Framework_TestCase
+class InvoiceTest extends \PHPUnit\Framework\TestCase
 {
     /**
      * Setup the test environment.
      *
      * @return void
      */
-    public function setUp()
+    protected function setUp(): void
     {
-        $this->instance = new ecPay\eInvoice\Invoice(
+        $this->client = new ecPay\eInvoice\EcPayClient(
             $_ENV['SERVER'],
+            $_ENV['HASH_KEY'],
+            $_ENV['HASH_IV']
+        );
+        $this->instance = new ecPay\eInvoice\Invoice(
             $_ENV['MERCHANT_ID'],
             $_ENV['HASH_KEY'],
             $_ENV['HASH_IV']
@@ -31,10 +35,9 @@ class InvoiceTest extends PHPUnit_Framework_TestCase
                     'totalPrice' => 100,
                 ],
             ])
-            ->setSalesAmount(100)
-            ->sendRequest();
-
-        $response = $this->instance->getResponse();
+            ->setSalesAmount(100);
+            
+        $response = $this->client->send($this->instance);
 
         $this->assertTrue($response->success());
     }
@@ -54,10 +57,9 @@ class InvoiceTest extends PHPUnit_Framework_TestCase
                     'totalPrice' => 100,
                 ],
             ])
-            ->setSalesAmount(100)
-            ->sendRequest();
-
-        $response = $this->instance->getResponse();
+            ->setSalesAmount(100);
+            
+        $response = $this->client->send($this->instance);
 
         $this->assertTrue($response->success());
     }
@@ -79,10 +81,9 @@ class InvoiceTest extends PHPUnit_Framework_TestCase
                     'totalPrice' => 100,
                 ],
             ])
-            ->setSalesAmount(100)
-            ->sendRequest();
-
-        $response = $this->instance->getResponse();
+            ->setSalesAmount(100);
+            
+        $response = $this->client->send($this->instance);
 
         $this->assertTrue($response->success());
     }
