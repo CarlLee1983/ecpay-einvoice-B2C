@@ -14,22 +14,22 @@ class InvoiceNotify extends Content
     /**
      * The invoice no length.
      */
-    const INVOICE_NO_LENGTH = 10;
+    public const INVOICE_NO_LENGTH = 10;
 
     /**
      * The allowance no length.
      */
-    const ALLOWANCE_NO_LENGTH = 16;
+    public const ALLOWANCE_NO_LENGTH = 16;
 
     /**
      * The phone max length.
      */
-    const PHONE_MAX_LENGTH = 20;
+    public const PHONE_MAX_LENGTH = 20;
 
     /**
      * The email max length.
      */
-    const EMAIL_MAX_LENGTH = 80;
+    public const EMAIL_MAX_LENGTH = 80;
 
     /**
      * The request path.
@@ -40,8 +40,6 @@ class InvoiceNotify extends Content
 
     /**
      * Initialize invoice content.
-     *
-     * @return void
      */
     protected function initContent()
     {
@@ -203,7 +201,6 @@ class InvoiceNotify extends Content
     /**
      * Validation content.
      *
-     * @return void
      * @throws Exception
      */
     public function validation()
@@ -219,7 +216,8 @@ class InvoiceNotify extends Content
             in_array($data['InvoiceTag'], [
                 InvoiceTagType::ALLOWANCE,
                 InvoiceTagType::ALLOWANCE_VOID,
-            ])) {
+            ])
+        ) {
             if (empty($data['AllowanceNo'])) {
                 throw new Exception('Invoice tag type is allowed or allowed invalid, `AllowanceNo` should be set.');
             }

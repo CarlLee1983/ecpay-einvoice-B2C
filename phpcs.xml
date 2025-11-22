@@ -1,0 +1,22 @@
+<?xml version="1.0"?>
+<ruleset name="ECPay eInvoice B2B">
+    <description>ECPay 電子發票 B2B 專案編碼規範</description>
+
+    <!-- 檢查的目錄 -->
+    <file>src</file>
+    <file>test</file>
+
+    <!-- 排除的目錄 -->
+    <exclude-pattern>vendor/*</exclude-pattern>
+
+    <!-- 使用 PSR12 作為基礎標準 -->
+    <rule ref="PSR12"/>
+
+    <!-- 顯示進度和顏色 -->
+    <arg name="colors"/>
+    <arg value="p"/>
+    
+    <!-- 平行處理，加快速度 -->
+    <arg name="parallel" value="8"/>
+</ruleset>
+

@@ -62,7 +62,7 @@ class EcPayClient
 
         $payload = $invoice->getContent();
         $requestPath = $invoice->getRequestPath();
-        
+
         $body = (new Request($this->requestServer . $requestPath, $payload))->send();
 
         $response = new Response();
@@ -87,4 +87,3 @@ class EcPayClient
         return $response;
     }
 }
-

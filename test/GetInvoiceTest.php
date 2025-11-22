@@ -41,7 +41,7 @@ class GetInvoiceTest extends \PHPUnit\Framework\TestCase
                 ],
             ])
             ->setSalesAmount(100);
-            
+
         $response = $this->client->send($invoice);
 
         if ($response->success()) {
@@ -50,7 +50,7 @@ class GetInvoiceTest extends \PHPUnit\Framework\TestCase
             $this->instance->setRelateNumber($relateNumber)
                 ->setInvoiceNo($data['InvoiceNo'])
                 ->setInvoiceDate(date('Y-m-d', strtotime($data['InvoiceDate'])));
-                
+
             $response = $this->client->send($this->instance);
 
             $this->assertTrue($response->success());

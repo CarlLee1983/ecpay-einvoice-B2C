@@ -13,17 +13,17 @@ abstract class Content implements InvoiceInterface
     /**
      * ECPay invoice api version.
      */
-    const VERSION = '3.0.0';
+    public const VERSION = '3.0.0';
 
     /**
      * The relate number max length.
      */
-    const RELATE_NUMBER_MAX_LENGTH = 30;
+    public const RELATE_NUMBER_MAX_LENGTH = 30;
 
     /**
      * The RqID random string length.
      */
-    const RQID_RANDOM_LENGTH = 5;
+    public const RQID_RANDOM_LENGTH = 5;
 
     /**
      * The request server.

@@ -41,7 +41,7 @@ class InvalidInvoiceTest extends \PHPUnit\Framework\TestCase
                 ],
             ])
             ->setSalesAmount(100);
-            
+
         $response = $this->client->send($invoice);
 
         if ($response->success()) {
@@ -51,7 +51,7 @@ class InvalidInvoiceTest extends \PHPUnit\Framework\TestCase
                 ->setInvoiceNo($data['InvoiceNo'])
                 ->setInvoiceDate(date('Y-m-d', strtotime($data['InvoiceDate'])))
                 ->setReason('Cancel Order.');
-                
+
             $response = $this->client->send($this->instance);
 
             $this->assertTrue($response->success());

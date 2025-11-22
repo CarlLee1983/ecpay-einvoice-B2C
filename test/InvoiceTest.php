@@ -36,7 +36,7 @@ class InvoiceTest extends \PHPUnit\Framework\TestCase
                 ],
             ])
             ->setSalesAmount(100);
-            
+
         $response = $this->client->send($this->instance);
 
         $this->assertTrue($response->success());
@@ -58,7 +58,7 @@ class InvoiceTest extends \PHPUnit\Framework\TestCase
                 ],
             ])
             ->setSalesAmount(100);
-            
+
         $response = $this->client->send($this->instance);
 
         $this->assertTrue($response->success());
@@ -82,7 +82,7 @@ class InvoiceTest extends \PHPUnit\Framework\TestCase
                 ],
             ])
             ->setSalesAmount(100);
-            
+
         $response = $this->client->send($this->instance);
 
         $this->assertTrue($response->success());

@@ -15,12 +15,12 @@ class InvoiceValidator
     /**
      * The carrier citizen length.
      */
-    const CARRIER_CITIZEN_LENGTH = 16;
+    public const CARRIER_CITIZEN_LENGTH = 16;
 
     /**
      * The carrier cellphone length.
      */
-    const CARRIER_CELLPHONE_LENGTH = 8;
+    public const CARRIER_CELLPHONE_LENGTH = 8;
 
     /**
      * Validate invoice data.
