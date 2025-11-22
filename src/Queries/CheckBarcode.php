@@ -17,8 +17,6 @@ class CheckBarcode extends Content
 
     /**
      * Initialize invoice content.
-     *
-     * @return void
      */
     protected function initContent()
     {
@@ -32,23 +30,21 @@ class CheckBarcode extends Content
      * Setting barcode.
      *
      * @param string $code
-     * @return @return InvoiceInterface
+     * @return self
      */
     public function setBarcode(string $code): self
     {
-        if (strlen($code) != 8) {
-            throw new Exception('Phone barcode length must be 8 characters.');
-        }
+        $barcode = strtoupper($code);
 
-        $this->content['Data']['BarCode'] = strtoupper($code);
+        $this->assertBarcodeFormat($barcode);
+
+        $this->content['Data']['BarCode'] = $barcode;
 
         return $this;
     }
 
     /**
      * Validation content.
-     *
-     * @return void
      */
     public function validation()
     {
@@ -56,6 +52,20 @@ class CheckBarcode extends Content
 
         if (empty($this->content['Data']['BarCode'])) {
             throw new Exception('Phone barcode is empty.');
+        }
+
+        $this->assertBarcodeFormat($this->content['Data']['BarCode']);
+    }
+
+    /**
+     * Validate barcode format constraint.
+     *
+     * @param string $code
+     */
+    private function assertBarcodeFormat(string $code): void
+    {
+        if (!preg_match('/^\/[0-9A-Z+\-.]{7}$/', $code)) {
+            throw new Exception('Phone barcode format invalid.');
         }
     }
 }

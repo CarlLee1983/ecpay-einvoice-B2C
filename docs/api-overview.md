@@ -15,10 +15,20 @@
 | 模組 | 類別 | Request Path | 用途 |
 | --- | --- | --- | --- |
 | Operations | `Invoice` | `/B2CInvoice/Issue` | 一般發票開立 |
+| Operations | `DelayIssue` | `/B2CInvoice/DelayIssue` | 延遲/預約開立發票 |
+| Operations | `EditDelayIssue` | `/B2CInvoice/EditDelayIssue` | 編輯延遲開立發票 |
+| Operations | `TriggerIssue` | `/B2CInvoice/TriggerIssue` | 觸發延遲開立 |
+| Operations | `CancelDelayIssue` | `/B2CInvoice/CancelDelayIssue` | 取消延遲開立 |
 | Operations | `InvalidInvoice` | `/B2CInvoice/Invalid` | 作廢發票 |
 | Operations | `AllowanceInvoice` | `/B2CInvoice/Allowance` | 開立折讓 |
+| Operations | `AllowanceByCollegiate` | `/B2CInvoice/AllowanceByCollegiate` | 線上開立折讓（通知） |
+| Operations | `AllowanceInvalidByCollegiate` | `/B2CInvoice/AllowanceInvalidByCollegiate` | 取消線上折讓 |
 | Operations | `AllowanceInvalid` | `/B2CInvoice/AllowanceInvalid` | 作廢折讓 |
+| Printing | `InvoicePrint` | `/B2CInvoice/InvoicePrint` | 取得發票列印頁 |
 | Queries | `GetInvoice` | `/B2CInvoice/GetIssue` | 查詢已開立發票 |
+| Queries | `GetIssueList` | `/B2CInvoice/GetIssueList` | 查詢特定多筆發票 |
+| Queries | `GetAllowanceList` | `/B2CInvoice/GetAllowanceList` | 查詢折讓明細 |
+| Queries | `GetAllowanceInvalid` | `/B2CInvoice/GetAllowanceInvalid` | 查詢作廢折讓明細 |
 | Queries | `GetInvalidInvoice` | `/B2CInvoice/GetInvalid` | 查詢作廢發票 |
 | Queries | `CheckBarcode` | `/B2CInvoice/CheckBarcode` | 驗證手機條碼載具 |
 | Queries | `CheckLoveCode` | `/B2CInvoice/CheckLoveCode` | 驗證愛心碼 |

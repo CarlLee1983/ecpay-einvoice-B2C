@@ -12,5 +12,6 @@
         <env name="HASH_IV" value="q9jcZX8Ib9LM8wYk"/>
         <env name="BARCODE" value="/YC+RROR"/>
         <env name="LOVECODE" value="9527"/>
+        <env name="UNIFIED_BUSINESS_NO" value="97025978"/>
     </php>
 </phpunit>

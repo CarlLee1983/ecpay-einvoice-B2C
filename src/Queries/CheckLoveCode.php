@@ -17,8 +17,6 @@ class CheckLoveCode extends Content
 
     /**
      * Initialize invoice content.
-     *
-     * @return void
      */
     protected function initContent()
     {
@@ -37,7 +35,7 @@ class CheckLoveCode extends Content
     public function setLoveCode(string $code): self
     {
         if (strlen($code) < 3 || strlen($code) > 7) {
-            throw new Exception('The donate code length must be between 3 and 8 characters.');
+            throw new Exception('The donate code length must be between 3 and 7 characters.');
         }
 
         $this->content['Data']['LoveCode'] = $code;
@@ -47,15 +45,13 @@ class CheckLoveCode extends Content
 
     /**
      * Validation content.
-     *
-     * @return void
      */
     public function validation()
     {
         $this->validatorBaseParam();
 
         if (empty($this->content['Data']['LoveCode'])) {
-            throw new Exception('Phone barcode is empty.');
+            throw new Exception('Love code is empty.');
         }
     }
 }
