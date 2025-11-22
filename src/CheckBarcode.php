@@ -32,7 +32,7 @@ class CheckBarcode extends Content
      * @param string $code
      * @return @return InvoiceInterface
      */
-    public function setBarcode(string $code): InvoiceInterface
+    public function setBarcode(string $code): self
     {
         if (strlen($code) != 8) {
             throw new Exception('Phone barcode length must be 8 characters.');

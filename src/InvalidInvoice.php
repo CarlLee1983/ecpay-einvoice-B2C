@@ -35,7 +35,7 @@ class InvalidInvoice extends Content
      * @param string $invoiceNo
      * @return InvoiceInterface
      */
-    public function setInvoiceNo(string $invoiceNo): InvoiceInterface
+    public function setInvoiceNo(string $invoiceNo): self
     {
         if (strlen($invoiceNo) != 10) {
             throw new Exception('The invoice no length should be 10.');
@@ -52,7 +52,7 @@ class InvalidInvoice extends Content
      * @param string $reason
      * @return InvoiceInterface
      */
-    public function setReason(string $reason): InvoiceInterface
+    public function setReason(string $reason): self
     {
         $this->content['Data']['Reason'] = $reason;
 

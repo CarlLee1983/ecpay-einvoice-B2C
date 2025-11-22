@@ -34,7 +34,7 @@ class AllowanceInvalid extends Content
      * @param string $invoiceNo
      * @return InvoiceInterface
      */
-    public function setInvoiceNo(string $invoiceNo): InvoiceInterface
+    public function setInvoiceNo(string $invoiceNo): self
     {
         if (strlen($invoiceNo) != 10) {
             throw new Exception('The invoice no length should be 10.');
@@ -51,7 +51,7 @@ class AllowanceInvalid extends Content
      * @param string $number
      * @return InvoiceInterface
      */
-    public function setAllowanceNo(string $number): InvoiceInterface
+    public function setAllowanceNo(string $number): self
     {
         if (strlen($number) != 16) {
             throw new Exception('The invoice allowance no length should be 16.');
@@ -68,7 +68,7 @@ class AllowanceInvalid extends Content
      * @param string $reason
      * @return InvoiceInterface
      */
-    public function setReason(string $reason): InvoiceInterface
+    public function setReason(string $reason): self
     {
         $this->content['Data']['Reason'] = $reason;
 

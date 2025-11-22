@@ -15,6 +15,13 @@ class AllowanceInvoice extends Content
     protected $requestPath = '/B2CInvoice/Allowance';
 
     /**
+     * The allowance items.
+     *
+     * @var array
+     */
+    protected $items = [];
+
+    /**
      * Initialize invoice content.
      *
      * @return void
@@ -40,7 +47,7 @@ class AllowanceInvoice extends Content
      * @param string $invoiceNo
      * @return InvoiceInterface
      */
-    public function setInvoiceNo(string $invoiceNo): InvoiceInterface
+    public function setInvoiceNo(string $invoiceNo): self
     {
         if (strlen($invoiceNo) != 10) {
             throw new Exception('The invoice no length should be 10.');
@@ -57,7 +64,7 @@ class AllowanceInvoice extends Content
      * @param string $type
      * @return InvoiceInterface
      */
-    public function setAllowanceNotify(string $type): InvoiceInterface
+    public function setAllowanceNotify(string $type): self
     {
         $allownaceType = [
             AllowanceNotifyType::SMS,
@@ -81,7 +88,7 @@ class AllowanceInvoice extends Content
      * @param string $name
      * @return InvoiceInterface
      */
-    public function setCustomerName(string $name): InvoiceInterface
+    public function setCustomerName(string $name): self
     {
         if (empty($name)) {
             throw new Exception('Customer name is empty.');
@@ -98,7 +105,7 @@ class AllowanceInvoice extends Content
      * @param string $email
      * @return InvoiceInterface
      */
-    public function setNotifyfMail(string $email): InvoiceInterface
+    public function setNotifyMail(string $email): self
     {
         if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
             throw new Exception('Invalid email format');
@@ -119,7 +126,7 @@ class AllowanceInvoice extends Content
      * @param string $number
      * @return InvoiceInterface
      */
-    public function setNotifyfPhone(string $number): InvoiceInterface
+    public function setNotifyPhone(string $number): self
     {
         if (strlen($number) > 20) {
             throw new Exception('Phone number length must be less than 21 characters.');
@@ -136,7 +143,7 @@ class AllowanceInvoice extends Content
      * @param integer $amount
      * @return InvoiceInterface
      */
-    public function setAllowanceAmount(int $amount): InvoiceInterface
+    public function setAllowanceAmount(int $amount): self
     {
         $this->content['Data']['AllowanceAmount'] = $amount;
 
@@ -149,7 +156,7 @@ class AllowanceInvoice extends Content
      * @param array $items
      * @return InvoiceInterface
      */
-    public function setItems(array $items): InvoiceInterface
+    public function setItems(array $items): self
     {
         $this->content['Data']['AllowanceAmount'] = 0;
         $this->items = [];
@@ -174,6 +181,18 @@ class AllowanceInvoice extends Content
         }
 
         return $this;
+    }
+
+    /**
+     * Get the invoice content.
+     *
+     * @return array
+     */
+    public function getContent(): array
+    {
+        $this->content['Data']['Items'] = $this->items;
+
+        return parent::getContent();
     }
 
     /**

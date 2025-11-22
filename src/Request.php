@@ -34,6 +34,16 @@ class Request
     protected static $client;
 
     /**
+     * Set HTTP client instance.
+     *
+     * @param Client|null $client
+     */
+    public static function setHttpClient(?Client $client): void
+    {
+        self::$client = $client;
+    }
+
+    /**
      * __construct
      *
      * @param string $url
@@ -50,14 +60,14 @@ class Request
      *
      * @param string $url
      * @param array $content
-     * @return array
      * @throws Exception
+     * @return array
      */
     public function send(string $url = '', array $content = []): array
     {
         try {
             if (!self::$client) {
-                self::$client = new Client();
+                self::$client = new Client(['verify' => false]);
             }
 
             $sendContent = $content ?: $this->content;
@@ -75,7 +85,7 @@ class Request
                 throw new Exception($response->getBody()->getContents());
             }
 
-            throw new Exception('Request Error.');
+            throw new Exception('Request Error: ' . $exception->getMessage());
         }
     }
 }

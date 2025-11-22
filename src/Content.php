@@ -214,9 +214,9 @@ abstract class Content implements InvoiceInterface
      * Setting Relate number.
      *
      * @param string $relateNumber
-     * @return InvoiceInterface
+     * @return $this
      */
-    public function setRelateNumber(string $relateNumber): InvoiceInterface
+    public function setRelateNumber(string $relateNumber): self
     {
         if (strlen($relateNumber) > self::RELATE_NUMBER_MAX_LENGTH) {
             throw new Exception('The invoice RelateNumber length over ' . self::RELATE_NUMBER_MAX_LENGTH . '.');
@@ -231,9 +231,9 @@ abstract class Content implements InvoiceInterface
      * Setting invoice data.
      *
      * @param string $date
-     * @return InvoiceInterface
+     * @return $this
      */
-    public function setInvoiceDate(string $date): InvoiceInterface
+    public function setInvoiceDate(string $date): self
     {
         $format = 'Y-m-d';
         $dateTime = \DateTime::createFromFormat($format, $date);

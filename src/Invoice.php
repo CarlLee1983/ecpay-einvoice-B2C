@@ -45,8 +45,6 @@ class Invoice extends Content
 
     /**
      * Initialize invoice content.
-     *
-     * @return void
      */
     protected function initContent()
     {
@@ -78,9 +76,9 @@ class Invoice extends Content
      * Set the invoice customer identifier.
      *
      * @param string $identifier
-     * @return InvoiceInterface
+     * @return $this
      */
-    public function setCustomerIdentifier(string $identifier): InvoiceInterface
+    public function setCustomerIdentifier(string $identifier): self
     {
         $this->content['Data']['CustomerIdentifier'] = $identifier;
 
@@ -91,9 +89,9 @@ class Invoice extends Content
      * Set the invoice customer name.
      *
      * @param string $name
-     * @return InvoiceInterface
+     * @return $this
      */
-    public function setCustomerName(string $name): InvoiceInterface
+    public function setCustomerName(string $name): self
     {
         $this->content['Data']['CustomerName'] = $name;
 
@@ -104,9 +102,9 @@ class Invoice extends Content
      * Set the invoice customer address.
      *
      * @param string $address
-     * @return InvoiceInterface
+     * @return $this
      */
-    public function setCustomerAddr(string $address): InvoiceInterface
+    public function setCustomerAddr(string $address): self
     {
         $this->content['Data']['CustomerAddr'] = $address;
 
@@ -117,9 +115,9 @@ class Invoice extends Content
      * Set the invoice customer Phone.
      *
      * @param string $phone
-     * @return InvoiceInterface
+     * @return $this
      */
-    public function setCustomerPhone(string $phone): InvoiceInterface
+    public function setCustomerPhone(string $phone): self
     {
         $this->content['Data']['CustomerPhone'] = $phone;
 
@@ -130,9 +128,9 @@ class Invoice extends Content
      * Set the invoice customer email.
      *
      * @param string $email
-     * @return InvoiceInterface
+     * @return $this
      */
-    public function setCustomerEmail(string $email): InvoiceInterface
+    public function setCustomerEmail(string $email): self
     {
         $this->content['Data']['CustomerEmail'] = $email;
 
@@ -143,9 +141,9 @@ class Invoice extends Content
      * Set the invoice clearance mark.
      *
      * @param string $mark
-     * @return InvoiceInterface
+     * @return $this
      */
-    public function setClearanceMark(string $mark): InvoiceInterface
+    public function setClearanceMark(string $mark): self
     {
         if (!in_array($mark, [ClearanceMark::YES, ClearanceMark::NO])) {
             throw new Exception('Invoice clearance mark format is invalid.');
@@ -160,9 +158,9 @@ class Invoice extends Content
      * Set the invoice print mark.
      *
      * @param string $mark
-     * @return InvoiceInterface
+     * @return $this
      */
-    public function setPrintMark(string $mark): InvoiceInterface
+    public function setPrintMark(string $mark): self
     {
         if ($mark != PrintMark::YES && $mark != PrintMark::NO) {
             throw new Exception('Invoice print mark format is wrong.');
@@ -177,9 +175,9 @@ class Invoice extends Content
      * Set the invoice donation.
      *
      * @param string $donation
-     * @return InvoiceInterface
+     * @return $this
      */
-    public function setDonation(string $donation): InvoiceInterface
+    public function setDonation(string $donation): self
     {
         if (!in_array($donation, [Donation::YES, Donation::NO])) {
             throw new Exception('Invoice donation format is wrong.');
@@ -194,9 +192,9 @@ class Invoice extends Content
      * Set the invoice love code.
      *
      * @param string $code
-     * @return InvoiceInterface
+     * @return $this
      */
-    public function setLoveCode(string $code): InvoiceInterface
+    public function setLoveCode(string $code): self
     {
         $counter = strlen($code);
 
@@ -215,7 +213,7 @@ class Invoice extends Content
      * @param string $type
      * @return InvoiceInterface
      */
-    public function setCarrierType(string $type): InvoiceInterface
+    public function setCarrierType(string $type): self
     {
         $carrierType = [
             CarrierType::NONE,
@@ -239,7 +237,7 @@ class Invoice extends Content
      * @param string $number
      * @return InvoiceInterface
      */
-    public function setCarrierNum(string $number): InvoiceInterface
+    public function setCarrierNum(string $number): self
     {
         $this->content['Data']['CarrierNum'] = $number;
 
@@ -252,7 +250,7 @@ class Invoice extends Content
      * @param string $type
      * @return InvoiceInterface
      */
-    public function setTaxType(string $type): InvoiceInterface
+    public function setTaxType(string $type): self
     {
         $taxType = [
             TaxType::DUTIABLE,
@@ -277,7 +275,7 @@ class Invoice extends Content
      * @param string $type
      * @return InvoiceInterface
      */
-    public function setSpecialTaxType(string $type): InvoiceInterface
+    public function setSpecialTaxType(string $type): self
     {
         $this->content['Data']['SpecialTaxType'] = $type;
 
@@ -290,7 +288,7 @@ class Invoice extends Content
      * @param float|int $amount
      * @return InvoiceInterface
      */
-    public function setSalesAmount($amount): InvoiceInterface
+    public function setSalesAmount($amount): self
     {
         if ($amount <= 0) {
             throw new Exception('Invoice sales amount is invalid.');
@@ -307,7 +305,7 @@ class Invoice extends Content
      * @param array $items
      * @return InvoiceInterface
      */
-    public function setItems(array $items): InvoiceInterface
+    public function setItems(array $items): self
     {
         $this->content['Data']['SalesAmount'] = 0;
         $this->items = [];
@@ -348,7 +346,6 @@ class Invoice extends Content
     /**
      * Validation content.
      *
-     * @return void
      * @throws Exception
      */
     public function validation()

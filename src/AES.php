@@ -31,8 +31,12 @@ trait AES
     public function decrypt(string $data): string
     {
         $data = base64_decode($data);
-        $data = openssl_decrypt($data, 'AES-128-CBC', $this->hashKey, OPENSSL_RAW_DATA, $this->hashIV);
+        $decrypted = openssl_decrypt($data, 'AES-128-CBC', $this->hashKey, OPENSSL_RAW_DATA, $this->hashIV);
 
-        return \urldecode($data);
+        if ($decrypted === false) {
+            throw new \Exception('Decryption failed.');
+        }
+
+        return \urldecode($decrypted);
     }
 }

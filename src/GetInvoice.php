@@ -34,7 +34,7 @@ class GetInvoice extends Content
      * @param string $invoiceNo
      * @return InvoiceInterface
      */
-    public function setInvoiceNo(string $invoiceNo): InvoiceInterface
+    public function setInvoiceNo(string $invoiceNo): self
     {
         if (strlen($invoiceNo) != 10) {
             throw new Exception('The invoice no length should be 10.');

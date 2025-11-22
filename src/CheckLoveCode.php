@@ -32,7 +32,7 @@ class CheckLoveCode extends Content
      * @param string $code
      * @return InvoiceInterface
      */
-    public function setLoveCode(string $code): InvoiceInterface
+    public function setLoveCode(string $code): self
     {
         if (strlen($code) < 3 || strlen($code) > 7) {
             throw new Exception('The donate code length must be between 3 and 8 characters.');

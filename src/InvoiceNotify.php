@@ -61,7 +61,7 @@ class InvoiceNotify extends Content
      * @param string $invoiceNo
      * @return InvoiceInterface
      */
-    public function setInvoiceNo(string $invoiceNo): InvoiceInterface
+    public function setInvoiceNo(string $invoiceNo): self
     {
         if (strlen($invoiceNo) != self::INVOICE_NO_LENGTH) {
             throw new Exception('The invoice no length should be ' . self::INVOICE_NO_LENGTH . '.');
@@ -78,7 +78,7 @@ class InvoiceNotify extends Content
      * @param string $number
      * @return InvoiceInterface
      */
-    public function setAllowanceNo(string $number): InvoiceInterface
+    public function setAllowanceNo(string $number): self
     {
         if (strlen($number) != self::ALLOWANCE_NO_LENGTH) {
             throw new Exception('The invoice allowance no length should be ' . self::ALLOWANCE_NO_LENGTH . '.');
@@ -95,7 +95,7 @@ class InvoiceNotify extends Content
      * @param string $number
      * @return InvoiceInterface
      */
-    public function setPhone(string $number): InvoiceInterface
+    public function setPhone(string $number): self
     {
         if (strlen($number) > self::PHONE_MAX_LENGTH) {
             throw new Exception('Notify phone number should be less than ' . (self::PHONE_MAX_LENGTH + 1) . ' characters');
@@ -112,7 +112,7 @@ class InvoiceNotify extends Content
      * @param string $email
      * @return InvoiceInterface
      */
-    public function setNotifyMail(string $email): InvoiceInterface
+    public function setNotifyMail(string $email): self
     {
         if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
             throw new Exception('Invalid email format');
@@ -133,7 +133,7 @@ class InvoiceNotify extends Content
      * @param string $type
      * @return InvoiceInterface
      */
-    public function setNotify(string $type): InvoiceInterface
+    public function setNotify(string $type): self
     {
         $notifyType = [
             NotifyType::SMS,
@@ -156,7 +156,7 @@ class InvoiceNotify extends Content
      * @param string $tag
      * @return InvoiceInterface
      */
-    public function setInvoiceTag(string $tag): InvoiceInterface
+    public function setInvoiceTag(string $tag): self
     {
         $invoiceTag = [
             InvoiceTagType::INVOICE,
@@ -181,7 +181,7 @@ class InvoiceNotify extends Content
      * @param string $target
      * @return InvoiceInterface
      */
-    public function setNotified(string $target): InvoiceInterface
+    public function setNotified(string $target): self
     {
         $targetList = [
             NotifiedType::CUSTOMER,
