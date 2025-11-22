@@ -2,7 +2,7 @@
 
 require __DIR__ . '/_config.php';
 
-use ecPay\eInvoice\AllowanceInvoice;
+use ecPay\eInvoice\Operations\AllowanceInvoice;
 use ecPay\eInvoice\Parameter\TaxType;
 
 // 原發票號碼 (需已開立)

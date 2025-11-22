@@ -1,17 +1,19 @@
 <?php
 
-namespace ecPay\eInvoice;
+namespace ecPay\eInvoice\Queries;
 
+use ecPay\eInvoice\Content;
+use ecPay\eInvoice\InvoiceInterface;
 use Exception;
 
-class InvalidInvoice extends Content
+class GetInvalidInvoice extends Content
 {
     /**
      * The request path.
      *
      * @var string
      */
-    protected $requestPath = '/B2CInvoice/Invalid';
+    protected $requestPath = '/B2CInvoice/GetInvalid';
 
     /**
      * Initialize invoice content.
@@ -25,7 +27,6 @@ class InvalidInvoice extends Content
             'RelateNumber' => '',
             'InvoiceNo' => '',
             'InvoiceDate' => '',
-            'Reason' => '',
         ];
     }
 
@@ -47,19 +48,6 @@ class InvalidInvoice extends Content
     }
 
     /**
-     * Setting invoice invalid reason.
-     *
-     * @param string $reason
-     * @return InvoiceInterface
-     */
-    public function setReason(string $reason): self
-    {
-        $this->content['Data']['Reason'] = $reason;
-
-        return $this;
-    }
-
-    /**
      * Validation content.
      *
      * @return void
@@ -68,16 +56,10 @@ class InvalidInvoice extends Content
     {
         $this->validatorBaseParam();
 
-        if (empty($this->content['Data']['InvoiceNo'])) {
+        $data = $this->content['Data'];
+
+        if (empty($data['InvoiceNo'])) {
             throw new Exception('The invoice no is empty.');
-        }
-
-        if (empty($this->content['Data']['InvoiceDate'])) {
-            throw new Exception('The invoice date is empty.');
-        }
-
-        if (empty($this->content['Data']['Reason'])) {
-            throw new Exception('The invoice invalid reason is empty.');
         }
     }
 }

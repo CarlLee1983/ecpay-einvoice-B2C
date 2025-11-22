@@ -14,7 +14,7 @@ class GetInvoiceTest extends \PHPUnit\Framework\TestCase
             $_ENV['HASH_KEY'],
             $_ENV['HASH_IV']
         );
-        $this->instance = new ecPay\eInvoice\GetInvoice(
+        $this->instance = new ecPay\eInvoice\Queries\GetInvoice(
             $_ENV['MERCHANT_ID'],
             $_ENV['HASH_KEY'],
             $_ENV['HASH_IV']
@@ -24,7 +24,7 @@ class GetInvoiceTest extends \PHPUnit\Framework\TestCase
     public function testQuickCheck()
     {
         $relateNumber = 'YEP' . date('YmdHis');
-        $invoice = new ecPay\eInvoice\Invoice(
+        $invoice = new ecPay\eInvoice\Operations\Invoice(
             $_ENV['MERCHANT_ID'],
             $_ENV['HASH_KEY'],
             $_ENV['HASH_IV']

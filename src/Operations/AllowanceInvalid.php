@@ -1,7 +1,9 @@
 <?php
 
-namespace ecPay\eInvoice;
+namespace ecPay\eInvoice\Operations;
 
+use ecPay\eInvoice\Content;
+use ecPay\eInvoice\InvoiceInterface;
 use Exception;
 
 class AllowanceInvalid extends Content

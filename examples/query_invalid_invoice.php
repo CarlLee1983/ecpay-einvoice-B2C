@@ -2,7 +2,7 @@
 
 require __DIR__ . '/_config.php';
 
-use ecPay\eInvoice\GetInvalidInvoice;
+use ecPay\eInvoice\Queries\GetInvalidInvoice;
 
 // 欲查詢的發票相關編號 (RelateNumber)
 $relateNumber = 'ECPAY20251122221613592'; 

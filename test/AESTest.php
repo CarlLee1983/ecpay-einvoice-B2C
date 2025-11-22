@@ -1,6 +1,6 @@
 <?php
 
-use ecPay\eInvoice\Invoice;
+use ecPay\eInvoice\Operations\Invoice;
 use PHPUnit\Framework\TestCase;
 
 /**

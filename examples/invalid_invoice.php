@@ -2,7 +2,7 @@
 
 require __DIR__ . '/_config.php';
 
-use ecPay\eInvoice\InvalidInvoice;
+use ecPay\eInvoice\Operations\InvalidInvoice;
 
 // 欲作廢的發票號碼 (必須是已開立且未作廢的發票)
 $invoiceNo = 'DM20028781'; 

@@ -1,6 +1,6 @@
 <?php
 
-use ecPay\eInvoice\AllowanceInvoice;
+use ecPay\eInvoice\Operations\AllowanceInvoice;
 use ecPay\eInvoice\Parameter\AllowanceNotifyType;
 use PHPUnit\Framework\TestCase;
 

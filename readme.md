@@ -35,7 +35,7 @@ $iv = 'q9jcZX8Ib9LM8wYk';
 $client = new ecPay\eInvoice\EcPayClient($server, $key, $iv);
 
 // 初始化 Invoice
-$invoice = new ecPay\eInvoice\Invoice($id, $key, $iv);
+$invoice = new ecPay\eInvoice\Operations\Invoice($id, $key, $iv);
 
 $invoice->setRelateNumber('YEP' . date('YmdHis'))
     ->setCustomerEmail('cylee@chyp.com.tw')
@@ -54,3 +54,19 @@ $invoice->setRelateNumber('YEP' . date('YmdHis'))
 $response = $client->send($invoice);
 $data = $response->getData();
 ```
+
+## 模組分群
+
+- `ecPay\eInvoice\Operations\*`：包含開立發票、作廢與折讓等一般發票作業類別（例如 `Invoice`, `InvalidInvoice`, `AllowanceInvoice`）。
+- `ecPay\eInvoice\Queries\*`：封裝查詢與驗證類別（例如 `GetInvoice`, `CheckBarcode`），與作業模組解耦。
+- `ecPay\eInvoice\Notifications\*`：目前提供 `InvoiceNotify`，用於推播發票、折讓或中獎通知。
+- `ecPay\eInvoice\Printing\*`：列印功能尚未實作，`README` 僅為占位，未來若新增列印 API 會在此擴充。
+
+> 以上模組皆繼承共同的 `Content` 基底類別，仍可透過相同的 `EcPayClient` 傳送請求。
+
+## 文件資源
+
+- `docs/README.md`：文件入口，整理常用章節索引與官方最新下載連結。
+- `docs/api-overview.md`：快速瀏覽介接流程、模組與共用欄位。
+- `docs/error-codes.md`：常見錯誤碼與程式內部驗證訊息參考。
+- 官方 PDF：<https://www.ecpay.com.tw/Content/files/ecpay_einvoice_v3_0_0.pdf>

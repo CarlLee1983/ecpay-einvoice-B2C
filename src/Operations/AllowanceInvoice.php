@@ -1,9 +1,11 @@
 <?php
 
-namespace ecPay\eInvoice;
+namespace ecPay\eInvoice\Operations;
 
-use Exception;
+use ecPay\eInvoice\Content;
+use ecPay\eInvoice\InvoiceInterface;
 use ecPay\eInvoice\Parameter\AllowanceNotifyType;
+use Exception;
 
 class AllowanceInvoice extends Content
 {

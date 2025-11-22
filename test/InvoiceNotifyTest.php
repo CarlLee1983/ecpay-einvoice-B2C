@@ -1,6 +1,6 @@
 <?php
 
-use ecPay\eInvoice\InvoiceNotify;
+use ecPay\eInvoice\Notifications\InvoiceNotify;
 use ecPay\eInvoice\Parameter\NotifyType;
 use ecPay\eInvoice\Parameter\InvoiceTagType;
 use ecPay\eInvoice\Parameter\NotifiedType;

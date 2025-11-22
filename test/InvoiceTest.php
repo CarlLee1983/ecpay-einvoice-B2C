@@ -14,7 +14,7 @@ class InvoiceTest extends \PHPUnit\Framework\TestCase
             $_ENV['HASH_KEY'],
             $_ENV['HASH_IV']
         );
-        $this->instance = new ecPay\eInvoice\Invoice(
+        $this->instance = new ecPay\eInvoice\Operations\Invoice(
             $_ENV['MERCHANT_ID'],
             $_ENV['HASH_KEY'],
             $_ENV['HASH_IV']
@@ -300,7 +300,7 @@ class InvoiceTest extends \PHPUnit\Framework\TestCase
             ->setCustomerEmail('test@example.com')
             ->setCarrierType('1');
 
-        $this->assertInstanceOf(ecPay\eInvoice\Invoice::class, $result);
+        $this->assertInstanceOf(ecPay\eInvoice\Operations\Invoice::class, $result);
     }
 
     /**

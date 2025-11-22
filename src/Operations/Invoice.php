@@ -2,8 +2,10 @@
 
 declare(strict_types=1);
 
-namespace ecPay\eInvoice;
+namespace ecPay\eInvoice\Operations;
 
+use ecPay\eInvoice\Content;
+use ecPay\eInvoice\InvoiceValidator;
 use ecPay\eInvoice\Parameter\CarrierType;
 use ecPay\eInvoice\Parameter\ClearanceMark;
 use ecPay\eInvoice\Parameter\Donation;

@@ -14,7 +14,7 @@ class CheckLoveCodeTest extends \PHPUnit\Framework\TestCase
             $_ENV['HASH_KEY'],
             $_ENV['HASH_IV']
         );
-        $this->instance = new ecPay\eInvoice\CheckLoveCode(
+        $this->instance = new ecPay\eInvoice\Queries\CheckLoveCode(
             $_ENV['MERCHANT_ID'],
             $_ENV['HASH_KEY'],
             $_ENV['HASH_IV']

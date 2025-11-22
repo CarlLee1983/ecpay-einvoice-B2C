@@ -2,7 +2,7 @@
 
 require __DIR__ . '/_config.php';
 
-use ecPay\eInvoice\AllowanceInvalid;
+use ecPay\eInvoice\Operations\AllowanceInvalid;
 
 // 欲作廢的折讓單號
 $allowanceNo = '2025112222177023'; 

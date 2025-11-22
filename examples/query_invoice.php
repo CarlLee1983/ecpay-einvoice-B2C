@@ -2,7 +2,7 @@
 
 require __DIR__ . '/_config.php';
 
-use ecPay\eInvoice\GetInvoice;
+use ecPay\eInvoice\Queries\GetInvoice;
 
 // 假設我們要查詢的發票資訊
 // 注意：這裡需要填入實際存在的 RelateNumber 或 InvoiceNo (兩者擇一或皆填，視 API 需求)

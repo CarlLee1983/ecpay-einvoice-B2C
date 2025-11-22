@@ -2,7 +2,7 @@
 
 require __DIR__ . '/_config.php';
 
-use ecPay\eInvoice\Invoice;
+use ecPay\eInvoice\Operations\Invoice;
 use ecPay\eInvoice\Parameter\CarrierType;
 use ecPay\eInvoice\Parameter\Donation;
 use ecPay\eInvoice\Parameter\PrintMark;

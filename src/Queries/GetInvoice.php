@@ -1,17 +1,19 @@
 <?php
 
-namespace ecPay\eInvoice;
+namespace ecPay\eInvoice\Queries;
 
+use ecPay\eInvoice\Content;
+use ecPay\eInvoice\InvoiceInterface;
 use Exception;
 
-class GetInvalidInvoice extends Content
+class GetInvoice extends Content
 {
     /**
      * The request path.
      *
      * @var string
      */
-    protected $requestPath = '/B2CInvoice/GetInvalid';
+    protected $requestPath = '/B2CInvoice/GetIssue';
 
     /**
      * Initialize invoice content.
@@ -54,10 +56,12 @@ class GetInvalidInvoice extends Content
     {
         $this->validatorBaseParam();
 
-        $data = $this->content['Data'];
-
-        if (empty($data['InvoiceNo'])) {
+        if (empty($this->content['Data']['InvoiceNo'])) {
             throw new Exception('The invoice no is empty.');
+        }
+
+        if (empty($this->content['Data']['InvoiceDate'])) {
+            throw new Exception('The invoice date is empty.');
         }
     }
 }

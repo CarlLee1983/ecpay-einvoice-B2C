@@ -1,6 +1,6 @@
 <?php
 
-use ecPay\eInvoice\AllowanceInvalid;
+use ecPay\eInvoice\Operations\AllowanceInvalid;
 use PHPUnit\Framework\TestCase;
 
 class AllowanceInvalidTest extends TestCase

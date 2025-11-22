@@ -7,6 +7,18 @@ and this project adheres to [Semantic Versioning](https://semver.org/lang/zh-TW/
 
 ## [2.1.0] - 2024-11-22
 
+## [Unreleased]
+
+### Changed (變更)
+- 重新調整專案結構，將發票作業、查詢、通知類別分別移至 `src/Operations`, `src/Queries`, `src/Notifications`，並更新所有引用、範例與測試使用新的命名空間。
+
+### Added (新增)
+- 於 `src/Printing/README.md` 建立列印模組占位說明，預留未來列印 API 擴充空間。
+- 新增 `docs/` 目錄（`README.md`, `api-overview.md`, `error-codes.md`），整理官方 PDF 的常用資訊並提供快速連結。
+
+### Removed (移除)
+- 移除容量較大的 `ecpay_einvoice_v3_0_0.pdf`，改以 `docs/` 內的 Markdown 摘要與官方連結替代。
+
 ### Added (新增)
 - 新增 8 個完整的使用範例檔案（`examples/` 目錄）
   - `issue_invoice.php` - 開立發票範例

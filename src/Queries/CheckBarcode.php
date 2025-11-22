@@ -1,7 +1,9 @@
 <?php
 
-namespace ecPay\eInvoice;
+namespace ecPay\eInvoice\Queries;
 
+use ecPay\eInvoice\Content;
+use ecPay\eInvoice\InvoiceInterface;
 use Exception;
 
 class CheckBarcode extends Content

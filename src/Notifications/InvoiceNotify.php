@@ -2,8 +2,10 @@
 
 declare(strict_types=1);
 
-namespace ecPay\eInvoice;
+namespace ecPay\eInvoice\Notifications;
 
+use ecPay\eInvoice\Content;
+use ecPay\eInvoice\InvoiceInterface;
 use ecPay\eInvoice\Parameter\InvoiceTagType;
 use ecPay\eInvoice\Parameter\NotifiedType;
 use ecPay\eInvoice\Parameter\NotifyType;
