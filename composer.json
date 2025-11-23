@@ -2,11 +2,10 @@
     "name": "ecpay/einvoice",
     "description": "ECPay invoice package.",
     "license": "MIT",
-    "version": "2.1.0",
     "authors": [
         {
             "name": "Carl",
-            "email": "cylee@chyp.com.tw"
+            "email": "carllee0520@gmail.com"
         }
     ],
     "minimum-stability": "stable",
