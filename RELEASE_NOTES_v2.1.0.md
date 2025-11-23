@@ -175,11 +175,3 @@ vendor/bin/phpunit --coverage-html coverage/
 請參閱 [CHANGELOG.md](CHANGELOG.md) 查看詳細的變更記錄。
 
 ---
-
-**完整測試結果：**
-```
-✅ 174 tests, 408 assertions
-✅ 100% passing rate
-⚡ Execution time: 0.062 seconds
-```
-

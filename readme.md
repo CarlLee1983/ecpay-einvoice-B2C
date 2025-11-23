@@ -73,6 +73,7 @@ $data = $response->getData();
 - `docs/README.md`：文件入口，整理常用章節索引與官方最新下載連結。
 - `docs/api-overview.md`：快速瀏覽介接流程、模組與共用欄位。
 - `docs/error-codes.md`：常見錯誤碼與程式內部驗證訊息參考。
+- `docs/README.md#使用流程圖--flowcharts`：前置設定、開立發票、折讓/作廢/註銷等 Mermaid 流程圖。
 - 官方 PDF：<https://www.ecpay.com.tw/Content/files/ecpay_einvoice_v3_0_0.pdf>
 
 ---
