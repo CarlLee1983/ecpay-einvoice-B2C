@@ -5,6 +5,21 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/zh-TW/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/lang/zh-TW/).
 
+## [2.2.0] - 2025-11-23
+
+### Added (新增)
+- `src/Factories/OperationFactoryInterface.php` 與 `OperationFactory.php`：統一管理操作/查詢/通知類別建立、別名對應、自訂初始化流程。
+- Laravel 整合套件化：`config/ecpay-einvoice.php`、`Laravel/EcPayServiceProvider.php`、`Facades/EcPayInvoice.php`、`Facades/EcPayQuery.php`，支援 Service Container 綁定、Facade 與 `vendor:publish`。
+- 新增 `orchestra/testbench` 依賴以及 `test/OperationFactoryTest.php`、`test/Laravel/EcPayServiceProviderTest.php`，確保工廠與 Service Provider/Fascade 綁定可被測試。
+
+### Changed (變更)
+- README 與 `docs/README.md` 新增「工廠模式與 Laravel 整合」章節，提供純 PHP、Service Container 與 Facade 的使用範例與設定指引。
+- `composer.json` 新增 Laravel auto-discovery 設定、dev 依賴 `orchestra/testbench`，並調整作者信箱、移除 `version` 欄位以符合 Packagist 規範。
+- `composer.lock` 重新產生以反映新的依賴集。
+
+### Tests (測試)
+- `composer test`：全部 267 個測試案例（574 個 assertion）皆通過，僅維持既有 1 項 risky case（`InvalidInvoiceTest::testQuickCheck` 無斷言）。
+
 ## [2.1.0] - 2024-11-22
 
 ## [Unreleased]
@@ -72,7 +87,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/lang/zh-TW/
 ### Added
 - 初始功能實作
 
-[2.1.0]: https://github.com/your-repo/ecpay-einvoice-B2B/compare/v2.0.0...v2.1.0
-[2.0.0]: https://github.com/your-repo/ecpay-einvoice-B2B/compare/v1.3.0...v2.0.0
-[1.3.0]: https://github.com/your-repo/ecpay-einvoice-B2B/releases/tag/v1.3.0
+[2.2.0]: https://github.com/CarlLee1983/ecpay-einvoice-B2C/compare/v2.1.0...v2.2.0
+[2.1.0]: https://github.com/CarlLee1983/ecpay-einvoice-B2C/compare/v2.0.0...v2.1.0
+[2.0.0]: https://github.com/CarlLee1983/ecpay-einvoice-B2C/compare/v1.3.0...v2.0.0
+[1.3.0]: https://github.com/CarlLee1983/ecpay-einvoice-B2C/releases/tag/v1.3.0
 
