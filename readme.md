@@ -68,13 +68,84 @@ $data = $response->getData();
 
 > 以上模組皆繼承共同的 `Content` 基底類別，仍可透過相同的 `EcPayClient` 傳送請求。
 
+## 工廠模式與 Laravel 整合
+
+### 純 PHP 工廠
+
+`OperationFactory` 可依別名快速建立 `Operations\*`、`Queries\*` 等物件並注入共用憑證。別名預設對應為：
+
+- `invoice` → `Operations\Invoice`
+- `operations.invalid_invoice` → `Operations\InvalidInvoice`
+- `queries.get_invoice` → `Queries\GetInvoice`
+
+範例：
+
+```php
+use ecPay\eInvoice\EcPayClient;
+use ecPay\eInvoice\Factories\OperationFactory;
+
+$factory = new OperationFactory([
+    'merchant_id' => $merchantId,
+    'hash_key' => $hashKey,
+    'hash_iv' => $hashIV,
+]);
+
+$invoice = $factory->make('invoice')
+    ->setRelateNumber('YEP' . date('YmdHis'))
+    ->setSalesAmount(100)
+    ->setItems([
+        ['name' => '測試商品', 'quantity' => 1, 'unit' => '組', 'price' => 100],
+    ]);
+
+$client = new EcPayClient($server, $hashKey, $hashIV);
+$data = $client->send($invoice)->getData();
+```
+
+如需自訂別名或預設欄位，可呼叫 `alias()`、`addInitializer()`：
+
+```php
+use ecPay\eInvoice\Content;
+
+$factory->alias('operations.mobile_invoice', \App\Invoices\MobileInvoice::class);
+$factory->addInitializer(function (Content $content) {
+    $content->setRelateNumber('APP' . date('YmdHis'));
+});
+```
+
+### Laravel Service Container + Facade
+
+- 套件已支援 auto-discovery，或可手動在 `config/app.php` 註冊 `ecPay\eInvoice\Laravel\EcPayServiceProvider::class`。
+- 發布設定檔：`php artisan vendor:publish --tag=ecpay-einvoice-config`
+- 設定檔 `config/ecpay-einvoice.php` 內可調整 MerchantID、別名綁定與初始化器。
+
+使用範例：
+
+```php
+use ecPay\eInvoice\Laravel\Facades\EcPayInvoice;
+use ecPay\eInvoice\Laravel\Facades\EcPayQuery;
+
+$invoice = EcPayInvoice::make()
+    ->setRelateNumber('YEP' . now()->format('YmdHis'))
+    ->setSalesAmount(100)
+    ->setItems([
+        ['name' => 'Laravel Facade', 'quantity' => 1, 'unit' => '式', 'price' => 100],
+    ]);
+
+$response = app('ecpay.client')->send($invoice)->getData();
+
+$query = EcPayQuery::invoice()->setInvoiceNumber('AB12345678');
+$result = app('ecpay.client')->send($query)->getData();
+```
+
+同時也可直接透過容器解析 `app('ecpay.allowance')`、`app(OperationFactoryInterface::class)` 等實例，自行調整後送出請求。
+
 ## 文件資源
 
 - `docs/README.md`：文件入口，整理常用章節索引與官方最新下載連結。
 - `docs/api-overview.md`：快速瀏覽介接流程、模組與共用欄位。
 - `docs/error-codes.md`：常見錯誤碼與程式內部驗證訊息參考。
 - `docs/README.md#使用流程圖--flowcharts`：前置設定、開立發票、折讓/作廢/註銷等 Mermaid 流程圖。
-- 官方 PDF：<https://www.ecpay.com.tw/Content/files/ecpay_einvoice_v3_0_0.pdf>
+- 官方 PDF：<https://developers.ecpay.com.tw/?p=7809>
 
 ---
 

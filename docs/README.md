@@ -10,6 +10,13 @@
 
 > 建議在專案升級或綠界公告有修訂時，檢查官方文件是否更新並同步調整本摘要。
 
+## Laravel 整合重點
+
+1. Service Provider：`ecPay\eInvoice\Laravel\EcPayServiceProvider` 會自動載入，或可手動加入 `config/app.php`。
+2. 設定檔：執行 `php artisan vendor:publish --tag=ecpay-einvoice-config` 生成 `config/ecpay-einvoice.php`，設定 MerchantID / HashKey / HashIV。
+3. Service Container：`app('ecpay.invoice')`、`app('ecpay.query_invoice')` 等 key 將回傳對應的操作物件，可由 `config/ecpay-einvoice.php` 的 `bindings` 區段調整。
+4. Facade：`EcPayInvoice` 與 `EcPayQuery` 皆繼承 `OperationFactory`，可透過 `EcPayInvoice::make()`、`EcPayQuery::invoice()` 快速取得常用類別。
+
 ---
 
 ## Files

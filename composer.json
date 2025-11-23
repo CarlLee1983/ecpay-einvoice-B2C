@@ -22,6 +22,7 @@
     "require-dev": {
         "fakerphp/faker": "^1.23",
         "mockery/mockery": "^1.6",
+        "orchestra/testbench": "^8.0 || ^9.0",
         "phpunit/phpunit": "^10.5",
         "squizlabs/php_codesniffer": "^4.0"
     },
@@ -29,5 +30,16 @@
         "test": "phpunit",
         "phpcs": "phpcs",
         "phpcbf": "phpcbf"
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "ecPay\\eInvoice\\Laravel\\EcPayServiceProvider"
+            ],
+            "aliases": {
+                "EcPayInvoice": "ecPay\\eInvoice\\Laravel\\Facades\\EcPayInvoice",
+                "EcPayQuery": "ecPay\\eInvoice\\Laravel\\Facades\\EcPayQuery"
+            }
+        }
     }
 }
