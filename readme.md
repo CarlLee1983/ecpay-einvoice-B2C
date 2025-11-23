@@ -20,6 +20,10 @@
 *   **[作廢折讓 (invalid_allowance.php)](examples/invalid_allowance.php)**：作廢折讓證明單。
 *   **[驗證手機條碼 (check_mobile_barcode.php)](examples/check_mobile_barcode.php)**：檢查手機條碼是否有效。
 *   **[驗證愛心碼 (check_love_code.php)](examples/check_love_code.php)**：檢查愛心碼是否有效。
+*   **[設定字軌與配號 (add_invoice_word_setting.php)](examples/add_invoice_word_setting.php)**：新增當期字軌區間。
+*   **[設定字軌狀態 (update_invoice_word_status.php)](examples/update_invoice_word_status.php)**：啟用/暫停既有字軌。
+*   **[查詢字軌 (get_invoice_word_setting.php)](examples/get_invoice_word_setting.php)**：檢視字軌使用狀態與 TrackID。
+*   **[查詢財政部配號結果 (get_gov_invoice_word_setting.php)](examples/get_gov_invoice_word_setting.php)**：查詢財政部授權綠界的字軌配號。
 
 ## 快速入門範例
 
@@ -70,3 +74,54 @@ $data = $response->getData();
 - `docs/api-overview.md`：快速瀏覽介接流程、模組與共用欄位。
 - `docs/error-codes.md`：常見錯誤碼與程式內部驗證訊息參考。
 - 官方 PDF：<https://www.ecpay.com.tw/Content/files/ecpay_einvoice_v3_0_0.pdf>
+
+---
+
+# ECPay e-Invoice API Package (English Overview)
+
+This library wraps the official ECPay e-Invoice API. Use it to create, void, and query invoices/allowances, manage tracks, and trigger notifications with consistent encryption and validation helpers.
+
+## Parameters
+- Server: API endpoint (stage or production)
+- MerchantID: merchant code registered with ECPay
+- HashKey / HashIV: AES credentials for encrypting `Data`
+
+## Sample Scripts
+Key runnable samples live under `examples/`. Common ones include:
+- **issue_invoice.php** – create regular invoices (with carrier / donation settings)
+- **query_invoice.php** – fetch invoice details
+- **invalid_invoice.php / query_invalid_invoice.php** – void invoices and confirm status
+- **issue_allowance.php / invalid_allowance.php** – manage allowances
+- **check_mobile_barcode.php / check_love_code.php** – validate carrier and donation codes
+- **add_invoice_word_setting.php / update_invoice_word_status.php / get_invoice_word_setting.php** – allocate, enable/disable, and inspect invoice tracks
+- **get_gov_invoice_word_setting.php** – retrieve Ministry of Finance track allocation
+
+## Quick Start
+```php
+$client = new ecPay\eInvoice\EcPayClient($server, $hashKey, $hashIV);
+$invoice = new ecPay\eInvoice\Operations\Invoice($merchantId, $hashKey, $hashIV);
+
+$invoice->setRelateNumber('YEP' . date('YmdHis'))
+    ->setCustomerEmail('demo@example.com')
+    ->setItems([
+        ['name' => 'Demo Item', 'quantity' => 1, 'unit' => 'pcs', 'price' => 100, 'totalPrice' => 100],
+    ])
+    ->setSalesAmount(100);
+
+$response = $client->send($invoice);
+$data = $response->getData();
+```
+
+## Module Groups
+- `Operations\*`: create/void invoices and allowances (`Invoice`, `InvalidInvoice`, `AllowanceInvoice`, etc.)
+- `Queries\*`: lookup invoice/allowance status or validate carriers (`GetInvoice`, `CheckBarcode`, …)
+- `Notifications\*`: push invoice/allowance/winning notifications (`InvoiceNotify`)
+- `Printing\*`: reserved for future printing helpers
+
+All modules extend `Content`, so you can share the same `EcPayClient` to send requests.
+
+## Documentation Resources
+- `docs/README.md`: entry point for local docs
+- `docs/api-overview.md`: flow overview, module list, shared parameters
+- `docs/error-codes.md`: maps common API errors to in-project validation rules
+- Official PDF: <https://www.ecpay.com.tw/Content/files/ecpay_einvoice_v3_0_0.pdf>

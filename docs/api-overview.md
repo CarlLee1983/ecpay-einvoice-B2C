@@ -24,12 +24,16 @@
 | Operations | `AllowanceByCollegiate` | `/B2CInvoice/AllowanceByCollegiate` | 線上開立折讓（通知） |
 | Operations | `AllowanceInvalidByCollegiate` | `/B2CInvoice/AllowanceInvalidByCollegiate` | 取消線上折讓 |
 | Operations | `AllowanceInvalid` | `/B2CInvoice/AllowanceInvalid` | 作廢折讓 |
+| Operations | `AddInvoiceWordSetting` | `/B2CInvoice/AddInvoiceWordSetting` | 設定字軌與配號 |
+| Operations | `UpdateInvoiceWordStatus` | `/B2CInvoice/UpdateInvoiceWordStatus` | 更新字軌啟用狀態 |
 | Printing | `InvoicePrint` | `/B2CInvoice/InvoicePrint` | 取得發票列印頁 |
 | Queries | `GetInvoice` | `/B2CInvoice/GetIssue` | 查詢已開立發票 |
 | Queries | `GetIssueList` | `/B2CInvoice/GetIssueList` | 查詢特定多筆發票 |
 | Queries | `GetAllowanceList` | `/B2CInvoice/GetAllowanceList` | 查詢折讓明細 |
 | Queries | `GetAllowanceInvalid` | `/B2CInvoice/GetAllowanceInvalid` | 查詢作廢折讓明細 |
 | Queries | `GetInvalidInvoice` | `/B2CInvoice/GetInvalid` | 查詢作廢發票 |
+| Queries | `GetInvoiceWordSetting` | `/B2CInvoice/GetInvoiceWordSetting` | 查詢字軌使用狀態 |
+| Queries | `GetGovInvoiceWordSetting` | `/B2CInvoice/GetGovInvoiceWordSetting` | 查詢財政部字軌配號結果 |
 | Queries | `CheckBarcode` | `/B2CInvoice/CheckBarcode` | 驗證手機條碼載具 |
 | Queries | `CheckLoveCode` | `/B2CInvoice/CheckLoveCode` | 驗證愛心碼 |
 | Notifications | `InvoiceNotify` | `/B2CInvoice/InvoiceNotify` | 發送開立/折讓/中獎通知 |
