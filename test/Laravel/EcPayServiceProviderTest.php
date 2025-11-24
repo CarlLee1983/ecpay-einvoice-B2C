@@ -14,6 +14,7 @@ use ecPay\eInvoice\Operations\Invoice;
 use ecPay\eInvoice\Queries\GetInvoice;
 use ecPay\eInvoice\Response;
 use Mockery;
+use Illuminate\Support\Facades\Facade;
 use Orchestra\Testbench\TestCase;
 
 /**
@@ -142,5 +143,163 @@ class EcPayServiceProviderTest extends TestCase
         });
 
         $this->assertSame($response, $returned);
+    }
+
+    public function testFactoryKeepsPerConfigCredentials(): void
+    {
+        /** @var OperationFactoryInterface $defaultFactory */
+        $defaultFactory = $this->app->make(OperationFactoryInterface::class);
+        $defaultInvoice = $defaultFactory->make('invoice');
+
+        $this->overrideEcPayConfig([
+            'merchant_id' => 'MERCHANT-B',
+            'hash_key' => 'HashKeyB',
+            'hash_iv' => 'HashIVB',
+        ]);
+
+        /** @var OperationFactoryInterface $reboundFactory */
+        $reboundFactory = $this->app->make(OperationFactoryInterface::class);
+        $reboundInvoice = $reboundFactory->make('invoice');
+        $stillOldInvoice = $defaultFactory->make('invoice');
+
+        $this->assertNotSame($defaultFactory, $reboundFactory);
+        $this->assertSame('2000132', $this->readProperty($defaultInvoice, 'merchantID'));
+        $this->assertSame('HashKey', $this->readProperty($defaultInvoice, 'hashKey'));
+        $this->assertSame('HashIV', $this->readProperty($defaultInvoice, 'hashIV'));
+        $this->assertSame('2000132', $this->readProperty($stillOldInvoice, 'merchantID'));
+        $this->assertSame('MERCHANT-B', $this->readProperty($reboundInvoice, 'merchantID'));
+        $this->assertSame('HashKeyB', $this->readProperty($reboundInvoice, 'hashKey'));
+        $this->assertSame('HashIVB', $this->readProperty($reboundInvoice, 'hashIV'));
+    }
+
+    public function testClientKeepsPerServerSettings(): void
+    {
+        /** @var EcPayClient $defaultClient */
+        $defaultClient = $this->app->make(EcPayClient::class);
+
+        $this->overrideEcPayConfig([
+            'server' => 'https://einvoice-new.ecpay.com.tw',
+            'hash_key' => 'HashKeyC',
+            'hash_iv' => 'HashIVC',
+        ]);
+
+        /** @var EcPayClient $reboundClient */
+        $reboundClient = $this->app->make(EcPayClient::class);
+
+        $this->assertNotSame($defaultClient, $reboundClient);
+        $this->assertSame(
+            'https://einvoice-stage.ecpay.com.tw',
+            $this->readProperty($defaultClient, 'requestServer')
+        );
+        $this->assertSame('HashKey', $this->readProperty($defaultClient, 'hashKey'));
+        $this->assertSame('HashIV', $this->readProperty($defaultClient, 'hashIV'));
+
+        $this->assertSame(
+            'https://einvoice-new.ecpay.com.tw',
+            $this->readProperty($reboundClient, 'requestServer')
+        );
+        $this->assertSame('HashKeyC', $this->readProperty($reboundClient, 'hashKey'));
+        $this->assertSame('HashIVC', $this->readProperty($reboundClient, 'hashIV'));
+    }
+
+    public function testCoordinatorRebindsDependencies(): void
+    {
+        /** @var OperationCoordinator $originalCoordinator */
+        $originalCoordinator = $this->app->make(OperationCoordinator::class);
+        $originalFactory = $this->readProperty($originalCoordinator, 'factory');
+        $originalClient = $this->readProperty($originalCoordinator, 'client');
+
+        $this->overrideEcPayConfig([
+            'merchant_id' => 'MERCHANT-NEW',
+            'hash_key' => 'HashKeyNEW',
+            'hash_iv' => 'HashIVNEW',
+            'server' => 'https://einvoice-new.ecpay.com.tw',
+        ]);
+
+        $response = new Response(['RtnCode' => 1, 'RtnMsg' => 'OK']);
+        $mockClient = Mockery::mock(EcPayClient::class);
+        $mockClient->shouldReceive('send')
+            ->once()
+            ->with(Mockery::on(function (Invoice $invoice) {
+                return $this->readProperty($invoice, 'merchantID') === 'MERCHANT-NEW'
+                    && $this->readProperty($invoice, 'hashKey') === 'HashKeyNEW'
+                    && $this->readProperty($invoice, 'hashIV') === 'HashIVNEW';
+            }))
+            ->andReturn($response);
+
+        $this->app->instance(EcPayClient::class, $mockClient);
+        $this->app->instance('ecpay.client', $mockClient);
+
+        /** @var OperationCoordinator $rebuiltCoordinator */
+        $rebuiltCoordinator = $this->app->make(OperationCoordinator::class);
+        $rebuiltFactory = $this->readProperty($rebuiltCoordinator, 'factory');
+        $rebuiltClient = $this->readProperty($rebuiltCoordinator, 'client');
+
+        $this->assertNotSame($originalCoordinator, $rebuiltCoordinator);
+        $this->assertNotSame($originalFactory, $rebuiltFactory);
+        $this->assertSame($mockClient, $rebuiltClient);
+
+        $result = $rebuiltCoordinator->dispatch('invoice', function (Invoice $invoice) {
+            $invoice->setRelateNumber('REBOUND-RELATE');
+
+            return $invoice;
+        });
+
+        $this->assertSame($response, $result);
+    }
+
+    /**
+     * 覆寫 config 並清除已解析的單例，確保容器會重建新的實例。
+     *
+     * @param array<string,mixed> $overrides
+     */
+    protected function overrideEcPayConfig(array $overrides): void
+    {
+        foreach ($overrides as $key => $value) {
+            $this->app['config']->set('ecpay-einvoice.' . $key, $value);
+        }
+
+        $this->refreshEcPayBindings();
+    }
+
+    /**
+     * 重置與綠界相關的單例與 Facade 快取。
+     */
+    protected function refreshEcPayBindings(): void
+    {
+        $bindings = [
+            OperationFactoryInterface::class,
+            'ecpay.factory',
+            EcPayClient::class,
+            'ecpay.client',
+            OperationCoordinator::class,
+            'ecpay.coordinator',
+        ];
+
+        foreach ($bindings as $binding) {
+            $this->app->forgetInstance($binding);
+        }
+
+        Facade::clearResolvedInstances();
+    }
+
+    /**
+     * 讀取受保護的屬性，方便驗證內部狀態。
+     *
+     * @param object $object
+     * @param string $property
+     * @return mixed
+     */
+    protected function readProperty(object $object, string $property)
+    {
+        $reflection = new \ReflectionObject($object);
+        if (!$reflection->hasProperty($property)) {
+            $this->fail("Property {$property} not found on " . get_class($object));
+        }
+
+        $prop = $reflection->getProperty($property);
+        $prop->setAccessible(true);
+
+        return $prop->getValue($object);
     }
 }
