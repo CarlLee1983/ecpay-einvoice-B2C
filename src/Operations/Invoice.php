@@ -16,6 +16,9 @@ use ecPay\eInvoice\Parameter\TaxType;
 use ecPay\eInvoice\Parameter\VatType;
 use Exception;
 
+/**
+ * Invoice class
+ */
 class Invoice extends Content
 {
     /**
@@ -332,18 +335,6 @@ class Invoice extends Content
     }
 
     /**
-     * Get the invoice content.
-     *
-     * @return array
-     */
-    public function getContent(): array
-    {
-        $this->content['Data']['Items'] = $this->items;
-
-        return parent::getContent();
-    }
-
-    /**
      * Validation content.
      *
      * @throws Exception
@@ -351,6 +342,7 @@ class Invoice extends Content
     public function validation()
     {
         $this->validatorBaseParam();
+        $this->content['Data']['Items'] = $this->items;
 
         // Sync SalesAmount with Items sum
         $amount = 0;

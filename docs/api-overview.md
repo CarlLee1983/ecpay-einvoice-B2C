@@ -4,8 +4,8 @@
 
 1. **準備店家金鑰**：取得 `MerchantID`、`HashKey`、`HashIV`，與 API Server (測試/正式) URL。
 2. **選擇模組類別**：依作業型態建立 `Operations`, `Queries`, `Notifications` 模組中的類別實例。所有類別都繼承 `Content`，共用 `setMerchantID()`、`setHashKey()`、`setHashIV()` 等方法。
-3. **填入欄位並呼叫 `getContent()`**：各類別提供 Fluent Interface 設定必填欄位；`getContent()` 會驗證資料、將 `Data` JSON 化後再透過 AES/CBC 加密。
-4. **透過 `EcPayClient` 發送請求**：`EcPayClient::send()` 會組成 `Request`，傳送至 `{Server}{RequestPath}` 並自動解密回應。
+3. **填入欄位並呼叫 `getPayload()`**：各類別提供 Fluent Interface 設定必填欄位；`getPayload()` 僅回傳純領域資料，若要自行送出可交由 `PayloadEncoder` 產製傳輸用 `Data`。
+4. **透過 `EcPayClient` 發送請求**：`EcPayClient::send()` 內建 `PayloadEncoder`/`CipherService`，會組成 `Request`，傳送至 `{Server}{RequestPath}` 並自動解密回應。
 5. **解析 `Response`**：`Response::success()` 判斷 `RtnCode == 1` 是否成功，`getData()` 取得解密後的內容。
 
 > 備註：PDF 版本記載更多進階參數（如批次作業、愛心碼維護等），若本摘要未涵蓋請回查官方文件。
@@ -47,14 +47,14 @@
 | --- | --- | --- |
 | `MerchantID` | `Content::__construct` | 自動帶入建構子傳入之特店代號 |
 | `RqHeader.Timestamp` | `Content::__construct` | UNIX timestamp，預設為建立實例當下時間 |
-| `Data` | 各模組 `initContent()` | 真正的業務欄位，後續會 JSON encode → urlencode → AES 加密 |
+| `Data` | 各模組 `initContent()` | 真正的業務欄位，可透過 `PayloadEncoder` JSON encode → urlencode → AES 加密 |
 
 ### 3.2 加解密流程
 
-1. `getContent()` 會先執行 `validation()`，確保必填欄位存在。
-2. `Data` 以 `json_encode` 序列化，並轉為 URL-safe 字串。
-3. 使用 `AES::encrypt()` 搭配 `HashKey`/`HashIV`（CBC/PKCS7）產出最終 `Data` 值。
-4. 回應時 `EcPayClient` 會解密 `Data`，失敗則回傳 `TransCode`/`TransMsg`。
+1. `getPayload()` 或 `validation()` 會先確保必填欄位存在。
+2. `PayloadEncoder` 將 `Data` JSON encode → urlencode → 進行 .NET 相容轉換。
+3. `CipherService` 使用 AES-128-CBC/PKCS7（搭配 `HashKey`/`HashIV`）產出最終 `Data` 值。
+4. 回應時 `EcPayClient` 會呼叫 `PayloadEncoder::decodeData()` 解出原始欄位，若 `Data` 空則退回 `TransCode`/`TransMsg`。
 
 ### 3.3 常見欄位（節錄）
 

@@ -1,8 +1,10 @@
 <?php
 
-use ecPay\eInvoice\EcPayClient;
-use ecPay\eInvoice\Request;
 use ecPay\eInvoice\Content;
+use ecPay\eInvoice\EcPayClient;
+use ecPay\eInvoice\Infrastructure\CipherService;
+use ecPay\eInvoice\Infrastructure\PayloadEncoder;
+use ecPay\eInvoice\Request;
 use ecPay\eInvoice\Response as EcPayResponse;
 use GuzzleHttp\Client;
 use GuzzleHttp\Handler\MockHandler;
@@ -27,10 +29,14 @@ class EcPayClientTest extends TestCase
 
     private function encryptData(array $data): string
     {
-        $json = json_encode($data);
-        $encoded = urlencode($json);
-        $encrypted = openssl_encrypt($encoded, 'AES-128-CBC', $this->hashKey, OPENSSL_RAW_DATA, $this->hashIV);
-        return base64_encode($encrypted);
+        $encoder = new PayloadEncoder(new CipherService($this->hashKey, $this->hashIV));
+        $payload = [
+            'Data' => $data,
+        ];
+
+        $encoded = $encoder->encodePayload($payload);
+
+        return $encoded['Data'];
     }
 
     public function testSendSuccess()
@@ -66,7 +72,11 @@ class EcPayClientTest extends TestCase
         $invoice = Mockery::mock(Content::class);
         $invoice->shouldReceive('setHashKey')->with($this->hashKey);
         $invoice->shouldReceive('setHashIV')->with($this->hashIV);
-        $invoice->shouldReceive('getContent')->andReturn(['some' => 'content']);
+        $invoice->shouldReceive('getPayload')->andReturn([
+            'MerchantID' => 'TEST_MERCHANT_ID',
+            'RqHeader' => ['Timestamp' => time()],
+            'Data' => ['Example' => 'value'],
+        ]);
         $invoice->shouldReceive('getRequestPath')->andReturn('/test/api');
 
         $response = $ecPayClient->send($invoice);
@@ -99,7 +109,11 @@ class EcPayClientTest extends TestCase
         $invoice = Mockery::mock(Content::class);
         $invoice->shouldReceive('setHashKey');
         $invoice->shouldReceive('setHashIV');
-        $invoice->shouldReceive('getContent')->andReturn([]);
+        $invoice->shouldReceive('getPayload')->andReturn([
+            'MerchantID' => 'TEST_MERCHANT_ID',
+            'RqHeader' => ['Timestamp' => time()],
+            'Data' => [],
+        ]);
         $invoice->shouldReceive('getRequestPath')->andReturn('/test/api');
 
         $response = $ecPayClient->send($invoice);
@@ -131,7 +145,11 @@ class EcPayClientTest extends TestCase
         $invoice = Mockery::mock(Content::class);
         $invoice->shouldReceive('setHashKey');
         $invoice->shouldReceive('setHashIV');
-        $invoice->shouldReceive('getContent')->andReturn([]);
+        $invoice->shouldReceive('getPayload')->andReturn([
+            'MerchantID' => 'TEST_MERCHANT_ID',
+            'RqHeader' => ['Timestamp' => time()],
+            'Data' => [],
+        ]);
         $invoice->shouldReceive('getRequestPath')->andReturn('/test/api');
 
         $this->expectException(Exception::class);

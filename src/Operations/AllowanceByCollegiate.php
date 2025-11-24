@@ -150,23 +150,12 @@ class AllowanceByCollegiate extends Content
     }
 
     /**
-     * 取得內容。
-     *
-     * @return array
-     */
-    public function getContent(): array
-    {
-        $this->content['Data']['Items'] = $this->items;
-
-        return parent::getContent();
-    }
-
-    /**
      * 驗證內容。
      */
     public function validation()
     {
         $this->validatorBaseParam();
+        $this->content['Data']['Items'] = $this->items;
 
         if (empty($this->content['Data']['InvoiceNo'])) {
             throw new Exception('InvoiceNo 不可為空。');

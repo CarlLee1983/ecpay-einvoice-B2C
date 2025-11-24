@@ -12,6 +12,13 @@ interface InvoiceInterface
     public function getContent(): array;
 
     /**
+     * 取得未加密的領域層資料。
+     *
+     * @return array
+     */
+    public function getPayload(): array;
+
+    /**
      * Validation content.
      *
      * @return void

@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace ecPay\eInvoice;
 
+use ecPay\eInvoice\Infrastructure\CipherService;
+use ecPay\eInvoice\Infrastructure\PayloadEncoder;
 use Exception;
 
 abstract class Content implements InvoiceInterface
@@ -68,6 +70,11 @@ abstract class Content implements InvoiceInterface
      * @var array
      */
     protected $content = [];
+
+    /**
+     * @var PayloadEncoder|null
+     */
+    protected $payloadEncoder;
 
     /**
      * __construct
@@ -241,26 +248,36 @@ abstract class Content implements InvoiceInterface
     }
 
     /**
-     * Get content.
+     * 設定自訂的 PayloadEncoder，以支援自外部注入的傳輸層。
+     */
+    public function setPayloadEncoder(PayloadEncoder $payloadEncoder): self
+    {
+        $this->payloadEncoder = $payloadEncoder;
+
+        return $this;
+    }
+
+    /**
+     * 取得純領域欄位，不包含加密處理。
+     */
+    public function getPayload(): array
+    {
+        $this->validation();
+
+        return $this->content;
+    }
+
+    /**
+     * 既有 getContent 仍保留，改為委派給 PayloadEncoder。
      *
      * @return array
      */
     public function getContent(): array
     {
-        $this->validation();
+        $payload = $this->getPayload();
+        $encoder = $this->payloadEncoder ?: $this->buildPayloadEncoder();
 
-        $content = $this->content;
-        $content['Data'] = json_encode($content['Data']);
-
-        if (json_last_error() !== JSON_ERROR_NONE) {
-            throw new Exception('The invoice data format is invalid.');
-        }
-
-        $content['Data'] = urlencode($content['Data']);
-        $content['Data'] = $this->transUrlencode($content['Data']);
-        $content['Data'] = $this->encrypt($content['Data']);
-
-        return $content;
+        return $encoder->encodePayload($payload);
     }
 
     /**
@@ -268,18 +285,20 @@ abstract class Content implements InvoiceInterface
      *
      * @throws Exception
      */
-    protected function validatorBaseParam()
+    protected function validatorBaseParam(bool $requireCredentials = false)
     {
         if (empty($this->content['MerchantID']) || empty($this->content['Data']['MerchantID'])) {
             throw new Exception('MerchantID is empty.');
         }
 
-        if (empty($this->hashKey)) {
-            throw new Exception('HashKey is empty.');
-        }
+        if ($requireCredentials) {
+            if (empty($this->hashKey)) {
+                throw new Exception('HashKey is empty.');
+            }
 
-        if (empty($this->hashIV)) {
-            throw new Exception('HashIV is empty.');
+            if (empty($this->hashIV)) {
+                throw new Exception('HashIV is empty.');
+            }
         }
     }
 
@@ -291,5 +310,17 @@ abstract class Content implements InvoiceInterface
     public function getResponse(): Response
     {
         return $this->response;
+    }
+
+    /**
+     * 產生預設的 PayloadEncoder，提供相容性使用。
+     */
+    protected function buildPayloadEncoder(): PayloadEncoder
+    {
+        $this->validatorBaseParam(true);
+
+        return new PayloadEncoder(
+            new CipherService($this->hashKey, $this->hashIV)
+        );
     }
 }

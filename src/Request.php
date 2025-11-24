@@ -10,8 +10,6 @@ use GuzzleHttp\Exception\RequestException;
 
 class Request
 {
-    use AES;
-
     /**
      * The request url.
      *

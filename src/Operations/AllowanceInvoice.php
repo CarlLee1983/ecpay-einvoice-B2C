@@ -180,18 +180,6 @@ class AllowanceInvoice extends Content
     }
 
     /**
-     * Get the invoice content.
-     *
-     * @return array
-     */
-    public function getContent(): array
-    {
-        $this->content['Data']['Items'] = $this->items;
-
-        return parent::getContent();
-    }
-
-    /**
      * Validation content.
      *
      * @return void
@@ -199,6 +187,7 @@ class AllowanceInvoice extends Content
     public function validation()
     {
         $this->validatorBaseParam();
+        $this->content['Data']['Items'] = $this->items;
 
         if (empty($this->content['Data']['InvoiceNo'])) {
             throw new Exception('The invoice no is empty.');
