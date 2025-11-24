@@ -6,6 +6,7 @@ namespace ecPay\eInvoice\Operations;
 
 use ecPay\eInvoice\Content;
 use ecPay\eInvoice\DTO\AllowanceCollegiateItemDto;
+use ecPay\eInvoice\DTO\ItemCollection;
 use ecPay\eInvoice\InvoiceInterface;
 use ecPay\eInvoice\Parameter\AllowanceNotifyType;
 use Exception;
@@ -20,11 +21,16 @@ class AllowanceByCollegiate extends Content
     protected $requestPath = '/B2CInvoice/AllowanceByCollegiate';
 
     /**
-     * 折讓項目陣列。
-     *
-     * @var array
+     * @var ItemCollection
      */
-    protected $items = [];
+    private ItemCollection $items;
+
+    public function __construct(string $merchantId = '', string $hashKey = '', string $hashIV = '')
+    {
+        $this->items = new ItemCollection();
+
+        parent::__construct($merchantId, $hashKey, $hashIV);
+    }
 
     /**
      * 初始化內容。
@@ -129,7 +135,7 @@ class AllowanceByCollegiate extends Content
      */
     public function setItems(array $items): self
     {
-        $this->items = [];
+        $collection = new ItemCollection();
         $this->content['Data']['AllowanceAmount'] = 0;
 
         foreach ($items as $item) {
@@ -141,10 +147,11 @@ class AllowanceByCollegiate extends Content
                 throw new Exception('折讓項目須為 AllowanceCollegiateItemDto 或陣列定義。');
             }
 
-            $payload = $item->toPayload();
-            $this->items[] = $payload;
+            $collection->add($item);
             $this->content['Data']['AllowanceAmount'] += $item->getAmount();
         }
+
+        $this->items = $collection;
 
         return $this;
     }
@@ -155,7 +162,7 @@ class AllowanceByCollegiate extends Content
     public function validation()
     {
         $this->validatorBaseParam();
-        $this->content['Data']['Items'] = $this->items;
+        $this->content['Data']['Items'] = $this->items->toArray();
 
         if (empty($this->content['Data']['InvoiceNo'])) {
             throw new Exception('InvoiceNo 不可為空。');
@@ -181,7 +188,7 @@ class AllowanceByCollegiate extends Content
             throw new Exception('AllowanceAmount 必須大於 0。');
         }
 
-        if (empty($this->content['Data']['Items'])) {
+        if ($this->items->isEmpty()) {
             throw new Exception('折讓項目不可為空。');
         }
     }

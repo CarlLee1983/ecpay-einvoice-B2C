@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace ecPay\eInvoice;
 
+use ecPay\eInvoice\DTO\RqHeaderDto;
 use ecPay\eInvoice\Infrastructure\CipherService;
 use ecPay\eInvoice\Infrastructure\PayloadEncoder;
 use Exception;
@@ -72,6 +73,11 @@ abstract class Content implements InvoiceInterface
     protected $content = [];
 
     /**
+     * @var RqHeaderDto
+     */
+    protected RqHeaderDto $rqHeader;
+
+    /**
      * @var PayloadEncoder|null
      */
     protected $payloadEncoder;
@@ -92,11 +98,11 @@ abstract class Content implements InvoiceInterface
         $this->setHashKey($hashKey);
         $this->setHashIV($hashIV);
 
+        $this->rqHeader = new RqHeaderDto();
+
         $this->content = [
             'MerchantID' => $this->merchantID,
-            'RqHeader' => [
-                'Timestamp' => time(),
-            ],
+            'RqHeader' => $this->rqHeader->toArray(),
         ];
 
         $this->initContent();
@@ -248,6 +254,25 @@ abstract class Content implements InvoiceInterface
     }
 
     /**
+     * 取得 RqHeader DTO。
+     */
+    public function getRqHeader(): RqHeaderDto
+    {
+        return $this->rqHeader;
+    }
+
+    /**
+     * 設定 RqHeader DTO。
+     */
+    public function setRqHeader(RqHeaderDto $rqHeader): self
+    {
+        $this->rqHeader = $rqHeader;
+        $this->syncRqHeader();
+
+        return $this;
+    }
+
+    /**
      * 設定自訂的 PayloadEncoder，以支援自外部注入的傳輸層。
      */
     public function setPayloadEncoder(PayloadEncoder $payloadEncoder): self
@@ -263,6 +288,7 @@ abstract class Content implements InvoiceInterface
     public function getPayload(): array
     {
         $this->validation();
+        $this->syncRqHeader();
 
         return $this->content;
     }
@@ -322,5 +348,13 @@ abstract class Content implements InvoiceInterface
         return new PayloadEncoder(
             new CipherService($this->hashKey, $this->hashIV)
         );
+    }
+
+    /**
+     * 同步 RqHeader 至內容陣列。
+     */
+    protected function syncRqHeader(): void
+    {
+        $this->content['RqHeader'] = $this->rqHeader->toArray();
     }
 }

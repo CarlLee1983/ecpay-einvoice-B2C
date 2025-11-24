@@ -4,6 +4,7 @@ namespace ecPay\eInvoice\Operations;
 
 use ecPay\eInvoice\Content;
 use ecPay\eInvoice\DTO\AllowanceItemDto;
+use ecPay\eInvoice\DTO\ItemCollection;
 use ecPay\eInvoice\InvoiceInterface;
 use ecPay\eInvoice\Parameter\AllowanceNotifyType;
 use Exception;
@@ -18,11 +19,16 @@ class AllowanceInvoice extends Content
     protected $requestPath = '/B2CInvoice/Allowance';
 
     /**
-     * The allowance items.
-     *
-     * @var array
+     * @var ItemCollection
      */
-    protected $items = [];
+    private ItemCollection $items;
+
+    public function __construct(string $merchantId = '', string $hashKey = '', string $hashIV = '')
+    {
+        $this->items = new ItemCollection();
+
+        parent::__construct($merchantId, $hashKey, $hashIV);
+    }
 
     /**
      * Initialize invoice content.
@@ -158,8 +164,7 @@ class AllowanceInvoice extends Content
      */
     public function setItems(array $items): self
     {
-        $this->content['Data']['AllowanceAmount'] = 0;
-        $this->items = [];
+        $collection = new ItemCollection();
 
         foreach ($items as $item) {
             if (is_array($item)) {
@@ -170,11 +175,11 @@ class AllowanceInvoice extends Content
                 throw new Exception('Each allowance item must be an AllowanceItemDto or array definition.');
             }
 
-            $payload = $item->toPayload();
-            $this->items[] = $payload;
-
-            $this->content['Data']['AllowanceAmount'] += (int) $item->getAmount();
+            $collection->add($item);
         }
+
+        $this->items = $collection;
+        $this->content['Data']['AllowanceAmount'] = (int) $this->items->sumAmount();
 
         return $this;
     }
@@ -187,7 +192,7 @@ class AllowanceInvoice extends Content
     public function validation()
     {
         $this->validatorBaseParam();
-        $this->content['Data']['Items'] = $this->items;
+        $this->content['Data']['Items'] = $this->items->toArray();
 
         if (empty($this->content['Data']['InvoiceNo'])) {
             throw new Exception('The invoice no is empty.');
@@ -215,7 +220,7 @@ class AllowanceInvoice extends Content
             throw new Exception('The allowance amount should be greater than 0.');
         }
 
-        if (empty($this->content['Data']['Items'])) {
+        if ($this->items->isEmpty()) {
             throw new Exception('The items is empty.');
         }
     }

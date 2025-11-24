@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace ecPay\eInvoice;
 
+use ecPay\eInvoice\DTO\ItemCollection;
 use ecPay\eInvoice\Parameter\CarrierType;
 use ecPay\eInvoice\Parameter\Donation;
 use ecPay\eInvoice\Parameter\PrintMark;
@@ -26,10 +27,10 @@ class InvoiceValidator
      * Validate invoice data.
      *
      * @param array $data
-     * @param array $items
+     * @param ItemCollection $items
      * @throws Exception
      */
-    public static function validate(array $data, array $items)
+    public static function validate(array $data, ItemCollection $items)
     {
         self::validateBasicParams($data);
         self::validateCustomer($data);
@@ -142,9 +143,9 @@ class InvoiceValidator
      * @param array $items
      * @throws Exception
      */
-    private static function validateItems(array $items)
+    private static function validateItems(ItemCollection $items)
     {
-        if (empty($items)) {
+        if ($items->isEmpty()) {
             throw new Exception('Invoice data items is Empty.');
         }
     }

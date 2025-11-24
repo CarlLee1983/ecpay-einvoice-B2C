@@ -4,7 +4,7 @@
 
 1. **準備店家金鑰**：取得 `MerchantID`、`HashKey`、`HashIV`，與 API Server (測試/正式) URL。
 2. **選擇模組類別**：依作業型態建立 `Operations`, `Queries`, `Notifications` 模組中的類別實例。所有類別都繼承 `Content`，共用 `setMerchantID()`、`setHashKey()`、`setHashIV()` 等方法。
-3. **填入欄位並呼叫 `getPayload()`**：各類別提供 Fluent Interface 設定必填欄位；`getPayload()` 僅回傳純領域資料，若要自行送出可交由 `PayloadEncoder` 產製傳輸用 `Data`。
+3. **填入欄位並呼叫 `getPayload()`**：各類別提供 Fluent Interface 設定必填欄位，`RqHeader` 由 `DTO\RqHeaderDto` 管理、商品項目則由 `DTO\ItemCollection` 及各項目 DTO 組成；`getPayload()` 僅回傳純領域資料，若要自行送出可交由 `PayloadEncoder` 產製傳輸用 `Data`。
 4. **透過 `EcPayClient` 發送請求**：`EcPayClient::send()` 內建 `PayloadEncoder`/`CipherService`，會組成 `Request`，傳送至 `{Server}{RequestPath}` 並自動解密回應。
 5. **解析 `Response`**：`Response::success()` 判斷 `RtnCode == 1` 是否成功，`getData()` 取得解密後的內容。
 
@@ -46,7 +46,7 @@
 | 欄位 | 來源 | 說明 |
 | --- | --- | --- |
 | `MerchantID` | `Content::__construct` | 自動帶入建構子傳入之特店代號 |
-| `RqHeader.Timestamp` | `Content::__construct` | UNIX timestamp，預設為建立實例當下時間 |
+| `RqHeader.Timestamp` | `Content::__construct` | 透過 `RqHeaderDto` 產生 UNIX timestamp，預設為建立實例當下時間 |
 | `Data` | 各模組 `initContent()` | 真正的業務欄位，可透過 `PayloadEncoder` JSON encode → urlencode → AES 加密 |
 
 ### 3.2 加解密流程
@@ -67,7 +67,7 @@
 | `CarrierType/CarrierNum` | enum/string | 依載具類型規則檢查長度與是否可列印 |
 | `Print` | enum | `PrintMark::YES/NO`，與統編、捐贈、載具互斥規則相關 |
 | `Donation/LoveCode` | enum/string | 捐贈時必須帶愛心碼，且不可列印 |
-| `Items` | array | 每筆需包含 `name`, `quantity`, `unit`, `price`；系統會自動計算金額 |
+| `Items` | array/DTO | 由 `ItemCollection` + 對應項目 DTO (`InvoiceItemDto`, `AllowanceItemDto`, ...) 組成，會自動計算金額與套用缺省稅別 |
 
 ## 4. 驗證重點摘要
 

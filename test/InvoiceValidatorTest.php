@@ -1,5 +1,7 @@
 <?php
 
+use ecPay\eInvoice\DTO\InvoiceItemDto;
+use ecPay\eInvoice\DTO\ItemCollection;
 use ecPay\eInvoice\InvoiceValidator;
 use ecPay\eInvoice\Parameter\CarrierType;
 use ecPay\eInvoice\Parameter\Donation;
@@ -9,6 +11,18 @@ use PHPUnit\Framework\TestCase;
 
 class InvoiceValidatorTest extends TestCase
 {
+    private function makeItems(): ItemCollection
+    {
+        return new ItemCollection([
+            InvoiceItemDto::fromArray([
+                'name' => '測試商品',
+                'quantity' => 1,
+                'unit' => '個',
+                'price' => 100,
+            ]),
+        ]);
+    }
+
     /**
      * 測試基本參數驗證 - RelateNumber 為空
      */
@@ -29,7 +43,7 @@ class InvoiceValidatorTest extends TestCase
             'CarrierNum' => '',
         ];
 
-        InvoiceValidator::validate($data, [['name' => 'test']]);
+        InvoiceValidator::validate($data, $this->makeItems());
     }
 
     /**
@@ -53,7 +67,7 @@ class InvoiceValidatorTest extends TestCase
             'CarrierNum' => '',
         ];
 
-        InvoiceValidator::validate($data, [['name' => 'test']]);
+        InvoiceValidator::validate($data, $this->makeItems());
     }
 
     /**
@@ -78,7 +92,7 @@ class InvoiceValidatorTest extends TestCase
             'CarrierNum' => '',
         ];
 
-        InvoiceValidator::validate($data, [['name' => 'test']]);
+        InvoiceValidator::validate($data, $this->makeItems());
     }
 
     /**
@@ -101,7 +115,7 @@ class InvoiceValidatorTest extends TestCase
             'CarrierNum' => '',
         ];
 
-        InvoiceValidator::validate($data, [['name' => 'test']]);
+        InvoiceValidator::validate($data, $this->makeItems());
     }
 
     /**
@@ -126,7 +140,7 @@ class InvoiceValidatorTest extends TestCase
             'CarrierNum' => '',
         ];
 
-        InvoiceValidator::validate($data, [['name' => 'test']]);
+        InvoiceValidator::validate($data, $this->makeItems());
     }
 
     /**
@@ -152,7 +166,7 @@ class InvoiceValidatorTest extends TestCase
             'CarrierNum' => '',
         ];
 
-        InvoiceValidator::validate($data, [['name' => 'test']]);
+        InvoiceValidator::validate($data, $this->makeItems());
     }
 
     /**
@@ -176,7 +190,7 @@ class InvoiceValidatorTest extends TestCase
             'CarrierNum' => '',
         ];
 
-        InvoiceValidator::validate($data, [['name' => 'test']]);
+        InvoiceValidator::validate($data, $this->makeItems());
     }
 
     /**
@@ -202,7 +216,7 @@ class InvoiceValidatorTest extends TestCase
             'CarrierNum' => '',
         ];
 
-        InvoiceValidator::validate($data, [['name' => 'test']]);
+        InvoiceValidator::validate($data, $this->makeItems());
     }
 
     /**
@@ -225,7 +239,7 @@ class InvoiceValidatorTest extends TestCase
             'CarrierNum' => '1234567890',
         ];
 
-        InvoiceValidator::validate($data, [['name' => 'test']]);
+        InvoiceValidator::validate($data, $this->makeItems());
     }
 
     /**
@@ -250,7 +264,7 @@ class InvoiceValidatorTest extends TestCase
             'CarrierNum' => '',
         ];
 
-        InvoiceValidator::validate($data, [['name' => 'test']]);
+        InvoiceValidator::validate($data, $this->makeItems());
     }
 
     /**
@@ -273,7 +287,7 @@ class InvoiceValidatorTest extends TestCase
             'CarrierNum' => '1234567890',
         ];
 
-        InvoiceValidator::validate($data, [['name' => 'test']]);
+        InvoiceValidator::validate($data, $this->makeItems());
     }
 
     /**
@@ -296,7 +310,7 @@ class InvoiceValidatorTest extends TestCase
             'CarrierNum' => '123456789',
         ];
 
-        InvoiceValidator::validate($data, [['name' => 'test']]);
+        InvoiceValidator::validate($data, $this->makeItems());
     }
 
     /**
@@ -319,7 +333,7 @@ class InvoiceValidatorTest extends TestCase
             'CarrierNum' => '12345',
         ];
 
-        InvoiceValidator::validate($data, [['name' => 'test']]);
+        InvoiceValidator::validate($data, $this->makeItems());
     }
 
     /**
@@ -342,7 +356,7 @@ class InvoiceValidatorTest extends TestCase
             'CarrierNum' => '',
         ];
 
-        InvoiceValidator::validate($data, []);
+        InvoiceValidator::validate($data, new ItemCollection());
     }
 
     /**
@@ -363,7 +377,7 @@ class InvoiceValidatorTest extends TestCase
         ];
 
         $this->expectNotToPerformAssertions();
-        InvoiceValidator::validate($data, [['name' => 'test']]);
+        InvoiceValidator::validate($data, $this->makeItems());
     }
 
     /**
@@ -384,7 +398,7 @@ class InvoiceValidatorTest extends TestCase
         ];
 
         $this->expectNotToPerformAssertions();
-        InvoiceValidator::validate($data, [['name' => 'test']]);
+        InvoiceValidator::validate($data, $this->makeItems());
     }
 
     /**
@@ -405,7 +419,7 @@ class InvoiceValidatorTest extends TestCase
         ];
 
         $this->expectNotToPerformAssertions();
-        InvoiceValidator::validate($data, [['name' => 'test']]);
+        InvoiceValidator::validate($data, $this->makeItems());
     }
 
     /**
@@ -428,7 +442,7 @@ class InvoiceValidatorTest extends TestCase
         ];
 
         $this->expectNotToPerformAssertions();
-        InvoiceValidator::validate($data, [['name' => 'test']]);
+        InvoiceValidator::validate($data, $this->makeItems());
     }
 
     /**
@@ -450,7 +464,7 @@ class InvoiceValidatorTest extends TestCase
         ];
 
         $this->expectNotToPerformAssertions();
-        InvoiceValidator::validate($data, [['name' => 'test']]);
+        InvoiceValidator::validate($data, $this->makeItems());
     }
 }
 

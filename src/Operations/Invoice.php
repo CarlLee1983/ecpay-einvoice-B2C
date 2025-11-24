@@ -6,6 +6,7 @@ namespace ecPay\eInvoice\Operations;
 
 use ecPay\eInvoice\Content;
 use ecPay\eInvoice\DTO\InvoiceItemDto;
+use ecPay\eInvoice\DTO\ItemCollection;
 use ecPay\eInvoice\InvoiceValidator;
 use ecPay\eInvoice\Parameter\CarrierType;
 use ecPay\eInvoice\Parameter\ClearanceMark;
@@ -16,9 +17,6 @@ use ecPay\eInvoice\Parameter\TaxType;
 use ecPay\eInvoice\Parameter\VatType;
 use Exception;
 
-/**
- * Invoice class
- */
 class Invoice extends Content
 {
     /**
@@ -43,11 +41,16 @@ class Invoice extends Content
     protected $content = [];
 
     /**
-     * The invoice items.
-     *
-     * @var array
+     * @var ItemCollection
      */
-    protected $items = [];
+    private ItemCollection $items;
+
+    public function __construct(string $merchantId = '', string $hashKey = '', string $hashIV = '')
+    {
+        $this->items = new ItemCollection();
+
+        parent::__construct($merchantId, $hashKey, $hashIV);
+    }
 
     /**
      * Initialize invoice content.
@@ -310,8 +313,7 @@ class Invoice extends Content
      */
     public function setItems(array $items): self
     {
-        $this->content['Data']['SalesAmount'] = 0;
-        $this->items = [];
+        $collection = new ItemCollection();
 
         foreach ($items as $item) {
             if (is_array($item)) {
@@ -322,14 +324,10 @@ class Invoice extends Content
                 throw new Exception('Each invoice item must be an InvoiceItemDto or array definition.');
             }
 
-            $payload = $item->toPayload();
-
-            if (!isset($payload['ItemTaxType'])) {
-                $payload['ItemTaxType'] = $this->taxType;
-            }
-
-            $this->items[] = $payload;
+            $collection->add($item);
         }
+
+        $this->items = $collection;
 
         return $this;
     }
@@ -342,13 +340,10 @@ class Invoice extends Content
     public function validation()
     {
         $this->validatorBaseParam();
-        $this->content['Data']['Items'] = $this->items;
+        $this->content['Data']['Items'] = $this->buildItemsPayload();
 
         // Sync SalesAmount with Items sum
-        $amount = 0;
-        foreach ($this->items as $item) {
-            $amount += $item['ItemAmount'];
-        }
+        $amount = $this->items->sumAmount();
 
         if (!empty($this->content['Data']['SalesAmount']) && $this->content['Data']['SalesAmount'] != $amount) {
             throw new Exception('The calculated sales amount is not equal to the set sales amount.');
@@ -358,5 +353,19 @@ class Invoice extends Content
 
         // Delegate validation to InvoiceValidator
         InvoiceValidator::validate($this->content['Data'], $this->items);
+    }
+
+    /**
+     * @return array<int,array<string,mixed>>
+     */
+    private function buildItemsPayload(): array
+    {
+        return $this->items->mapPayload(function (array $payload): array {
+            if (!isset($payload['ItemTaxType'])) {
+                $payload['ItemTaxType'] = $this->taxType;
+            }
+
+            return $payload;
+        });
     }
 }
