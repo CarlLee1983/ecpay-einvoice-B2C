@@ -1,5 +1,6 @@
 <?php
 
+use ecPay\eInvoice\DTO\AllowanceItemDto;
 use ecPay\eInvoice\Operations\AllowanceInvoice;
 use ecPay\eInvoice\Parameter\AllowanceNotifyType;
 use PHPUnit\Framework\TestCase;
@@ -39,6 +40,24 @@ class AllowanceInvoiceTest extends TestCase
         $property = $reflection->getProperty('content');
         $property->setAccessible(true);
         return $property->getValue($this->allowance);
+    }
+
+    /**
+     * @param array<int,array<string,mixed>> $items
+     * @return AllowanceItemDto[]
+     */
+    private function buildItems(array $items = []): array
+    {
+        if ($items === []) {
+            $items = [
+                ['name' => '測試商品', 'quantity' => 1, 'unit' => '個', 'price' => 100],
+            ];
+        }
+
+        return array_map(
+            static fn(array $item): AllowanceItemDto => AllowanceItemDto::fromArray($item),
+            $items
+        );
     }
 
     /**
@@ -213,7 +232,7 @@ class AllowanceInvoiceTest extends TestCase
      */
     public function testSetItemsSuccess()
     {
-        $items = [
+        $items = $this->buildItems([
             [
                 'name' => '商品A',
                 'quantity' => 2,
@@ -226,7 +245,7 @@ class AllowanceInvoiceTest extends TestCase
                 'unit' => '件',
                 'price' => 300,
             ],
-        ];
+        ]);
 
         $result = $this->allowance->setItems($items);
         
@@ -279,9 +298,7 @@ class AllowanceInvoiceTest extends TestCase
         $this->expectException(Exception::class);
         $this->expectExceptionMessage('The invoice no is empty.');
 
-        $this->allowance->setItems([
-            ['name' => '測試商品', 'quantity' => 1, 'unit' => '個', 'price' => 100],
-        ]);
+        $this->allowance->setItems($this->buildItems());
 
         $this->allowance->validation();
     }
@@ -296,9 +313,7 @@ class AllowanceInvoiceTest extends TestCase
 
         $this->allowance
             ->setInvoiceNo('AB12345678')
-            ->setItems([
-                ['name' => '測試商品', 'quantity' => 1, 'unit' => '個', 'price' => 100],
-            ]);
+            ->setItems($this->buildItems());
 
         $this->allowance->validation();
     }
@@ -316,9 +331,7 @@ class AllowanceInvoiceTest extends TestCase
         $this->allowance
             ->setInvoiceNo('AB12345678')
             ->setAllowanceNotify(AllowanceNotifyType::EMAIL)
-            ->setItems([
-                ['name' => '測試商品', 'quantity' => 1, 'unit' => '個', 'price' => 100],
-            ]);
+            ->setItems($this->buildItems());
 
         $this->allowance->validation();
     }
@@ -336,9 +349,7 @@ class AllowanceInvoiceTest extends TestCase
         $this->allowance
             ->setInvoiceNo('AB12345678')
             ->setAllowanceNotify(AllowanceNotifyType::SMS)
-            ->setItems([
-                ['name' => '測試商品', 'quantity' => 1, 'unit' => '個', 'price' => 100],
-            ]);
+            ->setItems($this->buildItems());
 
         $this->allowance->validation();
     }
@@ -389,9 +400,7 @@ class AllowanceInvoiceTest extends TestCase
             ->setAllowanceNotify(AllowanceNotifyType::EMAIL)
             ->setNotifyMail('test@example.com')
             ->setCustomerName('測試客戶')
-            ->setItems([
-                ['name' => '測試商品', 'quantity' => 1, 'unit' => '個', 'price' => 100],
-            ]);
+            ->setItems($this->buildItems());
 
         // 手動將 items 設定到 content['Data']['Items']（模擬 getContent 的行為）
         $reflection = new ReflectionClass($this->allowance);
@@ -422,9 +431,7 @@ class AllowanceInvoiceTest extends TestCase
             ->setAllowanceNotify(AllowanceNotifyType::EMAIL)
             ->setCustomerName('測試客戶')
             ->setNotifyMail('test@example.com')
-            ->setItems([
-                ['name' => '測試商品', 'quantity' => 1, 'unit' => '個', 'price' => 100],
-            ]);
+            ->setItems($this->buildItems());
 
         $this->assertInstanceOf(AllowanceInvoice::class, $result);
         
@@ -446,10 +453,10 @@ class AllowanceInvoiceTest extends TestCase
             ->setInvoiceNo('AB12345678')
             ->setAllowanceNotify(AllowanceNotifyType::NONE)
             ->setCustomerName('測試客戶')
-            ->setItems([
+            ->setItems($this->buildItems([
                 ['name' => '商品A', 'quantity' => 2, 'unit' => '個', 'price' => 100],
                 ['name' => '商品B', 'quantity' => 1, 'unit' => '件', 'price' => 300],
-            ]);
+            ]));
 
         $content = $this->allowance->getContent();
         

@@ -2,8 +2,8 @@
 
 require __DIR__ . '/_config.php';
 
+use ecPay\eInvoice\DTO\AllowanceItemDto;
 use ecPay\eInvoice\Operations\AllowanceInvoice;
-use ecPay\eInvoice\Parameter\TaxType;
 
 // 原發票號碼 (需已開立)
 $invoiceNo = 'DM20028782';
@@ -23,13 +23,12 @@ $allowance->setInvoiceNo($invoiceNo)
     ->setNotifyMail('test@example.com') // 若通知方式含 Email 則必填
     ->setAllowanceAmount($allowanceAmount)
     ->setItems([
-        [
+        AllowanceItemDto::fromArray([
             'name' => '折讓商品A',
             'quantity' => 1,
             'unit' => '個',
             'price' => 100,
-            'amount' => 100,
-        ]
+        ]),
     ]);
 
 // 3. 發送請求

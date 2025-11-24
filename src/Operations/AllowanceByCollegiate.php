@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace ecPay\eInvoice\Operations;
 
 use ecPay\eInvoice\Content;
+use ecPay\eInvoice\DTO\AllowanceCollegiateItemDto;
 use ecPay\eInvoice\InvoiceInterface;
 use ecPay\eInvoice\Parameter\AllowanceNotifyType;
 use Exception;
@@ -124,37 +125,25 @@ class AllowanceByCollegiate extends Content
     }
 
     /**
-     * 設定折讓項目。
-     *
-     * @param array $items
-     * @return InvoiceInterface
+     * @param array<int,AllowanceCollegiateItemDto|array<string,mixed>> $items
      */
     public function setItems(array $items): self
     {
-        $required = ['name', 'quantity', 'unit', 'price', 'taxType'];
-
         $this->items = [];
         $this->content['Data']['AllowanceAmount'] = 0;
 
         foreach ($items as $item) {
-            foreach ($required as $field) {
-                if (!isset($item[$field])) {
-                    throw new Exception('折讓項目缺少欄位: ' . $field);
-                }
+            if (is_array($item)) {
+                $item = AllowanceCollegiateItemDto::fromArray($item);
             }
 
-            $amount = (float) $item['quantity'] * (float) $item['price'];
+            if (!$item instanceof AllowanceCollegiateItemDto) {
+                throw new Exception('折讓項目須為 AllowanceCollegiateItemDto 或陣列定義。');
+            }
 
-            $this->items[] = [
-                'ItemName' => $item['name'],
-                'ItemCount' => (float) $item['quantity'],
-                'ItemWord' => $item['unit'],
-                'ItemPrice' => (float) $item['price'],
-                'ItemAmount' => $amount,
-                'ItemTaxType' => (string) $item['taxType'],
-            ];
-
-            $this->content['Data']['AllowanceAmount'] += $amount;
+            $payload = $item->toPayload();
+            $this->items[] = $payload;
+            $this->content['Data']['AllowanceAmount'] += $item->getAmount();
         }
 
         return $this;

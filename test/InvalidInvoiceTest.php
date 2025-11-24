@@ -1,5 +1,7 @@
 <?php
 
+use ecPay\eInvoice\DTO\InvoiceItemDto;
+
 class InvalidInvoiceTest extends \PHPUnit\Framework\TestCase
 {
     /**
@@ -21,6 +23,21 @@ class InvalidInvoiceTest extends \PHPUnit\Framework\TestCase
         );
     }
 
+    /**
+     * @return InvoiceItemDto[]
+     */
+    private function buildInvoiceItems(): array
+    {
+        return [
+            InvoiceItemDto::fromArray([
+                'name' => '商品範例',
+                'quantity' => 1,
+                'unit' => '個',
+                'price' => 100,
+            ]),
+        ];
+    }
+
     public function testQuickCheck()
     {
         $relateNumber = 'YEP' . date('YmdHis');
@@ -31,15 +48,7 @@ class InvalidInvoiceTest extends \PHPUnit\Framework\TestCase
         );
         $invoice->setRelateNumber($relateNumber)
             ->setCustomerEmail('cylee@chyp.com.tw')
-            ->setItems([
-                [
-                    'name' => '商品範例',
-                    'quantity' => 1,
-                    'unit' => '個',
-                    'price' => 100,
-                    'totalPrice' => 100,
-                ],
-            ])
+            ->setItems($this->buildInvoiceItems())
             ->setSalesAmount(100);
 
         $response = $this->client->send($invoice);

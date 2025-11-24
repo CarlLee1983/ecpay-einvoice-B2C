@@ -1,5 +1,7 @@
 <?php
 
+use ecPay\eInvoice\DTO\AllowanceCollegiateItemDto;
+
 class AllowanceByCollegiateTest extends \PHPUnit\Framework\TestCase
 {
     /**
@@ -13,6 +15,30 @@ class AllowanceByCollegiateTest extends \PHPUnit\Framework\TestCase
             $_ENV['MERCHANT_ID'],
             $_ENV['HASH_KEY'],
             $_ENV['HASH_IV']
+        );
+    }
+
+    /**
+     * @param array<int,array<string,mixed>> $items
+     * @return AllowanceCollegiateItemDto[]
+     */
+    private function makeItems(array $items = []): array
+    {
+        if ($items === []) {
+            $items = [
+                [
+                    'name' => '折讓商品',
+                    'quantity' => 1,
+                    'unit' => '組',
+                    'price' => 100,
+                    'taxType' => '1',
+                ],
+            ];
+        }
+
+        return array_map(
+            static fn(array $item): AllowanceCollegiateItemDto => AllowanceCollegiateItemDto::fromArray($item),
+            $items
         );
     }
 
@@ -53,15 +79,7 @@ class AllowanceByCollegiateTest extends \PHPUnit\Framework\TestCase
             ->setInvoiceDate('2024-01-10')
             ->setCustomerName('王小明')
             ->setNotifyMail('buyer@example.com')
-            ->setItems([
-                [
-                    'name' => '折讓商品',
-                    'quantity' => 1,
-                    'unit' => '組',
-                    'price' => 100,
-                    'taxType' => 1,
-                ],
-            ]);
+            ->setItems($this->makeItems());
 
         $this->expectException(Exception::class);
         $this->expectExceptionMessage('ReturnURL 不可為空。');
@@ -76,15 +94,7 @@ class AllowanceByCollegiateTest extends \PHPUnit\Framework\TestCase
             ->setCustomerName('王小明')
             ->setNotifyMail('buyer@example.com')
             ->setReturnURL('https://example.com/callback')
-            ->setItems([
-                [
-                    'name' => '折讓商品',
-                    'quantity' => 1,
-                    'unit' => '組',
-                    'price' => 100,
-                    'taxType' => 1,
-                ],
-            ])
+            ->setItems($this->makeItems())
             ->getContent();
 
         $this->assertEquals('/B2CInvoice/AllowanceByCollegiate', $this->instance->getRequestPath());

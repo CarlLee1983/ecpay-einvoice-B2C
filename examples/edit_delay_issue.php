@@ -2,6 +2,7 @@
 
 require __DIR__ . '/_config.php';
 
+use ecPay\eInvoice\DTO\InvoiceItemDto;
 use ecPay\eInvoice\Operations\EditDelayIssue;
 
 $tsr = '請填入原延遲開立取得的TSR';
@@ -14,13 +15,12 @@ $editDelayIssue = new EditDelayIssue($merchantId, $hashKey, $hashIV);
 $editDelayIssue->setRelateNumber($relateNumber)
     ->setCustomerEmail('buyer@example.com')
     ->setItems([
-        [
+        InvoiceItemDto::fromArray([
             'name' => '調整後商品',
             'quantity' => 2,
             'unit' => '組',
             'price' => 150,
-            'totalPrice' => 300,
-        ],
+        ]),
     ])
     ->setSalesAmount(300)
     ->setDelayFlag('1')

@@ -47,8 +47,6 @@
 | --- | --- | --- |
 | `MerchantID` | `Content::__construct` | 自動帶入建構子傳入之特店代號 |
 | `RqHeader.Timestamp` | `Content::__construct` | UNIX timestamp，預設為建立實例當下時間 |
-| `RqHeader.RqID` | `Content::getRqID()` | 由時間戳與亂數組成的唯一識別碼 |
-| `RqHeader.Revision` | `Content::VERSION` | 目前為 `3.0.0`，代表 API 版本 |
 | `Data` | 各模組 `initContent()` | 真正的業務欄位，後續會 JSON encode → urlencode → AES 加密 |
 
 ### 3.2 加解密流程

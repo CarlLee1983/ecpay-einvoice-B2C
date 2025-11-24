@@ -1,5 +1,7 @@
 <?php
 
+use ecPay\eInvoice\DTO\InvoiceItemDto;
+
 class EditDelayIssueTest extends \PHPUnit\Framework\TestCase
 {
     /**
@@ -53,15 +55,7 @@ class EditDelayIssueTest extends \PHPUnit\Framework\TestCase
         return $this->makeEditDelayIssue()
             ->setRelateNumber('EDIT' . date('YmdHis'))
             ->setCustomerEmail('test@example.com')
-            ->setItems([
-                [
-                    'name' => '編輯延遲測試商品',
-                    'quantity' => 1,
-                    'unit' => '組',
-                    'price' => 100,
-                    'totalPrice' => 100,
-                ],
-            ])
+            ->setItems($this->buildItems())
             ->setSalesAmount(100);
     }
 
@@ -77,6 +71,21 @@ class EditDelayIssueTest extends \PHPUnit\Framework\TestCase
             $this->credentials['hashKey'],
             $this->credentials['hashIV']
         );
+    }
+
+    /**
+     * @return InvoiceItemDto[]
+     */
+    private function buildItems(): array
+    {
+        return [
+            InvoiceItemDto::fromArray([
+                'name' => '編輯延遲測試商品',
+                'quantity' => 1,
+                'unit' => '組',
+                'price' => 100,
+            ]),
+        ];
     }
 }
 

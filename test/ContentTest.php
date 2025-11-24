@@ -278,10 +278,6 @@ class ContentTest extends TestCase
         
         // 檢查 RqHeader 結構
         $this->assertArrayHasKey('Timestamp', $content['RqHeader']);
-        $this->assertArrayHasKey('RqID', $content['RqHeader']);
-        $this->assertArrayHasKey('Revision', $content['RqHeader']);
-        
-        $this->assertEquals('3.0.0', $content['RqHeader']['Revision']);
     }
 
     /**
@@ -289,7 +285,6 @@ class ContentTest extends TestCase
      */
     public function testConstants()
     {
-        $this->assertEquals('3.0.0', Content::VERSION);
         $this->assertEquals(30, Content::RELATE_NUMBER_MAX_LENGTH);
         $this->assertEquals(5, Content::RQID_RANDOM_LENGTH);
     }

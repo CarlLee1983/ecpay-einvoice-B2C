@@ -38,19 +38,19 @@ $iv = 'q9jcZX8Ib9LM8wYk';
 // 初始化 Client
 $client = new ecPay\eInvoice\EcPayClient($server, $key, $iv);
 
+use ecPay\eInvoice\DTO\InvoiceItemDto;
 // 初始化 Invoice
 $invoice = new ecPay\eInvoice\Operations\Invoice($id, $key, $iv);
 
 $invoice->setRelateNumber('YEP' . date('YmdHis'))
     ->setCustomerEmail('cylee@chyp.com.tw')
     ->setItems([
-        [
+        InvoiceItemDto::fromArray([
             'name' => '商品範例',
             'quantity' => 1,
             'unit' => '個',
             'price' => 100,
-            'totalPrice' => 100,
-        ],
+        ]),
     ])
     ->setSalesAmount(100);
 
@@ -58,6 +58,8 @@ $invoice->setRelateNumber('YEP' . date('YmdHis'))
 $response = $client->send($invoice);
 $data = $response->getData();
 ```
+
+> 提示：自本次改版起，`setItems()` 應傳入對應的 DTO（例如 `InvoiceItemDto`、`AllowanceItemDto`），可透過 `::fromArray()` 將既有陣列快速轉換。
 
 ## 模組分群
 
@@ -81,6 +83,7 @@ $data = $response->getData();
 範例：
 
 ```php
+use ecPay\eInvoice\DTO\InvoiceItemDto;
 use ecPay\eInvoice\EcPayClient;
 use ecPay\eInvoice\Factories\OperationFactory;
 
@@ -94,7 +97,7 @@ $invoice = $factory->make('invoice')
     ->setRelateNumber('YEP' . date('YmdHis'))
     ->setSalesAmount(100)
     ->setItems([
-        ['name' => '測試商品', 'quantity' => 1, 'unit' => '組', 'price' => 100],
+        InvoiceItemDto::fromArray(['name' => '測試商品', 'quantity' => 1, 'unit' => '組', 'price' => 100]),
     ]);
 
 $client = new EcPayClient($server, $hashKey, $hashIV);
@@ -121,6 +124,7 @@ $factory->addInitializer(function (Content $content) {
 使用範例：
 
 ```php
+use ecPay\eInvoice\DTO\InvoiceItemDto;
 use ecPay\eInvoice\Laravel\Facades\EcPayInvoice;
 use ecPay\eInvoice\Laravel\Facades\EcPayQuery;
 
@@ -128,7 +132,7 @@ $invoice = EcPayInvoice::make()
     ->setRelateNumber('YEP' . now()->format('YmdHis'))
     ->setSalesAmount(100)
     ->setItems([
-        ['name' => 'Laravel Facade', 'quantity' => 1, 'unit' => '式', 'price' => 100],
+        InvoiceItemDto::fromArray(['name' => 'Laravel Facade', 'quantity' => 1, 'unit' => '式', 'price' => 100]),
     ]);
 
 $response = app('ecpay.client')->send($invoice)->getData();
@@ -173,16 +177,20 @@ Key runnable samples live under `examples/`. Common ones include:
 $client = new ecPay\eInvoice\EcPayClient($server, $hashKey, $hashIV);
 $invoice = new ecPay\eInvoice\Operations\Invoice($merchantId, $hashKey, $hashIV);
 
+use ecPay\eInvoice\DTO\InvoiceItemDto;
+
 $invoice->setRelateNumber('YEP' . date('YmdHis'))
     ->setCustomerEmail('demo@example.com')
     ->setItems([
-        ['name' => 'Demo Item', 'quantity' => 1, 'unit' => 'pcs', 'price' => 100, 'totalPrice' => 100],
+        InvoiceItemDto::fromArray(['name' => 'Demo Item', 'quantity' => 1, 'unit' => 'pcs', 'price' => 100]),
     ])
     ->setSalesAmount(100);
 
 $response = $client->send($invoice);
 $data = $response->getData();
 ```
+
+> Note: `setItems()` now expects DTO instances (e.g., `InvoiceItemDto`, `AllowanceItemDto`). Use their `fromArray()` helpers to adapt legacy arrays.
 
 ## Module Groups
 - `Operations\*`: create/void invoices and allowances (`Invoice`, `InvalidInvoice`, `AllowanceInvoice`, etc.)

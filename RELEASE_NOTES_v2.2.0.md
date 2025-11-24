@@ -29,7 +29,12 @@
   - 新增 dev 依賴 `orchestra/testbench`，支援 Laravel Service Provider 測試。
   - 調整作者聯絡資訊、移除 `version` 欄位，使套件符合 Packagist 發佈規範。
 
-### 4. 測試與品質 🧪
+### 4. setItems DTO 化 🧱
+- `Invoice`, `AllowanceInvoice`, `AllowanceByCollegiate` 的 `setItems()` 皆允許直接傳入 `InvoiceItemDto`、`AllowanceItemDto`、`AllowanceCollegiateItemDto`。
+- 新增 `ecPay\eInvoice\DTO\*` 類別，集中欄位驗證與 `toPayload()`、`getAmount()` 邏輯；可透過 `::fromArray()` 將舊陣列升級。
+- README、examples、PHPUnit 測試全面改為 DTO 寫法，保留舊陣列相容但在欄位缺漏時會更早拋錯。
+
+### 5. 測試與品質 🧪
 - 新增 `test/OperationFactoryTest.php` 驗證工廠別名與初始化邏輯。
 - 新增 `test/Laravel/EcPayServiceProviderTest.php`，透過 Orchestra Testbench 確認 Service Provider 綁定與 Facade 解析。
 - `composer test`：共 267 個測試案例、574 個斷言全數通過，僅維持既有 1 項 risky case（`InvalidInvoiceTest::testQuickCheck` 未含斷言）。  
@@ -50,15 +55,19 @@
 2. 於 `.env` 設定 `ECPAY_EINVOICE_SERVER`、`ECPAY_EINVOICE_MERCHANT_ID`、`ECPAY_EINVOICE_HASH_KEY`、`ECPAY_EINVOICE_HASH_IV`。
 3. 透過 Facade：
    ```php
+   use ecPay\eInvoice\DTO\InvoiceItemDto;
    use ecPay\eInvoice\Laravel\Facades\EcPayInvoice;
 
    $invoice = EcPayInvoice::make()
        ->setRelateNumber('APP' . now()->format('YmdHis'))
        ->setSalesAmount(1000)
-       ->setItems([...]);
+       ->setItems([
+           InvoiceItemDto::fromArray(['name' => '升級教學', 'quantity' => 1, 'unit' => '份', 'price' => 1000]),
+       ]);
 
    $result = app('ecpay.client')->send($invoice)->getData();
    ```
+4. 建議同步將其他純 PHP 呼叫改用 `InvoiceItemDto::fromArray([...])` 等 DTO 寫法，取得更完整的欄位驗證與 IDE 型別提示。
 
 ---
 

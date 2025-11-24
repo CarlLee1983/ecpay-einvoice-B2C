@@ -2,6 +2,7 @@
 
 require __DIR__ . '/_config.php';
 
+use ecPay\eInvoice\DTO\InvoiceItemDto;
 use ecPay\eInvoice\Operations\DelayIssue;
 
 $relateNumber = 'DELAY' . date('YmdHis');
@@ -13,13 +14,12 @@ $delayIssue = new DelayIssue($merchantId, $hashKey, $hashIV);
 $delayIssue->setRelateNumber($relateNumber)
     ->setCustomerEmail('buyer@example.com')
     ->setItems([
-        [
+        InvoiceItemDto::fromArray([
             'name' => '延遲開立測試商品',
             'quantity' => 1,
             'unit' => '組',
             'price' => 100,
-            'totalPrice' => 100,
-        ],
+        ]),
     ])
     ->setSalesAmount(100)
     ->setDelayFlag('1') // 1: 預約自動開立，2: 後續觸發開立

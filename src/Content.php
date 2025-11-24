@@ -11,11 +11,6 @@ abstract class Content implements InvoiceInterface
     use AES;
 
     /**
-     * ECPay invoice api version.
-     */
-    public const VERSION = '3.0.0';
-
-    /**
      * The relate number max length.
      */
     public const RELATE_NUMBER_MAX_LENGTH = 30;
@@ -94,8 +89,6 @@ abstract class Content implements InvoiceInterface
             'MerchantID' => $this->merchantID,
             'RqHeader' => [
                 'Timestamp' => time(),
-                'RqID' => $this->getRqID(),
-                'Revision' => self::VERSION,
             ],
         ];
 

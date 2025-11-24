@@ -3,6 +3,7 @@
 namespace ecPay\eInvoice\Operations;
 
 use ecPay\eInvoice\Content;
+use ecPay\eInvoice\DTO\AllowanceItemDto;
 use ecPay\eInvoice\InvoiceInterface;
 use ecPay\eInvoice\Parameter\AllowanceNotifyType;
 use Exception;
@@ -153,33 +154,26 @@ class AllowanceInvoice extends Content
     }
 
     /**
-     * Set the invoice allowance item.
-     *
-     * @param array $items
-     * @return InvoiceInterface
+     * @param array<int,AllowanceItemDto|array<string,mixed>> $items
      */
     public function setItems(array $items): self
     {
         $this->content['Data']['AllowanceAmount'] = 0;
         $this->items = [];
-        $fields = ['name', 'quantity', 'unit', 'price'];
 
         foreach ($items as $item) {
-            foreach ($fields as $name) {
-                if (!isset($item[$name])) {
-                    throw new Exception('Items field' . $name . ' not exists.');
-                }
+            if (is_array($item)) {
+                $item = AllowanceItemDto::fromArray($item);
             }
 
-            $this->items[] = [
-                'ItemName' => $item['name'],
-                'ItemCount' => (int) $item['quantity'],
-                'ItemWord' => $item['unit'],
-                'ItemPrice' => (int) $item['price'],
-                'ItemAmount' => $item['quantity'] * $item['price'],
-            ];
+            if (!$item instanceof AllowanceItemDto) {
+                throw new Exception('Each allowance item must be an AllowanceItemDto or array definition.');
+            }
 
-            $this->content['Data']['AllowanceAmount'] += $item['quantity'] * $item['price'];
+            $payload = $item->toPayload();
+            $this->items[] = $payload;
+
+            $this->content['Data']['AllowanceAmount'] += (int) $item->getAmount();
         }
 
         return $this;

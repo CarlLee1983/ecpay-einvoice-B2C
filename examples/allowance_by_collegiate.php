@@ -2,6 +2,7 @@
 
 require __DIR__ . '/_config.php';
 
+use ecPay\eInvoice\DTO\AllowanceCollegiateItemDto;
 use ecPay\eInvoice\Operations\AllowanceByCollegiate;
 
 $invoiceNo = 'UV11100016';
@@ -16,13 +17,13 @@ $allowance->setInvoiceNo($invoiceNo)
     ->setNotifyMail('buyer@example.com')
     ->setReturnURL('https://example.com/allowance/callback')
     ->setItems([
-        [
+        AllowanceCollegiateItemDto::fromArray([
             'name' => '折讓商品',
             'quantity' => 1,
             'unit' => '組',
             'price' => 100,
-            'taxType' => 1,
-        ],
+            'taxType' => '1',
+        ]),
     ]);
 
 try {

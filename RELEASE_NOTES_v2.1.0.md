@@ -114,12 +114,16 @@
 雖然不是必須，但建議更新 IDE 和靜態分析工具以享受更好的型別推斷：
 
 ```php
+use ecPay\eInvoice\DTO\InvoiceItemDto;
+
 // v2.0.0 和 v2.1.0 都支援此寫法
 $invoice = new Invoice($merchantId, $hashKey, $hashIV);
 $invoice->setRelateNumber('TEST123')
         ->setCustomerEmail('test@example.com')
         ->setCarrierType('1')  // IDE 現在能更精確推斷 $invoice 型別
-        ->setItems([...])
+        ->setItems([
+            InvoiceItemDto::fromArray(['name' => 'IDE 範例', 'quantity' => 1, 'unit' => '式', 'price' => 1000]),
+        ])
         ->setSalesAmount(1000);
 ```
 

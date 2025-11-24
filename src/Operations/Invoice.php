@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace ecPay\eInvoice\Operations;
 
 use ecPay\eInvoice\Content;
+use ecPay\eInvoice\DTO\InvoiceItemDto;
 use ecPay\eInvoice\InvoiceValidator;
 use ecPay\eInvoice\Parameter\CarrierType;
 use ecPay\eInvoice\Parameter\ClearanceMark;
@@ -213,7 +214,7 @@ class Invoice extends Content
      * Set the invoice carrier type.
      *
      * @param string $type
-     * @return InvoiceInterface
+     * @return self
      */
     public function setCarrierType(string $type): self
     {
@@ -237,7 +238,7 @@ class Invoice extends Content
      * Set the invoice carrier number.
      *
      * @param string $number
-     * @return InvoiceInterface
+     * @return self
      */
     public function setCarrierNum(string $number): self
     {
@@ -250,7 +251,7 @@ class Invoice extends Content
      * Set the invoice tax type.
      *
      * @param string $type
-     * @return InvoiceInterface
+     * @return self
      */
     public function setTaxType(string $type): self
     {
@@ -275,7 +276,7 @@ class Invoice extends Content
      * Set the invoice special tax type.
      *
      * @param string $type
-     * @return InvoiceInterface
+     * @return self
      */
     public function setSpecialTaxType(string $type): self
     {
@@ -288,7 +289,7 @@ class Invoice extends Content
      * Set the invoice sales amount.
      *
      * @param float|int $amount
-     * @return InvoiceInterface
+     * @return self
      */
     public function setSalesAmount($amount): self
     {
@@ -302,32 +303,29 @@ class Invoice extends Content
     }
 
     /**
-     * Set the invoice item.
-     *
-     * @param array $items
-     * @return InvoiceInterface
+     * @param array<int,InvoiceItemDto|array<string,mixed>> $items
      */
     public function setItems(array $items): self
     {
         $this->content['Data']['SalesAmount'] = 0;
         $this->items = [];
-        $fields = ['name', 'quantity', 'unit', 'price'];
 
         foreach ($items as $item) {
-            foreach ($fields as $name) {
-                if (!isset($item[$name])) {
-                    throw new Exception('Items field' . $name . ' not exists.');
-                }
+            if (is_array($item)) {
+                $item = InvoiceItemDto::fromArray($item);
             }
 
-            $this->items[] = [
-                'ItemName' => $item['name'],
-                'ItemCount' => (float) $item['quantity'],
-                'ItemWord' => $item['unit'],
-                'ItemPrice' => (float) $item['price'],
-                'ItemTaxType' => $this->taxType,
-                'ItemAmount' => $item['quantity'] * $item['price'],
-            ];
+            if (!$item instanceof InvoiceItemDto) {
+                throw new Exception('Each invoice item must be an InvoiceItemDto or array definition.');
+            }
+
+            $payload = $item->toPayload();
+
+            if (!isset($payload['ItemTaxType'])) {
+                $payload['ItemTaxType'] = $this->taxType;
+            }
+
+            $this->items[] = $payload;
         }
 
         return $this;

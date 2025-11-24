@@ -1,5 +1,7 @@
 <?php
 
+use ecPay\eInvoice\DTO\InvoiceItemDto;
+
 class InvoiceTest extends \PHPUnit\Framework\TestCase
 {
     /**
@@ -21,20 +23,35 @@ class InvoiceTest extends \PHPUnit\Framework\TestCase
         );
     }
 
-    public function testQuickCreate()
+    /**
+     * @param array<int,array<string,mixed>> $items
+     * @return InvoiceItemDto[]
+     */
+    private function makeItems(array $items = []): array
     {
-        $this->instance->setRelateNumber('YEP' . date('YmdHis') . rand(10, 99))
-            ->setCarrierType('1')
-            ->setCustomerEmail('cylee@chyp.com.tw')
-            ->setItems([
+        if ($items === []) {
+            $items = [
                 [
                     'name' => '商品範例',
                     'quantity' => 1,
                     'unit' => '個',
                     'price' => 100,
-                    'totalPrice' => 100,
                 ],
-            ])
+            ];
+        }
+
+        return array_map(
+            static fn(array $item): InvoiceItemDto => InvoiceItemDto::fromArray($item),
+            $items
+        );
+    }
+
+    public function testQuickCreate()
+    {
+        $this->instance->setRelateNumber('YEP' . date('YmdHis') . rand(10, 99))
+            ->setCarrierType('1')
+            ->setCustomerEmail('cylee@chyp.com.tw')
+            ->setItems($this->makeItems())
             ->setSalesAmount(100);
 
         $response = $this->client->send($this->instance);
@@ -48,15 +65,7 @@ class InvoiceTest extends \PHPUnit\Framework\TestCase
             ->setCarrierType('3')
             ->setCarrierNum('/YC+RROR')
             ->setCustomerEmail('cylee@chyp.com.tw')
-            ->setItems([
-                [
-                    'name' => '商品範例',
-                    'quantity' => 1,
-                    'unit' => '個',
-                    'price' => 100,
-                    'totalPrice' => 100,
-                ],
-            ])
+            ->setItems($this->makeItems())
             ->setSalesAmount(100);
 
         $response = $this->client->send($this->instance);
@@ -72,15 +81,7 @@ class InvoiceTest extends \PHPUnit\Framework\TestCase
             ->setCustomerAddr('台中市北區進化路322號')
             ->setCustomerEmail('cylee@chyp.com.tw')
             ->setPrintMark('1')
-            ->setItems([
-                [
-                    'name' => '商品範例',
-                    'quantity' => 1,
-                    'unit' => '個',
-                    'price' => 100,
-                    'totalPrice' => 100,
-                ],
-            ])
+            ->setItems($this->makeItems())
             ->setSalesAmount(100);
 
         $response = $this->client->send($this->instance);
@@ -98,15 +99,7 @@ class InvoiceTest extends \PHPUnit\Framework\TestCase
 
         $this->instance
             ->setCustomerEmail('test@example.com')
-            ->setItems([
-                [
-                    'name' => '商品範例',
-                    'quantity' => 1,
-                    'unit' => '個',
-                    'price' => 100,
-                    'totalPrice' => 100,
-                ],
-            ])
+            ->setItems($this->makeItems())
             ->setSalesAmount(100);
 
         $this->client->send($this->instance);
@@ -122,15 +115,7 @@ class InvoiceTest extends \PHPUnit\Framework\TestCase
 
         $this->instance
             ->setRelateNumber('TEST' . date('YmdHis'))
-            ->setItems([
-                [
-                    'name' => '商品範例',
-                    'quantity' => 1,
-                    'unit' => '個',
-                    'price' => 100,
-                    'totalPrice' => 100,
-                ],
-            ])
+            ->setItems($this->makeItems())
             ->setSalesAmount(100);
 
         $this->client->send($this->instance);
@@ -163,15 +148,7 @@ class InvoiceTest extends \PHPUnit\Framework\TestCase
         $this->instance
             ->setRelateNumber('TEST' . date('YmdHis'))
             ->setCustomerEmail('test@example.com')
-            ->setItems([
-                [
-                    'name' => '商品範例',
-                    'quantity' => 1,
-                    'unit' => '個',
-                    'price' => 100,
-                    'totalPrice' => 100,
-                ],
-            ])
+            ->setItems($this->makeItems())
             ->setSalesAmount(500); // 設定錯誤的金額
 
         $this->client->send($this->instance);
@@ -189,15 +166,7 @@ class InvoiceTest extends \PHPUnit\Framework\TestCase
             ->setRelateNumber('TEST' . date('YmdHis'))
             ->setCustomerEmail('test@example.com')
             ->setDonation('1')
-            ->setItems([
-                [
-                    'name' => '商品範例',
-                    'quantity' => 1,
-                    'unit' => '個',
-                    'price' => 100,
-                    'totalPrice' => 100,
-                ],
-            ])
+            ->setItems($this->makeItems())
             ->setSalesAmount(100);
 
         $this->client->send($this->instance);
@@ -220,15 +189,7 @@ class InvoiceTest extends \PHPUnit\Framework\TestCase
             ->setPrintMark('1')
             ->setDonation('1')
             ->setLoveCode('123456')
-            ->setItems([
-                [
-                    'name' => '商品範例',
-                    'quantity' => 1,
-                    'unit' => '個',
-                    'price' => 100,
-                    'totalPrice' => 100,
-                ],
-            ])
+            ->setItems($this->makeItems())
             ->setSalesAmount(100);
 
         $this->client->send($this->instance);
@@ -249,15 +210,7 @@ class InvoiceTest extends \PHPUnit\Framework\TestCase
             ->setCustomerEmail('test@example.com')
             ->setPrintMark('1')
             ->setCarrierType('1')
-            ->setItems([
-                [
-                    'name' => '商品範例',
-                    'quantity' => 1,
-                    'unit' => '個',
-                    'price' => 100,
-                    'totalPrice' => 100,
-                ],
-            ])
+            ->setItems($this->makeItems())
             ->setSalesAmount(100);
 
         $this->client->send($this->instance);
@@ -276,15 +229,7 @@ class InvoiceTest extends \PHPUnit\Framework\TestCase
             ->setCustomerEmail('test@example.com')
             ->setCarrierType('3')
             ->setCarrierNum('123') // 錯誤長度
-            ->setItems([
-                [
-                    'name' => '商品範例',
-                    'quantity' => 1,
-                    'unit' => '個',
-                    'price' => 100,
-                    'totalPrice' => 100,
-                ],
-            ])
+            ->setItems($this->makeItems())
             ->setSalesAmount(100);
 
         $this->client->send($this->instance);
@@ -311,7 +256,7 @@ class InvoiceTest extends \PHPUnit\Framework\TestCase
         $this->instance->setRelateNumber('YEP' . date('YmdHis') . rand(10, 99))
             ->setCarrierType('1')
             ->setCustomerEmail('cylee@chyp.com.tw')
-            ->setItems([
+            ->setItems($this->makeItems([
                 [
                     'name' => '商品A',
                     'quantity' => 2,
@@ -333,7 +278,7 @@ class InvoiceTest extends \PHPUnit\Framework\TestCase
                     'price' => 50,
                     'totalPrice' => 250,
                 ],
-            ])
+            ]))
             ->setSalesAmount(750);
 
         $response = $this->client->send($this->instance);
@@ -350,15 +295,7 @@ class InvoiceTest extends \PHPUnit\Framework\TestCase
             ->setCustomerEmail('cylee@chyp.com.tw')
             ->setDonation('1')
             ->setLoveCode('9999')
-            ->setItems([
-                [
-                    'name' => '商品範例',
-                    'quantity' => 1,
-                    'unit' => '個',
-                    'price' => 100,
-                    'totalPrice' => 100,
-                ],
-            ])
+            ->setItems($this->makeItems())
             ->setSalesAmount(100);
 
         $response = $this->client->send($this->instance);
