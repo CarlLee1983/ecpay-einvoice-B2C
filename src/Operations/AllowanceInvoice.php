@@ -5,7 +5,6 @@ namespace ecPay\eInvoice\Operations;
 use ecPay\eInvoice\Content;
 use ecPay\eInvoice\DTO\AllowanceItemDto;
 use ecPay\eInvoice\DTO\ItemCollection;
-use ecPay\eInvoice\InvoiceInterface;
 use ecPay\eInvoice\Parameter\AllowanceNotifyType;
 use Exception;
 
@@ -54,7 +53,7 @@ class AllowanceInvoice extends Content
      * Setting the invoice no.
      *
      * @param string $invoiceNo
-     * @return InvoiceInterface
+     * @return $this
      */
     public function setInvoiceNo(string $invoiceNo): self
     {
@@ -71,7 +70,7 @@ class AllowanceInvoice extends Content
      * Setting allownace notify.
      *
      * @param string $type
-     * @return InvoiceInterface
+     * @return $this
      */
     public function setAllowanceNotify(string $type): self
     {
@@ -95,7 +94,7 @@ class AllowanceInvoice extends Content
      * Setting customer name.
      *
      * @param string $name
-     * @return InvoiceInterface
+     * @return $this
      */
     public function setCustomerName(string $name): self
     {
@@ -112,7 +111,7 @@ class AllowanceInvoice extends Content
      * Setting allownace notify email.
      *
      * @param string $email
-     * @return InvoiceInterface
+     * @return $this
      */
     public function setNotifyMail(string $email): self
     {
@@ -133,7 +132,7 @@ class AllowanceInvoice extends Content
      * Setting allowance notify phone number.
      *
      * @param string $number
-     * @return InvoiceInterface
+     * @return $this
      */
     public function setNotifyPhone(string $number): self
     {
@@ -150,7 +149,7 @@ class AllowanceInvoice extends Content
      * Setting the invoice allowance amount.
      *
      * @param integer $amount
-     * @return InvoiceInterface
+     * @return $this
      */
     public function setAllowanceAmount(int $amount): self
     {

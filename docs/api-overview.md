@@ -10,6 +10,33 @@
 
 > 備註：PDF 版本記載更多進階參數（如批次作業、愛心碼維護等），若本摘要未涵蓋請回查官方文件。
 
+### Laravel 協調器快速示範
+
+在 Laravel 專案中，套件會註冊 `OperationCoordinator`，可透過 Facade 直接完成「建立 → 設定 → 送出」的流程：
+
+```php
+use EcPayInvoice;
+
+$response = EcPayInvoice::issue(function ($invoice) {
+    $invoice->setRelateNumber('INV' . now()->format('YmdHis'))
+        ->setCustomerEmail('demo@example.com')
+        ->setItems([
+            [
+                'name' => '商品Ａ',
+                'quantity' => 1,
+                'unit' => '個',
+                'price' => 100,
+            ],
+        ]);
+});
+
+if ($response->success()) {
+    // ...
+}
+```
+
+查詢類別同樣可以使用 `EcPayQuery::coordinate('get_invoice', fn ($query) => ...)`。
+
 ## 2. 模組與端點對照
 
 | 模組 | 類別 | Request Path | 用途 |

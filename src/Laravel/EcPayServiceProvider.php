@@ -7,6 +7,7 @@ namespace ecPay\eInvoice\Laravel;
 use ecPay\eInvoice\EcPayClient;
 use ecPay\eInvoice\Factories\OperationFactory;
 use ecPay\eInvoice\Factories\OperationFactoryInterface;
+use ecPay\eInvoice\Laravel\Services\OperationCoordinator;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Support\ServiceProvider;
 
@@ -25,6 +26,7 @@ class EcPayServiceProvider extends ServiceProvider
         $this->registerFactory();
         $this->registerClient();
         $this->registerOperationBindings();
+        $this->registerCoordinator();
     }
 
     /**
@@ -84,6 +86,21 @@ class EcPayServiceProvider extends ServiceProvider
         });
 
         $this->app->alias(EcPayClient::class, 'ecpay.client');
+    }
+
+    /**
+     * 綁定協調器。
+     */
+    protected function registerCoordinator(): void
+    {
+        $this->app->singleton(OperationCoordinator::class, function (Application $app) {
+            return new OperationCoordinator(
+                $app->make(OperationFactoryInterface::class),
+                $app->make(EcPayClient::class)
+            );
+        });
+
+        $this->app->alias(OperationCoordinator::class, 'ecpay.coordinator');
     }
 
     /**

@@ -1,6 +1,7 @@
 <?php
 
 use ecPay\eInvoice\DTO\AllowanceItemDto;
+use ecPay\eInvoice\DTO\ItemCollection;
 use ecPay\eInvoice\Operations\AllowanceInvoice;
 use ecPay\eInvoice\Parameter\AllowanceNotifyType;
 use PHPUnit\Framework\TestCase;
@@ -261,13 +262,16 @@ class AllowanceInvoiceTest extends TestCase
         $itemsProperty->setAccessible(true);
         $itemsData = $itemsProperty->getValue($this->allowance);
 
+        $this->assertInstanceOf(ItemCollection::class, $itemsData);
+        $payloadItems = $itemsData->toArray();
+
         // 驗證商品項目格式轉換
-        $this->assertCount(2, $itemsData);
-        $this->assertEquals('商品A', $itemsData[0]['ItemName']);
-        $this->assertEquals(2, $itemsData[0]['ItemCount']);
-        $this->assertEquals('個', $itemsData[0]['ItemWord']);
-        $this->assertEquals(100, $itemsData[0]['ItemPrice']);
-        $this->assertEquals(200, $itemsData[0]['ItemAmount']);
+        $this->assertCount(2, $payloadItems);
+        $this->assertEquals('商品A', $payloadItems[0]['ItemName']);
+        $this->assertEquals(2, $payloadItems[0]['ItemCount']);
+        $this->assertEquals('個', $payloadItems[0]['ItemWord']);
+        $this->assertEquals(100, $payloadItems[0]['ItemPrice']);
+        $this->assertEquals(200, $payloadItems[0]['ItemAmount']);
     }
 
     /**
@@ -311,9 +315,10 @@ class AllowanceInvoiceTest extends TestCase
         $this->expectException(Exception::class);
         $this->expectExceptionMessage('The invoice date is empty.');
 
-        $this->allowance
-            ->setInvoiceNo('AB12345678')
-            ->setItems($this->buildItems());
+        /** @var AllowanceInvoice $invoice */
+        $invoice = $this->allowance;
+        $invoice->setInvoiceNo('AB12345678');
+        $invoice->setItems($this->buildItems());
 
         $this->allowance->validation();
     }
@@ -328,10 +333,11 @@ class AllowanceInvoiceTest extends TestCase
 
         $this->setInvoiceDate('2024-01-01');
 
-        $this->allowance
-            ->setInvoiceNo('AB12345678')
-            ->setAllowanceNotify(AllowanceNotifyType::EMAIL)
-            ->setItems($this->buildItems());
+        /** @var AllowanceInvoice $invoice */
+        $invoice = $this->allowance;
+        $invoice->setInvoiceNo('AB12345678');
+        $invoice->setAllowanceNotify(AllowanceNotifyType::EMAIL);
+        $invoice->setItems($this->buildItems());
 
         $this->allowance->validation();
     }
@@ -346,10 +352,11 @@ class AllowanceInvoiceTest extends TestCase
 
         $this->setInvoiceDate('2024-01-01');
 
-        $this->allowance
-            ->setInvoiceNo('AB12345678')
-            ->setAllowanceNotify(AllowanceNotifyType::SMS)
-            ->setItems($this->buildItems());
+        /** @var AllowanceInvoice $invoice */
+        $invoice = $this->allowance;
+        $invoice->setInvoiceNo('AB12345678');
+        $invoice->setAllowanceNotify(AllowanceNotifyType::SMS);
+        $invoice->setItems($this->buildItems());
 
         $this->allowance->validation();
     }
@@ -364,9 +371,10 @@ class AllowanceInvoiceTest extends TestCase
 
         $this->setInvoiceDate('2024-01-01');
 
-        $this->allowance
-            ->setInvoiceNo('AB12345678')
-            ->setAllowanceAmount(0);
+        /** @var AllowanceInvoice $invoice */
+        $invoice = $this->allowance;
+        $invoice->setInvoiceNo('AB12345678');
+        $invoice->setAllowanceAmount(0);
 
         $this->allowance->validation();
     }
@@ -381,9 +389,10 @@ class AllowanceInvoiceTest extends TestCase
 
         $this->setInvoiceDate('2024-01-01');
 
-        $this->allowance
-            ->setInvoiceNo('AB12345678')
-            ->setAllowanceAmount(100);
+        /** @var AllowanceInvoice $invoice */
+        $invoice = $this->allowance;
+        $invoice->setInvoiceNo('AB12345678');
+        $invoice->setAllowanceAmount(100);
 
         $this->allowance->validation();
     }
@@ -395,12 +404,13 @@ class AllowanceInvoiceTest extends TestCase
     {
         $this->setInvoiceDate('2024-01-01');
 
-        $this->allowance
-            ->setInvoiceNo('AB12345678')
-            ->setAllowanceNotify(AllowanceNotifyType::EMAIL)
-            ->setNotifyMail('test@example.com')
-            ->setCustomerName('測試客戶')
-            ->setItems($this->buildItems());
+        /** @var AllowanceInvoice $invoice */
+        $invoice = $this->allowance;
+        $invoice->setInvoiceNo('AB12345678');
+        $invoice->setAllowanceNotify(AllowanceNotifyType::EMAIL);
+        $invoice->setNotifyMail('test@example.com');
+        $invoice->setCustomerName('測試客戶');
+        $invoice->setItems($this->buildItems());
 
         // 手動將 items 設定到 content['Data']['Items']（模擬 getContent 的行為）
         $reflection = new ReflectionClass($this->allowance);
@@ -412,7 +422,11 @@ class AllowanceInvoiceTest extends TestCase
         $itemsProperty->setAccessible(true);
         $items = $itemsProperty->getValue($this->allowance);
 
-        $content['Data']['Items'] = $items;
+        if ($items instanceof ItemCollection) {
+            $content['Data']['Items'] = $items->toArray();
+        } else {
+            $content['Data']['Items'] = $items;
+        }
         $contentProperty->setValue($this->allowance, $content);
 
         $this->expectNotToPerformAssertions();
@@ -426,12 +440,13 @@ class AllowanceInvoiceTest extends TestCase
     {
         $this->setInvoiceDate('2024-01-01');
 
-        $result = $this->allowance
-            ->setInvoiceNo('AB12345678')
-            ->setAllowanceNotify(AllowanceNotifyType::EMAIL)
-            ->setCustomerName('測試客戶')
-            ->setNotifyMail('test@example.com')
-            ->setItems($this->buildItems());
+        /** @var AllowanceInvoice $invoice */
+        $invoice = $this->allowance;
+        $invoice->setInvoiceNo('AB12345678');
+        $invoice->setAllowanceNotify(AllowanceNotifyType::EMAIL);
+        $invoice->setCustomerName('測試客戶');
+        $invoice->setNotifyMail('test@example.com');
+        $result = $invoice->setItems($this->buildItems());
 
         $this->assertInstanceOf(AllowanceInvoice::class, $result);
 
@@ -449,11 +464,12 @@ class AllowanceInvoiceTest extends TestCase
     {
         $this->setInvoiceDate('2024-01-15');
 
-        $this->allowance
-            ->setInvoiceNo('AB12345678')
-            ->setAllowanceNotify(AllowanceNotifyType::NONE)
-            ->setCustomerName('測試客戶')
-            ->setItems($this->buildItems([
+        /** @var AllowanceInvoice $invoice */
+        $invoice = $this->allowance;
+        $invoice->setInvoiceNo('AB12345678');
+        $invoice->setAllowanceNotify(AllowanceNotifyType::NONE);
+        $invoice->setCustomerName('測試客戶');
+        $invoice->setItems($this->buildItems([
                 ['name' => '商品A', 'quantity' => 2, 'unit' => '個', 'price' => 100],
                 ['name' => '商品B', 'quantity' => 1, 'unit' => '件', 'price' => 300],
             ]));

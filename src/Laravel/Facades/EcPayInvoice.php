@@ -6,6 +6,8 @@ namespace ecPay\eInvoice\Laravel\Facades;
 
 use ecPay\eInvoice\Content;
 use ecPay\eInvoice\Factories\OperationFactoryInterface;
+use ecPay\eInvoice\Laravel\Services\OperationCoordinator;
+use ecPay\eInvoice\Response;
 use Illuminate\Support\Facades\Facade;
 
 /**
@@ -67,6 +69,29 @@ class EcPayInvoice extends Facade
     }
 
     /**
+     * 透過協調器建立指定別名並送出請求。
+     *
+     * @param string $alias
+     * @param callable $configure
+     * @param array $parameters
+     */
+    public static function coordinate(string $alias, callable $configure, array $parameters = []): Response
+    {
+        return static::getCoordinator()->dispatch($alias, $configure, $parameters);
+    }
+
+    /**
+     * 快速開立一般發票（別名 invoice）。
+     *
+     * @param callable $configure
+     * @param array $parameters
+     */
+    public static function issue(callable $configure, array $parameters = []): Response
+    {
+        return static::coordinate('invoice', $configure, $parameters);
+    }
+
+    /**
      * 取得工廠實體。
      *
      * @return OperationFactoryInterface
@@ -77,5 +102,16 @@ class EcPayInvoice extends Facade
         $factory = static::getFacadeRoot();
 
         return $factory;
+    }
+
+    /**
+     * 取得協調器。
+     */
+    protected static function getCoordinator(): OperationCoordinator
+    {
+        /** @var OperationCoordinator $coordinator */
+        $coordinator = static::getFacadeApplication()->make(OperationCoordinator::class);
+
+        return $coordinator;
     }
 }

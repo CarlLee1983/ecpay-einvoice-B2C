@@ -6,6 +6,8 @@ namespace ecPay\eInvoice\Laravel\Facades;
 
 use ecPay\eInvoice\Content;
 use ecPay\eInvoice\Factories\OperationFactoryInterface;
+use ecPay\eInvoice\Laravel\Services\OperationCoordinator;
+use ecPay\eInvoice\Response;
 use Illuminate\Support\Facades\Facade;
 
 /**
@@ -30,11 +32,9 @@ class EcPayQuery extends Facade
      */
     public static function make(string $alias = 'queries.get_invoice', array $parameters = []): Content
     {
-        if (strpos($alias, 'queries.') !== 0) {
-            $alias = 'queries.' . $alias;
-        }
+        $normalized = static::normalizeAlias($alias);
 
-        return static::getFactory()->make($alias, $parameters);
+        return static::getFactory()->make($normalized, $parameters);
     }
 
     /**
@@ -60,6 +60,29 @@ class EcPayQuery extends Facade
     }
 
     /**
+     * 透過協調器建立查詢後直接送出。
+     *
+     * @param string $alias
+     * @param callable $configure
+     * @param array $parameters
+     */
+    public static function coordinate(string $alias, callable $configure, array $parameters = []): Response
+    {
+        return static::getCoordinator()->dispatch(static::normalizeAlias($alias), $configure, $parameters);
+    }
+
+    /**
+     * 快速查詢單筆發票（別名 queries.get_invoice）。
+     *
+     * @param callable $configure
+     * @param array $parameters
+     */
+    public static function queryInvoice(callable $configure, array $parameters = []): Response
+    {
+        return static::coordinate('queries.get_invoice', $configure, $parameters);
+    }
+
+    /**
      * 取得工廠實體。
      *
      * @return OperationFactoryInterface
@@ -70,5 +93,30 @@ class EcPayQuery extends Facade
         $factory = static::getFacadeRoot();
 
         return $factory;
+    }
+
+    /**
+     * @return OperationCoordinator
+     */
+    protected static function getCoordinator(): OperationCoordinator
+    {
+        /** @var OperationCoordinator $coordinator */
+        $coordinator = static::getFacadeApplication()->make(OperationCoordinator::class);
+
+        return $coordinator;
+    }
+
+    /**
+     * 正規化查詢別名。
+     */
+    protected static function normalizeAlias(string $alias): string
+    {
+        $alias = ltrim($alias);
+
+        if (strpos($alias, 'queries.') !== 0) {
+            $alias = 'queries.' . ltrim($alias, '.');
+        }
+
+        return $alias;
     }
 }
