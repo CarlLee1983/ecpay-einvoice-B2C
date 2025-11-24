@@ -4,12 +4,13 @@ declare(strict_types=1);
 
 namespace ecPay\eInvoice;
 
+use ecPay\eInvoice\Contracts\CommandInterface;
 use ecPay\eInvoice\DTO\RqHeaderDto;
 use ecPay\eInvoice\Infrastructure\CipherService;
 use ecPay\eInvoice\Infrastructure\PayloadEncoder;
 use Exception;
 
-abstract class Content implements InvoiceInterface
+abstract class Content implements InvoiceInterface, CommandInterface
 {
     use AES;
 
@@ -102,7 +103,7 @@ abstract class Content implements InvoiceInterface
 
         $this->content = [
             'MerchantID' => $this->merchantID,
-            'RqHeader' => $this->rqHeader->toArray(),
+            'RqHeader' => $this->rqHeader->toPayload(),
         ];
 
         $this->initContent();
@@ -301,7 +302,7 @@ abstract class Content implements InvoiceInterface
     public function getContent(): array
     {
         $payload = $this->getPayload();
-        $encoder = $this->payloadEncoder ?: $this->buildPayloadEncoder();
+        $encoder = $this->getPayloadEncoder();
 
         return $encoder->encodePayload($payload);
     }
@@ -351,10 +352,18 @@ abstract class Content implements InvoiceInterface
     }
 
     /**
+     * 取得當前命令可用的 PayloadEncoder。
+     */
+    public function getPayloadEncoder(): PayloadEncoder
+    {
+        return $this->payloadEncoder ?: $this->buildPayloadEncoder();
+    }
+
+    /**
      * 同步 RqHeader 至內容陣列。
      */
     protected function syncRqHeader(): void
     {
-        $this->content['RqHeader'] = $this->rqHeader->toArray();
+        $this->content['RqHeader'] = $this->rqHeader->toPayload();
     }
 }

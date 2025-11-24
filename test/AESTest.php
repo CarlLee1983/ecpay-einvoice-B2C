@@ -5,7 +5,7 @@ use PHPUnit\Framework\TestCase;
 
 /**
  * 測試 AES 加解密功能
- * 
+ *
  * 因為 AES 是 trait，我們使用 Invoice 類別來測試
  */
 class AESTest extends TestCase
@@ -29,17 +29,17 @@ class AESTest extends TestCase
     public function testEncrypt()
     {
         $plaintext = 'Hello World!';
-        
+
         $reflection = new ReflectionClass($this->invoice);
         $method = $reflection->getMethod('encrypt');
         $method->setAccessible(true);
-        
+
         $encrypted = $method->invoke($this->invoice, $plaintext);
-        
+
         $this->assertIsString($encrypted);
         $this->assertNotEmpty($encrypted);
         $this->assertNotEquals($plaintext, $encrypted);
-        
+
         // Base64 編碼的字串應該只包含特定字元
         $this->assertMatchesRegularExpression('/^[A-Za-z0-9+\/=]+$/', $encrypted);
     }
@@ -50,19 +50,19 @@ class AESTest extends TestCase
     public function testDecrypt()
     {
         $plaintext = 'Test Data 測試資料';
-        
+
         // 先加密
         $reflection = new ReflectionClass($this->invoice);
         $encryptMethod = $reflection->getMethod('encrypt');
         $encryptMethod->setAccessible(true);
-        
+
         // URL 編碼（模擬實際使用情境）
         $urlEncoded = urlencode($plaintext);
         $encrypted = $encryptMethod->invoke($this->invoice, $urlEncoded);
-        
+
         // 再解密
         $decrypted = $this->invoice->decrypt($encrypted);
-        
+
         $this->assertEquals($plaintext, $decrypted);
     }
 
@@ -84,11 +84,11 @@ class AESTest extends TestCase
             $reflection = new ReflectionClass($this->invoice);
             $encryptMethod = $reflection->getMethod('encrypt');
             $encryptMethod->setAccessible(true);
-            
+
             $urlEncoded = urlencode($plaintext);
             $encrypted = $encryptMethod->invoke($this->invoice, $urlEncoded);
             $decrypted = $this->invoice->decrypt($encrypted);
-            
+
             $this->assertEquals($plaintext, $decrypted, "Failed for: {$plaintext}");
         }
     }
@@ -99,14 +99,14 @@ class AESTest extends TestCase
     public function testEncryptDecryptEmptyString()
     {
         $plaintext = '';
-        
+
         $reflection = new ReflectionClass($this->invoice);
         $encryptMethod = $reflection->getMethod('encrypt');
         $encryptMethod->setAccessible(true);
-        
+
         $encrypted = $encryptMethod->invoke($this->invoice, $plaintext);
         $decrypted = $this->invoice->decrypt($encrypted);
-        
+
         $this->assertEquals($plaintext, $decrypted);
     }
 
@@ -116,15 +116,15 @@ class AESTest extends TestCase
     public function testEncryptDecryptLongString()
     {
         $plaintext = str_repeat('這是一個測試字串。', 100);
-        
+
         $reflection = new ReflectionClass($this->invoice);
         $encryptMethod = $reflection->getMethod('encrypt');
         $encryptMethod->setAccessible(true);
-        
+
         $urlEncoded = urlencode($plaintext);
         $encrypted = $encryptMethod->invoke($this->invoice, $urlEncoded);
         $decrypted = $this->invoice->decrypt($encrypted);
-        
+
         $this->assertEquals($plaintext, $decrypted);
     }
 
@@ -142,19 +142,19 @@ class AESTest extends TestCase
                 ['name' => '商品B', 'price' => 500],
             ],
         ];
-        
+
         $jsonString = json_encode($data);
-        
+
         $reflection = new ReflectionClass($this->invoice);
         $encryptMethod = $reflection->getMethod('encrypt');
         $encryptMethod->setAccessible(true);
-        
+
         $urlEncoded = urlencode($jsonString);
         $encrypted = $encryptMethod->invoke($this->invoice, $urlEncoded);
         $decrypted = $this->invoice->decrypt($encrypted);
-        
+
         $this->assertEquals($jsonString, $decrypted);
-        
+
         // 確認解密後可以正確解析 JSON
         $decodedData = json_decode($decrypted, true);
         $this->assertEquals($data, $decodedData);
@@ -167,7 +167,7 @@ class AESTest extends TestCase
     {
         $this->expectException(Exception::class);
         $this->expectExceptionMessage('Decryption failed.');
-        
+
         $this->invoice->decrypt('invalid base64 string!!!');
     }
 
@@ -177,7 +177,7 @@ class AESTest extends TestCase
     public function testDecryptEmptyString()
     {
         $this->expectException(Exception::class);
-        
+
         $this->invoice->decrypt('');
     }
 
@@ -187,25 +187,25 @@ class AESTest extends TestCase
     public function testDecryptWithWrongKey()
     {
         $plaintext = 'Test Data';
-        
+
         // 使用正確的金鑰加密
         $reflection = new ReflectionClass($this->invoice);
         $encryptMethod = $reflection->getMethod('encrypt');
         $encryptMethod->setAccessible(true);
-        
+
         $urlEncoded = urlencode($plaintext);
         $encrypted = $encryptMethod->invoke($this->invoice, $urlEncoded);
-        
+
         // 創建一個使用錯誤金鑰的實例
         $wrongKeyInvoice = new Invoice(
             'TEST_MERCHANT_ID',
             'wrongkey12345678',
             'wrongiv123456789'
         );
-        
+
         $this->expectException(Exception::class);
         $this->expectExceptionMessage('Decryption failed.');
-        
+
         $wrongKeyInvoice->decrypt($encrypted);
     }
 
@@ -215,14 +215,14 @@ class AESTest extends TestCase
     public function testEncryptConsistency()
     {
         $plaintext = 'Test consistency';
-        
+
         $reflection = new ReflectionClass($this->invoice);
         $encryptMethod = $reflection->getMethod('encrypt');
         $encryptMethod->setAccessible(true);
-        
+
         $encrypted1 = $encryptMethod->invoke($this->invoice, $plaintext);
         $encrypted2 = $encryptMethod->invoke($this->invoice, $plaintext);
-        
+
         // AES-CBC 模式使用固定的 IV，所以相同的明文應該產生相同的密文
         $this->assertEquals($encrypted1, $encrypted2);
     }
@@ -245,11 +245,11 @@ class AESTest extends TestCase
             $reflection = new ReflectionClass($this->invoice);
             $encryptMethod = $reflection->getMethod('encrypt');
             $encryptMethod->setAccessible(true);
-            
+
             $urlEncoded = urlencode($plaintext);
             $encrypted = $encryptMethod->invoke($this->invoice, $urlEncoded);
             $decrypted = $this->invoice->decrypt($encrypted);
-            
+
             $this->assertEquals($plaintext, $decrypted, "Failed for special char: {$plaintext}");
         }
     }
@@ -271,13 +271,12 @@ class AESTest extends TestCase
             $reflection = new ReflectionClass($this->invoice);
             $encryptMethod = $reflection->getMethod('encrypt');
             $encryptMethod->setAccessible(true);
-            
+
             $urlEncoded = urlencode($plaintext);
             $encrypted = $encryptMethod->invoke($this->invoice, $urlEncoded);
             $decrypted = $this->invoice->decrypt($encrypted);
-            
+
             $this->assertEquals($plaintext, $decrypted, "Failed for unicode: {$plaintext}");
         }
     }
 }
-

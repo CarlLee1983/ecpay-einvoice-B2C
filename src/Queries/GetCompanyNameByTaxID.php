@@ -74,4 +74,3 @@ class GetCompanyNameByTaxID extends Content
         }
     }
 }
-

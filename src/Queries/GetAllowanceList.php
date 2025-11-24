@@ -148,4 +148,3 @@ class GetAllowanceList extends Content
         throw new Exception('Date 格式需為 yyyy-MM-dd 或 yyyy/MM/dd。');
     }
 }
-

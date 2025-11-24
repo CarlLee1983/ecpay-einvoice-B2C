@@ -55,7 +55,7 @@ class AllowanceInvoiceTest extends TestCase
         }
 
         return array_map(
-            static fn(array $item): AllowanceItemDto => AllowanceItemDto::fromArray($item),
+            static fn (array $item): AllowanceItemDto => AllowanceItemDto::fromArray($item),
             $items
         );
     }
@@ -66,7 +66,7 @@ class AllowanceInvoiceTest extends TestCase
     public function testSetInvoiceNoSuccess()
     {
         $result = $this->allowance->setInvoiceNo('AB12345678');
-        
+
         $this->assertInstanceOf(AllowanceInvoice::class, $result);
         $content = $this->getContentWithoutValidation();
         $this->assertEquals('AB12345678', $content['Data']['InvoiceNo']);
@@ -89,7 +89,7 @@ class AllowanceInvoiceTest extends TestCase
     public function testSetAllowanceNotifyTypeSms()
     {
         $result = $this->allowance->setAllowanceNotify(AllowanceNotifyType::SMS);
-        
+
         $this->assertInstanceOf(AllowanceInvoice::class, $result);
         $content = $this->getContentWithoutValidation();
         $this->assertEquals(AllowanceNotifyType::SMS, $content['Data']['AllowanceNotify']);
@@ -101,7 +101,7 @@ class AllowanceInvoiceTest extends TestCase
     public function testSetAllowanceNotifyTypeEmail()
     {
         $result = $this->allowance->setAllowanceNotify(AllowanceNotifyType::EMAIL);
-        
+
         $this->assertInstanceOf(AllowanceInvoice::class, $result);
         $content = $this->getContentWithoutValidation();
         $this->assertEquals(AllowanceNotifyType::EMAIL, $content['Data']['AllowanceNotify']);
@@ -113,7 +113,7 @@ class AllowanceInvoiceTest extends TestCase
     public function testSetAllowanceNotifyTypeAll()
     {
         $result = $this->allowance->setAllowanceNotify(AllowanceNotifyType::ALL);
-        
+
         $this->assertInstanceOf(AllowanceInvoice::class, $result);
         $content = $this->getContentWithoutValidation();
         $this->assertEquals(AllowanceNotifyType::ALL, $content['Data']['AllowanceNotify']);
@@ -136,7 +136,7 @@ class AllowanceInvoiceTest extends TestCase
     public function testSetCustomerNameSuccess()
     {
         $result = $this->allowance->setCustomerName('測試客戶');
-        
+
         $this->assertInstanceOf(AllowanceInvoice::class, $result);
         $content = $this->getContentWithoutValidation();
         $this->assertEquals('測試客戶', $content['Data']['CustomerName']);
@@ -159,7 +159,7 @@ class AllowanceInvoiceTest extends TestCase
     public function testSetNotifyMailSuccess()
     {
         $result = $this->allowance->setNotifyMail('test@example.com');
-        
+
         $this->assertInstanceOf(AllowanceInvoice::class, $result);
         $content = $this->getContentWithoutValidation();
         $this->assertEquals('test@example.com', $content['Data']['NotifyMail']);
@@ -182,13 +182,13 @@ class AllowanceInvoiceTest extends TestCase
     public function testSetNotifyMailTooLong()
     {
         $this->expectException(Exception::class);
-        
+
         // 注意：因為 filter_var 會先檢查格式，而非常長的 email 通常也不符合格式
         // 所以這個測試實際上會先觸發格式錯誤
         // 我們保留這個測試以確保有長度檢查的邏輯存在
         $longEmail = str_repeat('test', 30) . '@example.com'; // 超過 100 字元
         $this->allowance->setNotifyMail($longEmail);
-        
+
         // 期望拋出 "Invalid email format" 或 "Email length must be less than 100 characters."
     }
 
@@ -198,7 +198,7 @@ class AllowanceInvoiceTest extends TestCase
     public function testSetNotifyPhoneSuccess()
     {
         $result = $this->allowance->setNotifyPhone('0912345678');
-        
+
         $this->assertInstanceOf(AllowanceInvoice::class, $result);
         $content = $this->getContentWithoutValidation();
         $this->assertEquals('0912345678', $content['Data']['NotifyPhone']);
@@ -221,7 +221,7 @@ class AllowanceInvoiceTest extends TestCase
     public function testSetAllowanceAmount()
     {
         $result = $this->allowance->setAllowanceAmount(1000);
-        
+
         $this->assertInstanceOf(AllowanceInvoice::class, $result);
         $content = $this->getContentWithoutValidation();
         $this->assertEquals(1000, $content['Data']['AllowanceAmount']);
@@ -248,19 +248,19 @@ class AllowanceInvoiceTest extends TestCase
         ]);
 
         $result = $this->allowance->setItems($items);
-        
+
         $this->assertInstanceOf(AllowanceInvoice::class, $result);
         $content = $this->getContentWithoutValidation();
-        
+
         // 驗證總金額自動計算
         $this->assertEquals(500, $content['Data']['AllowanceAmount']);
-        
+
         // 使用反射讀取 items 屬性
         $reflection = new ReflectionClass($this->allowance);
         $itemsProperty = $reflection->getProperty('items');
         $itemsProperty->setAccessible(true);
         $itemsData = $itemsProperty->getValue($this->allowance);
-        
+
         // 驗證商品項目格式轉換
         $this->assertCount(2, $itemsData);
         $this->assertEquals('商品A', $itemsData[0]['ItemName']);
@@ -407,11 +407,11 @@ class AllowanceInvoiceTest extends TestCase
         $contentProperty = $reflection->getProperty('content');
         $contentProperty->setAccessible(true);
         $content = $contentProperty->getValue($this->allowance);
-        
+
         $itemsProperty = $reflection->getProperty('items');
         $itemsProperty->setAccessible(true);
         $items = $itemsProperty->getValue($this->allowance);
-        
+
         $content['Data']['Items'] = $items;
         $contentProperty->setValue($this->allowance, $content);
 
@@ -425,7 +425,7 @@ class AllowanceInvoiceTest extends TestCase
     public function testFluentInterface()
     {
         $this->setInvoiceDate('2024-01-01');
-        
+
         $result = $this->allowance
             ->setInvoiceNo('AB12345678')
             ->setAllowanceNotify(AllowanceNotifyType::EMAIL)
@@ -434,7 +434,7 @@ class AllowanceInvoiceTest extends TestCase
             ->setItems($this->buildItems());
 
         $this->assertInstanceOf(AllowanceInvoice::class, $result);
-        
+
         $content = $this->getContentWithoutValidation();
         $this->assertEquals('AB12345678', $content['Data']['InvoiceNo']);
         $this->assertEquals('測試客戶', $content['Data']['CustomerName']);
@@ -448,7 +448,7 @@ class AllowanceInvoiceTest extends TestCase
     public function testGetContentWithCompleteData()
     {
         $this->setInvoiceDate('2024-01-15');
-        
+
         $this->allowance
             ->setInvoiceNo('AB12345678')
             ->setAllowanceNotify(AllowanceNotifyType::NONE)
@@ -459,7 +459,7 @@ class AllowanceInvoiceTest extends TestCase
             ]));
 
         $content = $this->allowance->getContent();
-        
+
         $this->assertIsArray($content);
         $this->assertArrayHasKey('Data', $content);
         $this->assertIsString($content['Data']);

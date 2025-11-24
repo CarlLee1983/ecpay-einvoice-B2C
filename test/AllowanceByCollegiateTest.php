@@ -37,7 +37,7 @@ class AllowanceByCollegiateTest extends \PHPUnit\Framework\TestCase
         }
 
         return array_map(
-            static fn(array $item): AllowanceCollegiateItemDto => AllowanceCollegiateItemDto::fromArray($item),
+            static fn (array $item): AllowanceCollegiateItemDto => AllowanceCollegiateItemDto::fromArray($item),
             $items
         );
     }
@@ -101,4 +101,3 @@ class AllowanceByCollegiateTest extends \PHPUnit\Framework\TestCase
         $this->assertArrayHasKey('Data', $content);
     }
 }
-

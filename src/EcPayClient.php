@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace ecPay\eInvoice;
 
+use ecPay\eInvoice\Contracts\CommandInterface;
 use ecPay\eInvoice\Infrastructure\CipherService;
 use ecPay\eInvoice\Infrastructure\PayloadEncoder;
 use Exception;
@@ -65,19 +66,20 @@ class EcPayClient
     /**
      * Send request to ECPay.
      *
-     * @param Content $invoice
+     * @param CommandInterface $command
      * @return Response
      * @throws Exception
      */
-    public function send(Content $invoice): Response
+    public function send(CommandInterface $command): Response
     {
-        // 將金鑰同步給操作物件，以保留既有 getContent/decrypt 等功能
-        $invoice->setHashKey($this->hashKey);
-        $invoice->setHashIV($this->hashIV);
+        // 將金鑰同步給命令，以保留既有運作方式
+        $command->setHashKey($this->hashKey);
+        $command->setHashIV($this->hashIV);
 
-        $payload = $invoice->getPayload();
-        $transportBody = $this->payloadEncoder->encodePayload($payload);
-        $requestPath = $invoice->getRequestPath();
+        $payload = $command->getPayload();
+        $requestPath = $command->getRequestPath();
+        $payloadEncoder = $command->getPayloadEncoder();
+        $transportBody = $payloadEncoder->encodePayload($payload);
 
         $body = (new Request($this->requestServer . $requestPath, $transportBody))->send();
 

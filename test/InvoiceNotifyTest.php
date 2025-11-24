@@ -1,9 +1,9 @@
 <?php
 
 use ecPay\eInvoice\Notifications\InvoiceNotify;
-use ecPay\eInvoice\Parameter\NotifyType;
 use ecPay\eInvoice\Parameter\InvoiceTagType;
 use ecPay\eInvoice\Parameter\NotifiedType;
+use ecPay\eInvoice\Parameter\NotifyType;
 use PHPUnit\Framework\TestCase;
 
 class InvoiceNotifyTest extends TestCase
@@ -36,7 +36,7 @@ class InvoiceNotifyTest extends TestCase
     public function testSetInvoiceNoSuccess()
     {
         $result = $this->invoiceNotify->setInvoiceNo('AB12345678');
-        
+
         $this->assertInstanceOf(InvoiceNotify::class, $result);
         $content = $this->getContentWithoutValidation();
         $this->assertEquals('AB12345678', $content['Data']['InvoiceNo']);
@@ -59,7 +59,7 @@ class InvoiceNotifyTest extends TestCase
     public function testSetAllowanceNoSuccess()
     {
         $result = $this->invoiceNotify->setAllowanceNo('1234567890123456');
-        
+
         $this->assertInstanceOf(InvoiceNotify::class, $result);
         $content = $this->getContentWithoutValidation();
         $this->assertEquals('1234567890123456', $content['Data']['AllowanceNo']);
@@ -82,7 +82,7 @@ class InvoiceNotifyTest extends TestCase
     public function testSetPhoneSuccess()
     {
         $result = $this->invoiceNotify->setPhone('0912345678');
-        
+
         $this->assertInstanceOf(InvoiceNotify::class, $result);
         $content = $this->getContentWithoutValidation();
         $this->assertEquals('0912345678', $content['Data']['Phone']);
@@ -106,7 +106,7 @@ class InvoiceNotifyTest extends TestCase
     {
         $phone = str_repeat('1', 20);
         $result = $this->invoiceNotify->setPhone($phone);
-        
+
         $this->assertInstanceOf(InvoiceNotify::class, $result);
         $content = $this->getContentWithoutValidation();
         $this->assertEquals($phone, $content['Data']['Phone']);
@@ -118,7 +118,7 @@ class InvoiceNotifyTest extends TestCase
     public function testSetNotifyMailSuccess()
     {
         $result = $this->invoiceNotify->setNotifyMail('test@example.com');
-        
+
         $this->assertInstanceOf(InvoiceNotify::class, $result);
         $content = $this->getContentWithoutValidation();
         $this->assertEquals('test@example.com', $content['Data']['NotifyMail']);
@@ -141,7 +141,7 @@ class InvoiceNotifyTest extends TestCase
     public function testSetNotifyMailTooLong()
     {
         $this->expectException(Exception::class);
-        
+
         $longEmail = str_repeat('test', 25) . '@example.com'; // 超過 80 字元
         $this->invoiceNotify->setNotifyMail($longEmail);
     }
@@ -152,7 +152,7 @@ class InvoiceNotifyTest extends TestCase
     public function testSetNotifyTypeSms()
     {
         $result = $this->invoiceNotify->setNotify(NotifyType::SMS);
-        
+
         $this->assertInstanceOf(InvoiceNotify::class, $result);
         $content = $this->getContentWithoutValidation();
         $this->assertEquals(NotifyType::SMS, $content['Data']['Notify']);
@@ -164,7 +164,7 @@ class InvoiceNotifyTest extends TestCase
     public function testSetNotifyTypeEmail()
     {
         $result = $this->invoiceNotify->setNotify(NotifyType::EMAIL);
-        
+
         $this->assertInstanceOf(InvoiceNotify::class, $result);
         $content = $this->getContentWithoutValidation();
         $this->assertEquals(NotifyType::EMAIL, $content['Data']['Notify']);
@@ -176,7 +176,7 @@ class InvoiceNotifyTest extends TestCase
     public function testSetNotifyTypeAll()
     {
         $result = $this->invoiceNotify->setNotify(NotifyType::ALL);
-        
+
         $this->assertInstanceOf(InvoiceNotify::class, $result);
         $content = $this->getContentWithoutValidation();
         $this->assertEquals(NotifyType::ALL, $content['Data']['Notify']);
@@ -199,7 +199,7 @@ class InvoiceNotifyTest extends TestCase
     public function testSetInvoiceTagInvoice()
     {
         $result = $this->invoiceNotify->setInvoiceTag(InvoiceTagType::INVOICE);
-        
+
         $this->assertInstanceOf(InvoiceNotify::class, $result);
         $content = $this->getContentWithoutValidation();
         $this->assertEquals(InvoiceTagType::INVOICE, $content['Data']['InvoiceTag']);
@@ -211,7 +211,7 @@ class InvoiceNotifyTest extends TestCase
     public function testSetInvoiceTagInvoiceVoid()
     {
         $result = $this->invoiceNotify->setInvoiceTag(InvoiceTagType::INVOICE_VOID);
-        
+
         $this->assertInstanceOf(InvoiceNotify::class, $result);
         $content = $this->getContentWithoutValidation();
         $this->assertEquals(InvoiceTagType::INVOICE_VOID, $content['Data']['InvoiceTag']);
@@ -223,7 +223,7 @@ class InvoiceNotifyTest extends TestCase
     public function testSetInvoiceTagAllowance()
     {
         $result = $this->invoiceNotify->setInvoiceTag(InvoiceTagType::ALLOWANCE);
-        
+
         $this->assertInstanceOf(InvoiceNotify::class, $result);
         $content = $this->getContentWithoutValidation();
         $this->assertEquals(InvoiceTagType::ALLOWANCE, $content['Data']['InvoiceTag']);
@@ -235,7 +235,7 @@ class InvoiceNotifyTest extends TestCase
     public function testSetInvoiceTagAllowanceVoid()
     {
         $result = $this->invoiceNotify->setInvoiceTag(InvoiceTagType::ALLOWANCE_VOID);
-        
+
         $this->assertInstanceOf(InvoiceNotify::class, $result);
         $content = $this->getContentWithoutValidation();
         $this->assertEquals(InvoiceTagType::ALLOWANCE_VOID, $content['Data']['InvoiceTag']);
@@ -247,7 +247,7 @@ class InvoiceNotifyTest extends TestCase
     public function testSetInvoiceTagInvoiceWinning()
     {
         $result = $this->invoiceNotify->setInvoiceTag(InvoiceTagType::INVOICE_WINNING);
-        
+
         $this->assertInstanceOf(InvoiceNotify::class, $result);
         $content = $this->getContentWithoutValidation();
         $this->assertEquals(InvoiceTagType::INVOICE_WINNING, $content['Data']['InvoiceTag']);
@@ -270,7 +270,7 @@ class InvoiceNotifyTest extends TestCase
     public function testSetNotifiedCustomer()
     {
         $result = $this->invoiceNotify->setNotified(NotifiedType::CUSTOMER);
-        
+
         $this->assertInstanceOf(InvoiceNotify::class, $result);
         $content = $this->getContentWithoutValidation();
         $this->assertEquals(NotifiedType::CUSTOMER, $content['Data']['Notified']);
@@ -282,7 +282,7 @@ class InvoiceNotifyTest extends TestCase
     public function testSetNotifiedVendor()
     {
         $result = $this->invoiceNotify->setNotified(NotifiedType::VENDOR);
-        
+
         $this->assertInstanceOf(InvoiceNotify::class, $result);
         $content = $this->getContentWithoutValidation();
         $this->assertEquals(NotifiedType::VENDOR, $content['Data']['Notified']);
@@ -294,7 +294,7 @@ class InvoiceNotifyTest extends TestCase
     public function testSetNotifiedAll()
     {
         $result = $this->invoiceNotify->setNotified(NotifiedType::ALL);
-        
+
         $this->assertInstanceOf(InvoiceNotify::class, $result);
         $content = $this->getContentWithoutValidation();
         $this->assertEquals(NotifiedType::ALL, $content['Data']['Notified']);
@@ -461,7 +461,7 @@ class InvoiceNotifyTest extends TestCase
             ->setNotified(NotifiedType::CUSTOMER);
 
         $this->assertInstanceOf(InvoiceNotify::class, $result);
-        
+
         $content = $this->getContentWithoutValidation();
         $this->assertEquals('AB12345678', $content['Data']['InvoiceNo']);
         $this->assertEquals('0912345678', $content['Data']['Phone']);
@@ -484,10 +484,9 @@ class InvoiceNotifyTest extends TestCase
             ->setNotified(NotifiedType::CUSTOMER);
 
         $content = $this->invoiceNotify->getContent();
-        
+
         $this->assertIsArray($content);
         $this->assertArrayHasKey('Data', $content);
         $this->assertIsString($content['Data']);
     }
 }
-

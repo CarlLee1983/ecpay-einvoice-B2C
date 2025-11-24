@@ -124,4 +124,3 @@ class GetGovInvoiceWordSetting extends Content
         }
     }
 }
-

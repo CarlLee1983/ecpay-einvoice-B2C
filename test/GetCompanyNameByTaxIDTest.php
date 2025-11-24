@@ -4,8 +4,6 @@ class GetCompanyNameByTaxIDTest extends \PHPUnit\Framework\TestCase
 {
     /**
      * 建立測試所需的基本物件。
-     *
-     * @return void
      */
     protected function setUp(): void
     {
@@ -30,4 +28,3 @@ class GetCompanyNameByTaxIDTest extends \PHPUnit\Framework\TestCase
         $this->assertTrue($response->success());
     }
 }
-

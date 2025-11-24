@@ -11,11 +11,11 @@ class ResponseTest extends TestCase
     public function testConstructorWithoutData()
     {
         $response = new Response();
-        
+
         $this->assertInstanceOf(Response::class, $response);
         $this->assertFalse($response->success());
         $this->assertEquals('', $response->getMessage());
-        
+
         $data = $response->getData();
         $this->assertEquals(0, $data['RtnCode']);
         $this->assertEquals('', $data['RtnMsg']);
@@ -33,10 +33,10 @@ class ResponseTest extends TestCase
         ];
 
         $response = new Response($responseData);
-        
+
         $this->assertTrue($response->success());
         $this->assertEquals('Success', $response->getMessage());
-        
+
         $data = $response->getData();
         $this->assertEquals(1, $data['RtnCode']);
         $this->assertEquals('Success', $data['RtnMsg']);
@@ -49,7 +49,7 @@ class ResponseTest extends TestCase
     public function testSetData()
     {
         $response = new Response();
-        
+
         $responseData = [
             'RtnCode' => 1,
             'RtnMsg' => 'Invoice created',
@@ -57,11 +57,11 @@ class ResponseTest extends TestCase
         ];
 
         $result = $response->setData($responseData);
-        
+
         $this->assertInstanceOf(Response::class, $result);
         $this->assertTrue($response->success());
         $this->assertEquals('Invoice created', $response->getMessage());
-        
+
         $data = $response->getData();
         $this->assertEquals('CD98765432', $data['InvoiceNo']);
     }
@@ -75,7 +75,7 @@ class ResponseTest extends TestCase
             'RtnCode' => 1,
             'RtnMsg' => 'Success',
         ]);
-        
+
         $this->assertTrue($response->success());
     }
 
@@ -88,7 +88,7 @@ class ResponseTest extends TestCase
             'RtnCode' => 0,
             'RtnMsg' => 'Error occurred',
         ]);
-        
+
         $this->assertFalse($response->success());
     }
 
@@ -101,7 +101,7 @@ class ResponseTest extends TestCase
             'RtnCode' => -1,
             'RtnMsg' => 'System error',
         ]);
-        
+
         $this->assertFalse($response->success());
     }
 
@@ -114,7 +114,7 @@ class ResponseTest extends TestCase
             'RtnCode' => 1,
             'RtnMsg' => '發票開立成功',
         ]);
-        
+
         $this->assertEquals('發票開立成功', $response->getMessage());
     }
 
@@ -127,7 +127,7 @@ class ResponseTest extends TestCase
             'RtnCode' => 0,
             'RtnMsg' => '發票號碼格式錯誤',
         ]);
-        
+
         $this->assertEquals('發票號碼格式錯誤', $response->getMessage());
     }
 
@@ -146,14 +146,14 @@ class ResponseTest extends TestCase
 
         $response = new Response($responseData);
         $data = $response->getData();
-        
+
         $this->assertIsArray($data);
         $this->assertArrayHasKey('RtnCode', $data);
         $this->assertArrayHasKey('RtnMsg', $data);
         $this->assertArrayHasKey('InvoiceNo', $data);
         $this->assertArrayHasKey('InvoiceDate', $data);
         $this->assertArrayHasKey('RandomNumber', $data);
-        
+
         $this->assertEquals('AB12345678', $data['InvoiceNo']);
         $this->assertEquals('2024-01-01', $data['InvoiceDate']);
         $this->assertEquals('1234', $data['RandomNumber']);
@@ -166,7 +166,7 @@ class ResponseTest extends TestCase
     {
         $response = new Response([]);
         $data = $response->getData();
-        
+
         $this->assertIsArray($data);
         // 傳入空陣列時，因為 !empty([]) 為 true，不會呼叫 setData
         // 所以會保留預設的 RtnCode 和 RtnMsg
@@ -182,11 +182,11 @@ class ResponseTest extends TestCase
     public function testSetDataFluentInterface()
     {
         $response = new Response();
-        
+
         $result = $response
             ->setData(['RtnCode' => 1, 'RtnMsg' => 'First'])
             ->setData(['RtnCode' => 1, 'RtnMsg' => 'Second']);
-        
+
         $this->assertInstanceOf(Response::class, $result);
         $this->assertEquals('Second', $response->getMessage());
     }
@@ -205,7 +205,7 @@ class ResponseTest extends TestCase
 
         foreach ($errorScenarios as $scenario) {
             $response = new Response($scenario);
-            $this->assertFalse($response->success(), "Failed for: " . $scenario['RtnMsg']);
+            $this->assertFalse($response->success(), 'Failed for: ' . $scenario['RtnMsg']);
         }
     }
 
@@ -226,9 +226,9 @@ class ResponseTest extends TestCase
         ];
 
         $response = new Response($responseData);
-        
+
         $this->assertTrue($response->success());
-        
+
         $data = $response->getData();
         $this->assertEquals('AB12345678', $data['InvoiceNo']);
         $this->assertEquals('2024-01-15', $data['InvoiceDate']);
@@ -253,7 +253,7 @@ class ResponseTest extends TestCase
         ];
 
         $response = new Response($responseData);
-        
+
         $this->assertTrue($response->success());
         $data = $response->getData();
         $this->assertEquals('AB12345678', $data['InvoiceNo']);
@@ -273,7 +273,7 @@ class ResponseTest extends TestCase
         ];
 
         $response = new Response($responseData);
-        
+
         $this->assertTrue($response->success());
         $this->assertEquals('作廢成功', $response->getMessage());
     }
@@ -291,7 +291,7 @@ class ResponseTest extends TestCase
         ];
 
         $response = new Response($responseData);
-        
+
         $this->assertTrue($response->success());
         $data = $response->getData();
         $this->assertEquals('AB12345678', $data['InvoiceNo']);
@@ -310,7 +310,7 @@ class ResponseTest extends TestCase
         ];
 
         $response = new Response($responseData);
-        
+
         $this->assertTrue($response->success());
         $data = $response->getData();
         $this->assertEquals('Y', $data['IsExist']);
@@ -328,7 +328,7 @@ class ResponseTest extends TestCase
         ];
 
         $response = new Response($responseData);
-        
+
         $this->assertTrue($response->success());
         $data = $response->getData();
         $this->assertEquals('Y', $data['IsExist']);
@@ -343,7 +343,7 @@ class ResponseTest extends TestCase
             'RtnCode' => '1',
             'RtnMsg' => 'Success',
         ]);
-        
+
         // PHP 會進行鬆散比較，'1' == 1 為 true
         $this->assertTrue($response->success());
     }
@@ -356,9 +356,8 @@ class ResponseTest extends TestCase
         $response = new Response([
             'RtnCode' => 1,
         ]);
-        
+
         $this->assertTrue($response->success());
         // getMessage 應該返回空字串或 null（根據實作）
     }
 }
-

@@ -61,4 +61,3 @@ class CancelDelayIssue extends Content
         }
     }
 }
-

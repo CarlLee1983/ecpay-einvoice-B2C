@@ -70,7 +70,7 @@ class ContentTest extends TestCase
     public function testGetRequestPath()
     {
         $path = $this->content->getRequestPath();
-        
+
         $this->assertEquals('/test/path', $path);
     }
 
@@ -81,13 +81,13 @@ class ContentTest extends TestCase
     {
         $newId = 'NEW_MERCHANT_ID';
         $result = $this->content->setMerchantID($newId);
-        
+
         $this->assertInstanceOf(TestableContent::class, $result);
-        
+
         $reflection = new ReflectionClass($this->content);
         $property = $reflection->getProperty('merchantID');
         $property->setAccessible(true);
-        
+
         $this->assertEquals($newId, $property->getValue($this->content));
     }
 
@@ -98,13 +98,13 @@ class ContentTest extends TestCase
     {
         $newKey = 'newHashKey1234567';
         $result = $this->content->setHashKey($newKey);
-        
+
         $this->assertInstanceOf(TestableContent::class, $result);
-        
+
         $reflection = new ReflectionClass($this->content);
         $property = $reflection->getProperty('hashKey');
         $property->setAccessible(true);
-        
+
         $this->assertEquals($newKey, $property->getValue($this->content));
     }
 
@@ -115,13 +115,13 @@ class ContentTest extends TestCase
     {
         $newIV = 'newHashIV12345678';
         $result = $this->content->setHashIV($newIV);
-        
+
         $this->assertInstanceOf(TestableContent::class, $result);
-        
+
         $reflection = new ReflectionClass($this->content);
         $property = $reflection->getProperty('hashIV');
         $property->setAccessible(true);
-        
+
         $this->assertEquals($newIV, $property->getValue($this->content));
     }
 
@@ -132,7 +132,7 @@ class ContentTest extends TestCase
     {
         $relateNumber = 'TEST202401150001';
         $result = $this->content->setRelateNumber($relateNumber);
-        
+
         $this->assertInstanceOf(TestableContent::class, $result);
     }
 
@@ -143,7 +143,7 @@ class ContentTest extends TestCase
     {
         $this->expectException(Exception::class);
         $this->expectExceptionMessage('The invoice RelateNumber length over 30.');
-        
+
         $longRelateNumber = str_repeat('A', 31);
         $this->content->setRelateNumber($longRelateNumber);
     }
@@ -155,7 +155,7 @@ class ContentTest extends TestCase
     {
         $relateNumber = str_repeat('A', 30);
         $result = $this->content->setRelateNumber($relateNumber);
-        
+
         $this->assertInstanceOf(TestableContent::class, $result);
     }
 
@@ -206,10 +206,10 @@ class ContentTest extends TestCase
     public function testGetRqID()
     {
         $rqId = $this->content->publicGetRqID();
-        
+
         $this->assertIsString($rqId);
         $this->assertNotEmpty($rqId);
-        
+
         // RqID 應該包含時間戳和隨機字串
         $this->assertMatchesRegularExpression('/^[0-9a-zA-Z]+$/', $rqId);
     }
@@ -222,7 +222,7 @@ class ContentTest extends TestCase
         $rqId1 = $this->content->publicGetRqID();
         usleep(1000); // 等待 1 毫秒
         $rqId2 = $this->content->publicGetRqID();
-        
+
         $this->assertNotEquals($rqId1, $rqId2);
     }
 
@@ -254,9 +254,9 @@ class ContentTest extends TestCase
     {
         $input = 'test%2d%5f%2e%21%2a%28%29data';
         $expected = 'test-_.!*()data';
-        
+
         $result = $this->content->publicTransUrlencode($input);
-        
+
         $this->assertEquals($expected, $result);
     }
 
@@ -269,13 +269,13 @@ class ContentTest extends TestCase
         $property = $reflection->getProperty('content');
         $property->setAccessible(true);
         $content = $property->getValue($this->content);
-        
+
         $this->assertArrayHasKey('MerchantID', $content);
         $this->assertArrayHasKey('RqHeader', $content);
         $this->assertArrayHasKey('Data', $content);
-        
+
         $this->assertEquals($this->merchantId, $content['MerchantID']);
-        
+
         // 檢查 RqHeader 結構
         $this->assertArrayHasKey('Timestamp', $content['RqHeader']);
     }
@@ -318,7 +318,7 @@ class ContentTest extends TestCase
     public function testSetEmptyRelateNumber()
     {
         $result = $this->content->setRelateNumber('');
-        
+
         $this->assertInstanceOf(TestableContent::class, $result);
     }
 
@@ -378,12 +378,11 @@ class ContentTest extends TestCase
         $property = $reflection->getProperty('content');
         $property->setAccessible(true);
         $content = $property->getValue($this->content);
-        
+
         $timestamp = $content['RqHeader']['Timestamp'];
-        
+
         $this->assertIsInt($timestamp);
         $this->assertGreaterThan(0, $timestamp);
         $this->assertLessThanOrEqual(time(), $timestamp);
     }
 }
-

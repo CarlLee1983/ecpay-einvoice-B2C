@@ -161,4 +161,3 @@ class InvoicePrint extends Content
         throw new Exception('InvoiceDate 格式需為 yyyy-MM-dd 或 yyyy/MM/dd。');
     }
 }
-

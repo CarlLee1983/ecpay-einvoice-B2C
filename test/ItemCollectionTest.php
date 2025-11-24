@@ -1,7 +1,7 @@
 <?php
 
-use ecPay\eInvoice\DTO\ItemCollection;
 use ecPay\eInvoice\DTO\InvoiceItemDto;
+use ecPay\eInvoice\DTO\ItemCollection;
 use PHPUnit\Framework\TestCase;
 
 class ItemCollectionTest extends TestCase
@@ -43,4 +43,3 @@ class ItemCollectionTest extends TestCase
         $this->assertSame('C', $payloads[0]['ItemName']);
     }
 }
-

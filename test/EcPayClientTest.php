@@ -1,6 +1,6 @@
 <?php
 
-use ecPay\eInvoice\Content;
+use ecPay\eInvoice\Contracts\CommandInterface;
 use ecPay\eInvoice\EcPayClient;
 use ecPay\eInvoice\Infrastructure\CipherService;
 use ecPay\eInvoice\Infrastructure\PayloadEncoder;
@@ -67,9 +67,9 @@ class EcPayClientTest extends TestCase
 
         // Test EcPayClient
         $ecPayClient = new EcPayClient($this->server, $this->hashKey, $this->hashIV);
-        
-        // Mock Content (Invoice)
-        $invoice = Mockery::mock(Content::class);
+
+        // Mock Command
+        $invoice = Mockery::mock(CommandInterface::class);
         $invoice->shouldReceive('setHashKey')->with($this->hashKey);
         $invoice->shouldReceive('setHashIV')->with($this->hashIV);
         $invoice->shouldReceive('getPayload')->andReturn([
@@ -77,6 +77,7 @@ class EcPayClientTest extends TestCase
             'RqHeader' => ['Timestamp' => time()],
             'Data' => ['Example' => 'value'],
         ]);
+        $invoice->shouldReceive('getPayloadEncoder')->andReturn(new PayloadEncoder(new CipherService($this->hashKey, $this->hashIV)));
         $invoice->shouldReceive('getRequestPath')->andReturn('/test/api');
 
         $response = $ecPayClient->send($invoice);
@@ -86,7 +87,7 @@ class EcPayClientTest extends TestCase
         $this->assertEquals(1, $data['RtnCode']);
         $this->assertEquals('AB12345678', $data['InvoiceNo']);
     }
-    
+
     public function testSendFailWithNoData()
     {
         // Simulate error where Data is empty but TransCode shows error
@@ -105,8 +106,8 @@ class EcPayClientTest extends TestCase
         Request::setHttpClient($client);
 
         $ecPayClient = new EcPayClient($this->server, $this->hashKey, $this->hashIV);
-        
-        $invoice = Mockery::mock(Content::class);
+
+        $invoice = Mockery::mock(CommandInterface::class);
         $invoice->shouldReceive('setHashKey');
         $invoice->shouldReceive('setHashIV');
         $invoice->shouldReceive('getPayload')->andReturn([
@@ -114,6 +115,7 @@ class EcPayClientTest extends TestCase
             'RqHeader' => ['Timestamp' => time()],
             'Data' => [],
         ]);
+        $invoice->shouldReceive('getPayloadEncoder')->andReturn(new PayloadEncoder(new CipherService($this->hashKey, $this->hashIV)));
         $invoice->shouldReceive('getRequestPath')->andReturn('/test/api');
 
         $response = $ecPayClient->send($invoice);
@@ -142,7 +144,7 @@ class EcPayClientTest extends TestCase
 
         $ecPayClient = new EcPayClient($this->server, $this->hashKey, $this->hashIV);
 
-        $invoice = Mockery::mock(Content::class);
+        $invoice = Mockery::mock(CommandInterface::class);
         $invoice->shouldReceive('setHashKey');
         $invoice->shouldReceive('setHashIV');
         $invoice->shouldReceive('getPayload')->andReturn([
@@ -150,13 +152,13 @@ class EcPayClientTest extends TestCase
             'RqHeader' => ['Timestamp' => time()],
             'Data' => [],
         ]);
+        $invoice->shouldReceive('getPayloadEncoder')->andReturn(new PayloadEncoder(new CipherService($this->hashKey, $this->hashIV)));
         $invoice->shouldReceive('getRequestPath')->andReturn('/test/api');
 
         $this->expectException(Exception::class);
         // Note: EcPayClient throws generic Exception for json error after decryption fail (decryption returns false/garbage)
         // "The response data format is invalid." is thrown if json_decode fails.
-        
+
         $ecPayClient->send($invoice);
     }
 }
-

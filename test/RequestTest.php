@@ -2,11 +2,11 @@
 
 use ecPay\eInvoice\Request;
 use GuzzleHttp\Client;
+use GuzzleHttp\Exception\RequestException;
 use GuzzleHttp\Handler\MockHandler;
 use GuzzleHttp\HandlerStack;
-use GuzzleHttp\Psr7\Response;
-use GuzzleHttp\Exception\RequestException;
 use GuzzleHttp\Psr7\Request as Psr7Request;
+use GuzzleHttp\Psr7\Response;
 use PHPUnit\Framework\TestCase;
 
 class RequestTest extends TestCase
@@ -26,7 +26,7 @@ class RequestTest extends TestCase
     public function testConstructor()
     {
         $request = new Request($this->testUrl, $this->testContent);
-        
+
         $this->assertInstanceOf(Request::class, $request);
     }
 
@@ -36,7 +36,7 @@ class RequestTest extends TestCase
     public function testConstructorWithoutParameters()
     {
         $request = new Request();
-        
+
         $this->assertInstanceOf(Request::class, $request);
     }
 
@@ -47,7 +47,7 @@ class RequestTest extends TestCase
     {
         $client = new Client();
         Request::setHttpClient($client);
-        
+
         $this->expectNotToPerformAssertions();
     }
 
@@ -57,7 +57,7 @@ class RequestTest extends TestCase
     public function testSetHttpClientNull()
     {
         Request::setHttpClient(null);
-        
+
         $this->expectNotToPerformAssertions();
     }
 
@@ -344,4 +344,3 @@ class RequestTest extends TestCase
         }
     }
 }
-

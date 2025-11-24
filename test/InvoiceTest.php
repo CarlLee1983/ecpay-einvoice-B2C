@@ -6,8 +6,6 @@ class InvoiceTest extends \PHPUnit\Framework\TestCase
 {
     /**
      * Setup the test environment.
-     *
-     * @return void
      */
     protected function setUp(): void
     {
@@ -41,7 +39,7 @@ class InvoiceTest extends \PHPUnit\Framework\TestCase
         }
 
         return array_map(
-            static fn(array $item): InvoiceItemDto => InvoiceItemDto::fromArray($item),
+            static fn (array $item): InvoiceItemDto => InvoiceItemDto::fromArray($item),
             $items
         );
     }

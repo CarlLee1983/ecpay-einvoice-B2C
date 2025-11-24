@@ -77,4 +77,3 @@ class GetGovInvoiceWordSettingTest extends TestCase
         $this->assertArrayHasKey('Data', $content);
     }
 }
-

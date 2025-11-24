@@ -376,4 +376,3 @@ class AddInvoiceWordSetting extends Content
         return (int) ceil(((int) date('n')) / 2);
     }
 }
-

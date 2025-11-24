@@ -177,4 +177,3 @@ class GetIssueList extends Content
         throw new Exception('日期格式需為 yyyy-MM-dd 或 yyyy/MM/dd。');
     }
 }
-

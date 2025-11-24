@@ -58,4 +58,3 @@ class PayloadEncoderTest extends TestCase
         $this->encoder->decodeData('invalid-data');
     }
 }
-

@@ -151,4 +151,3 @@ class DelayIssue extends Invoice
         }
     }
 }
-

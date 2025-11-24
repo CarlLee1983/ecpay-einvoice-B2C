@@ -59,7 +59,7 @@ class GetInvalidInvoiceTest extends TestCase
     public function testSetInvoiceNoSuccess()
     {
         $result = $this->getInvalidInvoice->setInvoiceNo('AB12345678');
-        
+
         $this->assertInstanceOf(GetInvalidInvoice::class, $result);
         $content = $this->getContentWithoutValidation();
         $this->assertEquals('AB12345678', $content['Data']['InvoiceNo']);
@@ -117,7 +117,7 @@ class GetInvalidInvoiceTest extends TestCase
         $result = $this->getInvalidInvoice->setInvoiceNo('AB12345678');
 
         $this->assertInstanceOf(GetInvalidInvoice::class, $result);
-        
+
         $content = $this->getContentWithoutValidation();
         $this->assertEquals('AB12345678', $content['Data']['InvoiceNo']);
     }
@@ -130,7 +130,7 @@ class GetInvalidInvoiceTest extends TestCase
         $this->getInvalidInvoice->setInvoiceNo('AB12345678');
 
         $content = $this->getInvalidInvoice->getContent();
-        
+
         $this->assertIsArray($content);
         $this->assertArrayHasKey('Data', $content);
         $this->assertIsString($content['Data']);
@@ -142,13 +142,13 @@ class GetInvalidInvoiceTest extends TestCase
     public function testInitContentHasRequiredFields()
     {
         $content = $this->getContentWithoutValidation();
-        
+
         $this->assertArrayHasKey('Data', $content);
         $this->assertArrayHasKey('MerchantID', $content['Data']);
         $this->assertArrayHasKey('RelateNumber', $content['Data']);
         $this->assertArrayHasKey('InvoiceNo', $content['Data']);
         $this->assertArrayHasKey('InvoiceDate', $content['Data']);
-        
+
         $this->assertEquals('TEST_MERCHANT_ID', $content['Data']['MerchantID']);
     }
 
@@ -162,7 +162,7 @@ class GetInvalidInvoiceTest extends TestCase
         $this->getInvalidInvoice->setInvoiceNo('AB12345678');
 
         $content = $this->getContentWithoutValidation();
-        
+
         $this->assertEquals('TEST202401150001', $content['Data']['RelateNumber']);
         $this->assertEquals('2024-01-15', $content['Data']['InvoiceDate']);
         $this->assertEquals('AB12345678', $content['Data']['InvoiceNo']);
@@ -210,4 +210,3 @@ class GetInvalidInvoiceTest extends TestCase
         }
     }
 }
-

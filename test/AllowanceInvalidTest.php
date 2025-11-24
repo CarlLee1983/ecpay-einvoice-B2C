@@ -33,7 +33,7 @@ class AllowanceInvalidTest extends TestCase
     public function testSetInvoiceNoSuccess()
     {
         $result = $this->allowanceInvalid->setInvoiceNo('AB12345678');
-        
+
         $this->assertInstanceOf(AllowanceInvalid::class, $result);
         $content = $this->getContentWithoutValidation();
         $this->assertEquals('AB12345678', $content['Data']['InvoiceNo']);
@@ -67,7 +67,7 @@ class AllowanceInvalidTest extends TestCase
     public function testSetAllowanceNoSuccess()
     {
         $result = $this->allowanceInvalid->setAllowanceNo('1234567890123456');
-        
+
         $this->assertInstanceOf(AllowanceInvalid::class, $result);
         $content = $this->getContentWithoutValidation();
         $this->assertEquals('1234567890123456', $content['Data']['AllowanceNo']);
@@ -101,7 +101,7 @@ class AllowanceInvalidTest extends TestCase
     public function testSetReasonSuccess()
     {
         $result = $this->allowanceInvalid->setReason('客戶退貨');
-        
+
         $this->assertInstanceOf(AllowanceInvalid::class, $result);
         $content = $this->getContentWithoutValidation();
         $this->assertEquals('客戶退貨', $content['Data']['Reason']);
@@ -113,7 +113,7 @@ class AllowanceInvalidTest extends TestCase
     public function testSetReasonEmpty()
     {
         $result = $this->allowanceInvalid->setReason('');
-        
+
         $this->assertInstanceOf(AllowanceInvalid::class, $result);
         $content = $this->getContentWithoutValidation();
         $this->assertEquals('', $content['Data']['Reason']);
@@ -189,7 +189,7 @@ class AllowanceInvalidTest extends TestCase
             ->setReason('測試作廢原因');
 
         $this->assertInstanceOf(AllowanceInvalid::class, $result);
-        
+
         $content = $this->getContentWithoutValidation();
         $this->assertEquals('AB12345678', $content['Data']['InvoiceNo']);
         $this->assertEquals('1234567890123456', $content['Data']['AllowanceNo']);
@@ -207,7 +207,7 @@ class AllowanceInvalidTest extends TestCase
             ->setReason('折讓單據錯誤，需要重新開立');
 
         $content = $this->allowanceInvalid->getContent();
-        
+
         $this->assertIsArray($content);
         $this->assertArrayHasKey('Data', $content);
         $this->assertIsString($content['Data']);
@@ -234,4 +234,3 @@ class AllowanceInvalidTest extends TestCase
         }
     }
 }
-

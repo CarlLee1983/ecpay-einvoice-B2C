@@ -78,4 +78,14 @@ final class RqHeaderDto
             'Timestamp' => $this->timestamp,
         ];
     }
+
+    /**
+     * @deprecated 改用 toPayload()
+     *
+     * @return array<string,int>
+     */
+    public function toArray(): array
+    {
+        return $this->toPayload();
+    }
 }

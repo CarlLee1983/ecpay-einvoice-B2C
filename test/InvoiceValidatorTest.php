@@ -467,4 +467,3 @@ class InvoiceValidatorTest extends TestCase
         InvoiceValidator::validate($data, $this->makeItems());
     }
 }
-

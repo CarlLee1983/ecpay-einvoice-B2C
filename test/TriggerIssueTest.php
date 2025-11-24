@@ -65,4 +65,3 @@ class TriggerIssueTest extends \PHPUnit\Framework\TestCase
         );
     }
 }
-

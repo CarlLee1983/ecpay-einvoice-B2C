@@ -51,4 +51,3 @@ class CancelDelayIssueTest extends \PHPUnit\Framework\TestCase
         );
     }
 }
-

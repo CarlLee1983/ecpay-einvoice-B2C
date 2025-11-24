@@ -64,4 +64,3 @@ class InvoicePrintTest extends \PHPUnit\Framework\TestCase
         $this->assertArrayHasKey('Data', $content);
     }
 }
-

@@ -4,8 +4,6 @@ class CheckBarcodeTest extends \PHPUnit\Framework\TestCase
 {
     /**
      * Setup the test environment.
-     *
-     * @return void
      */
     protected function setUp(): void
     {

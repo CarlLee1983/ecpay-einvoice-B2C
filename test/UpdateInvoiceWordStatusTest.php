@@ -53,4 +53,3 @@ class UpdateInvoiceWordStatusTest extends TestCase
         $this->assertArrayHasKey('Data', $content);
     }
 }
-

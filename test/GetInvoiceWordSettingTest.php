@@ -108,4 +108,3 @@ class GetInvoiceWordSettingTest extends TestCase
         return $property->getValue($this->query);
     }
 }
-

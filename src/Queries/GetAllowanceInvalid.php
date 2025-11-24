@@ -83,4 +83,3 @@ class GetAllowanceInvalid extends Content
         }
     }
 }
-

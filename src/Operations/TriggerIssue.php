@@ -83,4 +83,3 @@ class TriggerIssue extends Content
         }
     }
 }
-

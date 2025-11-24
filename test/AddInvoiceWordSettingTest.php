@@ -114,8 +114,6 @@ class AddInvoiceWordSettingTest extends TestCase
 
     /**
      * Prepare a valid payload for reuse.
-     *
-     * @return void
      */
     private function prepareValidData(): void
     {
@@ -145,4 +143,3 @@ class AddInvoiceWordSettingTest extends TestCase
         return $property->getValue($this->instance);
     }
 }
-

@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace ecPay\eInvoice\Tests;
 
 use ecPay\eInvoice\Factories\OperationFactory;
-use ecPay\eInvoice\Operations\Invoice;
 use ecPay\eInvoice\Operations\InvalidInvoice;
+use ecPay\eInvoice\Operations\Invoice;
 use PHPUnit\Framework\TestCase;
 use ReflectionClass;
 
@@ -61,5 +61,3 @@ class OperationFactoryTest extends TestCase
         $this->assertSame('INIT123', $content['Data']['RelateNumber']);
     }
 }
-
-

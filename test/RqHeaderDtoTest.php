@@ -30,4 +30,3 @@ class RqHeaderDtoTest extends TestCase
         new RqHeaderDto(0);
     }
 }
-
