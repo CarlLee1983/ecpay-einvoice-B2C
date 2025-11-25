@@ -2,7 +2,7 @@
 
 require __DIR__ . '/_config.php';
 
-use ecPay\eInvoice\Queries\GetAllowanceList;
+use CarlLee\EcPayB2C\Queries\GetAllowanceList;
 
 // 範例：以折讓單號查詢
 $searchType = '0';

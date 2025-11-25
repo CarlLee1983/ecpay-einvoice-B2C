@@ -1,6 +1,6 @@
 <?php
 
-use ecPay\eInvoice\Response;
+use CarlLee\EcPayB2C\Response;
 use PHPUnit\Framework\TestCase;
 
 class ResponseTest extends TestCase

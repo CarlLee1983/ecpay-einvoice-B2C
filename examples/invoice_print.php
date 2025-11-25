@@ -2,7 +2,7 @@
 
 require __DIR__ . '/_config.php';
 
-use ecPay\eInvoice\Operations\InvoicePrint;
+use CarlLee\EcPayB2C\Operations\InvoicePrint;
 
 $invoiceNo = 'UV11100016';
 $invoiceDate = '2024-01-10';

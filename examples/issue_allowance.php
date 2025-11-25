@@ -2,8 +2,8 @@
 
 require __DIR__ . '/_config.php';
 
-use ecPay\eInvoice\DTO\AllowanceItemDto;
-use ecPay\eInvoice\Operations\AllowanceInvoice;
+use CarlLee\EcPayB2C\DTO\AllowanceItemDto;
+use CarlLee\EcPayB2C\Operations\AllowanceInvoice;
 
 // 原發票號碼 (需已開立)
 $invoiceNo = 'DM20028782';

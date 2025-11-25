@@ -1,6 +1,6 @@
 <?php
 
-use ecPay\eInvoice\DTO\InvoiceItemDto;
+use CarlLee\EcPayB2C\DTO\InvoiceItemDto;
 
 class GetInvoiceTest extends \PHPUnit\Framework\TestCase
 {
@@ -9,12 +9,12 @@ class GetInvoiceTest extends \PHPUnit\Framework\TestCase
      */
     protected function setUp(): void
     {
-        $this->client = new ecPay\eInvoice\EcPayClient(
+        $this->client = new CarlLee\EcPayB2C\EcPayClient(
             $_ENV['SERVER'],
             $_ENV['HASH_KEY'],
             $_ENV['HASH_IV']
         );
-        $this->instance = new ecPay\eInvoice\Queries\GetInvoice(
+        $this->instance = new CarlLee\EcPayB2C\Queries\GetInvoice(
             $_ENV['MERCHANT_ID'],
             $_ENV['HASH_KEY'],
             $_ENV['HASH_IV']
@@ -39,7 +39,7 @@ class GetInvoiceTest extends \PHPUnit\Framework\TestCase
     public function testQuickCheck()
     {
         $relateNumber = 'YEP' . date('YmdHis');
-        $invoice = new ecPay\eInvoice\Operations\Invoice(
+        $invoice = new CarlLee\EcPayB2C\Operations\Invoice(
             $_ENV['MERCHANT_ID'],
             $_ENV['HASH_KEY'],
             $_ENV['HASH_IV']

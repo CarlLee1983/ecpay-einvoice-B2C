@@ -2,7 +2,7 @@
 
 require __DIR__ . '/_config.php';
 
-use ecPay\eInvoice\Operations\TriggerIssue;
+use CarlLee\EcPayB2C\Operations\TriggerIssue;
 
 $tsr = '請填入延遲開立回傳的TSR';
 

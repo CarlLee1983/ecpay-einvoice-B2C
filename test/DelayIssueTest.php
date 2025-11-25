@@ -1,6 +1,6 @@
 <?php
 
-use ecPay\eInvoice\DTO\InvoiceItemDto;
+use CarlLee\EcPayB2C\DTO\InvoiceItemDto;
 
 class DelayIssueTest extends \PHPUnit\Framework\TestCase
 {
@@ -69,9 +69,9 @@ class DelayIssueTest extends \PHPUnit\Framework\TestCase
     /**
      * 產生具備基本欄位的延遲開立請求。
      *
-     * @return ecPay\eInvoice\Operations\DelayIssue
+     * @return CarlLee\EcPayB2C\Operations\DelayIssue
      */
-    private function buildBaseInvoice(): ecPay\eInvoice\Operations\DelayIssue
+    private function buildBaseInvoice(): CarlLee\EcPayB2C\Operations\DelayIssue
     {
         return $this->makeDelayIssue()
             ->setRelateNumber('DELAY' . date('YmdHis'))
@@ -83,11 +83,11 @@ class DelayIssueTest extends \PHPUnit\Framework\TestCase
     /**
      * 建立 DelayIssue 實例。
      *
-     * @return ecPay\eInvoice\Operations\DelayIssue
+     * @return CarlLee\EcPayB2C\Operations\DelayIssue
      */
-    private function makeDelayIssue(): ecPay\eInvoice\Operations\DelayIssue
+    private function makeDelayIssue(): CarlLee\EcPayB2C\Operations\DelayIssue
     {
-        return new ecPay\eInvoice\Operations\DelayIssue(
+        return new CarlLee\EcPayB2C\Operations\DelayIssue(
             $this->credentials['merchantId'],
             $this->credentials['hashKey'],
             $this->credentials['hashIV']

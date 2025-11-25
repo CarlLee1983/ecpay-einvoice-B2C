@@ -42,9 +42,9 @@ class CancelDelayIssueTest extends \PHPUnit\Framework\TestCase
     /**
      * 建立 CancelDelayIssue 實例。
      */
-    private function makeCancelDelayIssue(): ecPay\eInvoice\Operations\CancelDelayIssue
+    private function makeCancelDelayIssue(): CarlLee\EcPayB2C\Operations\CancelDelayIssue
     {
-        return new ecPay\eInvoice\Operations\CancelDelayIssue(
+        return new CarlLee\EcPayB2C\Operations\CancelDelayIssue(
             $this->credentials['merchantId'],
             $this->credentials['hashKey'],
             $this->credentials['hashIV']

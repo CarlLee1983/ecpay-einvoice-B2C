@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace ecPay\eInvoice;
+namespace CarlLee\EcPayB2C;
 
 use Exception;
 use GuzzleHttp\Client;

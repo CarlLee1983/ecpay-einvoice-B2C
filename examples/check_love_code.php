@@ -2,7 +2,7 @@
 
 require __DIR__ . '/_config.php';
 
-use ecPay\eInvoice\Queries\CheckLoveCode;
+use CarlLee\EcPayB2C\Queries\CheckLoveCode;
 
 // 欲驗證的愛心碼 (例如: 9527)
 $loveCode = '9527';

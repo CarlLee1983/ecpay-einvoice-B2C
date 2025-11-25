@@ -2,19 +2,19 @@
 
 declare(strict_types=1);
 
-namespace ecPay\eInvoice\Operations;
+namespace CarlLee\EcPayB2C\Operations;
 
-use ecPay\eInvoice\Content;
-use ecPay\eInvoice\DTO\InvoiceItemDto;
-use ecPay\eInvoice\DTO\ItemCollection;
-use ecPay\eInvoice\InvoiceValidator;
-use ecPay\eInvoice\Parameter\CarrierType;
-use ecPay\eInvoice\Parameter\ClearanceMark;
-use ecPay\eInvoice\Parameter\Donation;
-use ecPay\eInvoice\Parameter\InvType;
-use ecPay\eInvoice\Parameter\PrintMark;
-use ecPay\eInvoice\Parameter\TaxType;
-use ecPay\eInvoice\Parameter\VatType;
+use CarlLee\EcPayB2C\Content;
+use CarlLee\EcPayB2C\DTO\InvoiceItemDto;
+use CarlLee\EcPayB2C\DTO\ItemCollection;
+use CarlLee\EcPayB2C\InvoiceValidator;
+use CarlLee\EcPayB2C\Parameter\CarrierType;
+use CarlLee\EcPayB2C\Parameter\ClearanceMark;
+use CarlLee\EcPayB2C\Parameter\Donation;
+use CarlLee\EcPayB2C\Parameter\InvType;
+use CarlLee\EcPayB2C\Parameter\PrintMark;
+use CarlLee\EcPayB2C\Parameter\TaxType;
+use CarlLee\EcPayB2C\Parameter\VatType;
 use Exception;
 
 class Invoice extends Content

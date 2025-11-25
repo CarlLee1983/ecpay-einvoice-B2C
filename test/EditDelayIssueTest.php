@@ -1,6 +1,6 @@
 <?php
 
-use ecPay\eInvoice\DTO\InvoiceItemDto;
+use CarlLee\EcPayB2C\DTO\InvoiceItemDto;
 
 class EditDelayIssueTest extends \PHPUnit\Framework\TestCase
 {
@@ -48,9 +48,9 @@ class EditDelayIssueTest extends \PHPUnit\Framework\TestCase
     /**
      * 產生具備基本欄位的延遲發票物件。
      *
-     * @return ecPay\eInvoice\Operations\EditDelayIssue
+     * @return CarlLee\EcPayB2C\Operations\EditDelayIssue
      */
-    private function buildBaseInvoice(): ecPay\eInvoice\Operations\EditDelayIssue
+    private function buildBaseInvoice(): CarlLee\EcPayB2C\Operations\EditDelayIssue
     {
         return $this->makeEditDelayIssue()
             ->setRelateNumber('EDIT' . date('YmdHis'))
@@ -62,11 +62,11 @@ class EditDelayIssueTest extends \PHPUnit\Framework\TestCase
     /**
      * 建立 EditDelayIssue 實例。
      *
-     * @return ecPay\eInvoice\Operations\EditDelayIssue
+     * @return CarlLee\EcPayB2C\Operations\EditDelayIssue
      */
-    private function makeEditDelayIssue(): ecPay\eInvoice\Operations\EditDelayIssue
+    private function makeEditDelayIssue(): CarlLee\EcPayB2C\Operations\EditDelayIssue
     {
-        return new ecPay\eInvoice\Operations\EditDelayIssue(
+        return new CarlLee\EcPayB2C\Operations\EditDelayIssue(
             $this->credentials['merchantId'],
             $this->credentials['hashKey'],
             $this->credentials['hashIV']

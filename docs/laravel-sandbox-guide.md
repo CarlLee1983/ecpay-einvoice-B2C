@@ -35,7 +35,7 @@ cp .env.example .env
    ```php
    'providers' => [
        // ...
-       ecPay\eInvoice\Laravel\EcPayServiceProvider::class,
+       CarlLee\EcPayB2C\Laravel\EcPayServiceProvider::class,
    ],
    ```
 3. 發布設定檔並填入 sandbox 憑證／伺服器：
@@ -58,8 +58,8 @@ cp .env.example .env
 在 `routes/web.php` 新增：
 
 ```php
-use ecPay\eInvoice\DTO\InvoiceItemDto;
-use ecPay\eInvoice\Laravel\Facades\EcPayInvoice;
+use CarlLee\EcPayB2C\DTO\InvoiceItemDto;
+use CarlLee\EcPayB2C\Laravel\Facades\EcPayInvoice;
 
 Route::get('/ecpay/sandbox', function () {
     $invoice = EcPayInvoice::make()
@@ -85,7 +85,7 @@ Route::get('/ecpay/sandbox', function () {
 ```php
 namespace App\Console\Commands;
 
-use ecPay\eInvoice\Laravel\Facades\EcPayQuery;
+use CarlLee\EcPayB2C\Laravel\Facades\EcPayQuery;
 use Illuminate\Console\Command;
 
 class EcPaySandboxPing extends Command
@@ -122,8 +122,8 @@ protected $commands = [
 新增 `tests/Feature/EcPaySandboxTest.php`：
 
 ```php
-use ecPay\eInvoice\Factories\OperationFactoryInterface;
-use ecPay\eInvoice\Laravel\Facades\EcPayInvoice;
+use CarlLee\EcPayB2C\Factories\OperationFactoryInterface;
+use CarlLee\EcPayB2C\Laravel\Facades\EcPayInvoice;
 
 it('can resolve invoice operation with sandbox credentials', function () {
     $invoice = EcPayInvoice::make();

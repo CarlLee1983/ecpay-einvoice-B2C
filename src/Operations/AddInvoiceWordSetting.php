@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace ecPay\eInvoice\Operations;
+namespace CarlLee\EcPayB2C\Operations;
 
-use ecPay\eInvoice\Content;
-use ecPay\eInvoice\InvoiceInterface;
-use ecPay\eInvoice\Parameter\InvType;
+use CarlLee\EcPayB2C\Content;
+use CarlLee\EcPayB2C\InvoiceInterface;
+use CarlLee\EcPayB2C\Parameter\InvType;
 use Exception;
 
 class AddInvoiceWordSetting extends Content

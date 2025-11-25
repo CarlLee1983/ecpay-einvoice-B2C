@@ -1,6 +1,6 @@
 <?php
 
-namespace ecPay\eInvoice;
+namespace CarlLee\EcPayB2C;
 
 interface InvoiceInterface
 {

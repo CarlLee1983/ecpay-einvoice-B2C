@@ -1,9 +1,9 @@
 <?php
 
-use ecPay\eInvoice\DTO\AllowanceItemDto;
-use ecPay\eInvoice\DTO\ItemCollection;
-use ecPay\eInvoice\Operations\AllowanceInvoice;
-use ecPay\eInvoice\Parameter\AllowanceNotifyType;
+use CarlLee\EcPayB2C\DTO\AllowanceItemDto;
+use CarlLee\EcPayB2C\DTO\ItemCollection;
+use CarlLee\EcPayB2C\Operations\AllowanceInvoice;
+use CarlLee\EcPayB2C\Parameter\AllowanceNotifyType;
 use PHPUnit\Framework\TestCase;
 
 class AllowanceInvoiceTest extends TestCase

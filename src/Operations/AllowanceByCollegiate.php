@@ -2,13 +2,13 @@
 
 declare(strict_types=1);
 
-namespace ecPay\eInvoice\Operations;
+namespace CarlLee\EcPayB2C\Operations;
 
-use ecPay\eInvoice\Content;
-use ecPay\eInvoice\DTO\AllowanceCollegiateItemDto;
-use ecPay\eInvoice\DTO\ItemCollection;
-use ecPay\eInvoice\InvoiceInterface;
-use ecPay\eInvoice\Parameter\AllowanceNotifyType;
+use CarlLee\EcPayB2C\Content;
+use CarlLee\EcPayB2C\DTO\AllowanceCollegiateItemDto;
+use CarlLee\EcPayB2C\DTO\ItemCollection;
+use CarlLee\EcPayB2C\InvoiceInterface;
+use CarlLee\EcPayB2C\Parameter\AllowanceNotifyType;
 use Exception;
 
 class AllowanceByCollegiate extends Content

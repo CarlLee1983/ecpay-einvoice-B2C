@@ -9,12 +9,12 @@ class CheckLoveCodeTest extends \PHPUnit\Framework\TestCase
      */
     protected function setUp(): void
     {
-        $this->client = new ecPay\eInvoice\EcPayClient(
+        $this->client = new CarlLee\EcPayB2C\EcPayClient(
             $_ENV['SERVER'],
             $_ENV['HASH_KEY'],
             $_ENV['HASH_IV']
         );
-        $this->instance = new ecPay\eInvoice\Queries\CheckLoveCode(
+        $this->instance = new CarlLee\EcPayB2C\Queries\CheckLoveCode(
             $_ENV['MERCHANT_ID'],
             $_ENV['HASH_KEY'],
             $_ENV['HASH_IV']

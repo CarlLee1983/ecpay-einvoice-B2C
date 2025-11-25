@@ -1,7 +1,7 @@
 <?php
 
-use ecPay\eInvoice\Content;
-use ecPay\eInvoice\Response;
+use CarlLee\EcPayB2C\Content;
+use CarlLee\EcPayB2C\Response;
 use PHPUnit\Framework\TestCase;
 
 /**

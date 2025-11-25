@@ -1,9 +1,9 @@
 <?php
 
-use ecPay\eInvoice\Notifications\InvoiceNotify;
-use ecPay\eInvoice\Parameter\InvoiceTagType;
-use ecPay\eInvoice\Parameter\NotifiedType;
-use ecPay\eInvoice\Parameter\NotifyType;
+use CarlLee\EcPayB2C\Notifications\InvoiceNotify;
+use CarlLee\EcPayB2C\Parameter\InvoiceTagType;
+use CarlLee\EcPayB2C\Parameter\NotifiedType;
+use CarlLee\EcPayB2C\Parameter\NotifyType;
 use PHPUnit\Framework\TestCase;
 
 class InvoiceNotifyTest extends TestCase

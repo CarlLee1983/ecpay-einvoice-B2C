@@ -54,11 +54,11 @@ class TriggerIssueTest extends \PHPUnit\Framework\TestCase
     /**
      * 建立 TriggerIssue 實例。
      *
-     * @return ecPay\eInvoice\Operations\TriggerIssue
+     * @return CarlLee\EcPayB2C\Operations\TriggerIssue
      */
-    private function makeTriggerIssue(): ecPay\eInvoice\Operations\TriggerIssue
+    private function makeTriggerIssue(): CarlLee\EcPayB2C\Operations\TriggerIssue
     {
-        return new ecPay\eInvoice\Operations\TriggerIssue(
+        return new CarlLee\EcPayB2C\Operations\TriggerIssue(
             $this->credentials['merchantId'],
             $this->credentials['hashKey'],
             $this->credentials['hashIV']

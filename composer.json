@@ -25,7 +25,7 @@
     "minimum-stability": "stable",
     "autoload": {
         "psr-4": {
-            "ecPay\\eInvoice\\": "src"
+            "CarlLee\\EcPayB2C\\": "src"
         }
     },
     "require": {
@@ -47,11 +47,11 @@
     "extra": {
         "laravel": {
             "providers": [
-                "ecPay\\eInvoice\\Laravel\\EcPayServiceProvider"
+                "CarlLee\\EcPayB2C\\Laravel\\EcPayServiceProvider"
             ],
             "aliases": {
-                "EcPayInvoice": "ecPay\\eInvoice\\Laravel\\Facades\\EcPayInvoice",
-                "EcPayQuery": "ecPay\\eInvoice\\Laravel\\Facades\\EcPayQuery"
+                "EcPayInvoice": "CarlLee\\EcPayB2C\\Laravel\\Facades\\EcPayInvoice",
+                "EcPayQuery": "CarlLee\\EcPayB2C\\Laravel\\Facades\\EcPayQuery"
             }
         }
     }

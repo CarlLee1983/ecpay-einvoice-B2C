@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace ecPay\eInvoice\Factories;
+namespace CarlLee\EcPayB2C\Factories;
 
-use ecPay\eInvoice\Content;
+use CarlLee\EcPayB2C\Content;
 
 /**
  * 工廠介面，統一產生所有 Content 衍生操作物件。

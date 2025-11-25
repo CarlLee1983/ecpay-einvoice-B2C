@@ -2,7 +2,7 @@
 
 require __DIR__ . '/_config.php';
 
-use ecPay\eInvoice\Queries\GetCompanyNameByTaxID;
+use CarlLee\EcPayB2C\Queries\GetCompanyNameByTaxID;
 
 // 欲查詢的統一編號 (例如：97025978)
 $taxId = '97025978';

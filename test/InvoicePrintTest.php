@@ -3,13 +3,13 @@
 class InvoicePrintTest extends \PHPUnit\Framework\TestCase
 {
     /**
-     * @var ecPay\eInvoice\Operations\InvoicePrint
+     * @var CarlLee\EcPayB2C\Operations\InvoicePrint
      */
     private $instance;
 
     protected function setUp(): void
     {
-        $this->instance = new ecPay\eInvoice\Operations\InvoicePrint(
+        $this->instance = new CarlLee\EcPayB2C\Operations\InvoicePrint(
             $_ENV['MERCHANT_ID'],
             $_ENV['HASH_KEY'],
             $_ENV['HASH_IV']

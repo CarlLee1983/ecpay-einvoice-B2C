@@ -2,12 +2,12 @@
 
 require __DIR__ . '/_config.php';
 
-use ecPay\eInvoice\DTO\InvoiceItemDto;
-use ecPay\eInvoice\Operations\Invoice;
-use ecPay\eInvoice\Parameter\CarrierType;
-use ecPay\eInvoice\Parameter\Donation;
-use ecPay\eInvoice\Parameter\PrintMark;
-use ecPay\eInvoice\Parameter\TaxType;
+use CarlLee\EcPayB2C\DTO\InvoiceItemDto;
+use CarlLee\EcPayB2C\Operations\Invoice;
+use CarlLee\EcPayB2C\Parameter\CarrierType;
+use CarlLee\EcPayB2C\Parameter\Donation;
+use CarlLee\EcPayB2C\Parameter\PrintMark;
+use CarlLee\EcPayB2C\Parameter\TaxType;
 
 // 1. 初始化發票物件
 $invoice = new Invoice($merchantId, $hashKey, $hashIV);

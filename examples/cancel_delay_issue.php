@@ -2,7 +2,7 @@
 
 require __DIR__ . '/_config.php';
 
-use ecPay\eInvoice\Operations\CancelDelayIssue;
+use CarlLee\EcPayB2C\Operations\CancelDelayIssue;
 
 $tsr = '請填入欲取消之延遲開立 TSR';
 

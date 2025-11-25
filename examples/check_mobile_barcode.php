@@ -2,7 +2,7 @@
 
 require __DIR__ . '/_config.php';
 
-use ecPay\eInvoice\Queries\CheckBarcode;
+use CarlLee\EcPayB2C\Queries\CheckBarcode;
 
 // 欲驗證的手機條碼 (測試用條碼：/YC+RROR)
 $barcode = '/YC+RROR';

@@ -3,13 +3,13 @@
 class GetAllowanceInvalidTest extends \PHPUnit\Framework\TestCase
 {
     /**
-     * @var ecPay\eInvoice\Queries\GetAllowanceInvalid
+     * @var CarlLee\EcPayB2C\Queries\GetAllowanceInvalid
      */
     private $instance;
 
     protected function setUp(): void
     {
-        $this->instance = new ecPay\eInvoice\Queries\GetAllowanceInvalid(
+        $this->instance = new CarlLee\EcPayB2C\Queries\GetAllowanceInvalid(
             $_ENV['MERCHANT_ID'],
             $_ENV['HASH_KEY'],
             $_ENV['HASH_IV']

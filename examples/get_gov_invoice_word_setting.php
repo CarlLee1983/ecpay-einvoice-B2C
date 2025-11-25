@@ -2,7 +2,7 @@
 
 require __DIR__ . '/_config.php';
 
-use ecPay\eInvoice\Queries\GetGovInvoiceWordSetting;
+use CarlLee\EcPayB2C\Queries\GetGovInvoiceWordSetting;
 
 $rocYear = date('Y') - 1911;
 

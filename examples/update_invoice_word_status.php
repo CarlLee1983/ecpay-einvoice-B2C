@@ -2,7 +2,7 @@
 
 require __DIR__ . '/_config.php';
 
-use ecPay\eInvoice\Operations\UpdateInvoiceWordStatus;
+use CarlLee\EcPayB2C\Operations\UpdateInvoiceWordStatus;
 
 $operation = new UpdateInvoiceWordStatus($merchantId, $hashKey, $hashIV);
 $operation

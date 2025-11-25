@@ -2,7 +2,7 @@
 
 require __DIR__ . '/_config.php';
 
-use ecPay\eInvoice\Queries\GetIssueList;
+use CarlLee\EcPayB2C\Queries\GetIssueList;
 
 $beginDate = '2024-01-01';
 $endDate = '2024-01-31';

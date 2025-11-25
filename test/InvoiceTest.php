@@ -1,6 +1,6 @@
 <?php
 
-use ecPay\eInvoice\DTO\InvoiceItemDto;
+use CarlLee\EcPayB2C\DTO\InvoiceItemDto;
 
 class InvoiceTest extends \PHPUnit\Framework\TestCase
 {
@@ -9,12 +9,12 @@ class InvoiceTest extends \PHPUnit\Framework\TestCase
      */
     protected function setUp(): void
     {
-        $this->client = new ecPay\eInvoice\EcPayClient(
+        $this->client = new CarlLee\EcPayB2C\EcPayClient(
             $_ENV['SERVER'],
             $_ENV['HASH_KEY'],
             $_ENV['HASH_IV']
         );
-        $this->instance = new ecPay\eInvoice\Operations\Invoice(
+        $this->instance = new CarlLee\EcPayB2C\Operations\Invoice(
             $_ENV['MERCHANT_ID'],
             $_ENV['HASH_KEY'],
             $_ENV['HASH_IV']
@@ -243,7 +243,7 @@ class InvoiceTest extends \PHPUnit\Framework\TestCase
             ->setCustomerEmail('test@example.com')
             ->setCarrierType('1');
 
-        $this->assertInstanceOf(ecPay\eInvoice\Operations\Invoice::class, $result);
+        $this->assertInstanceOf(CarlLee\EcPayB2C\Operations\Invoice::class, $result);
     }
 
     /**

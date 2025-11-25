@@ -2,13 +2,13 @@
 
 declare(strict_types=1);
 
-namespace ecPay\eInvoice\Notifications;
+namespace CarlLee\EcPayB2C\Notifications;
 
-use ecPay\eInvoice\Content;
-use ecPay\eInvoice\InvoiceInterface;
-use ecPay\eInvoice\Parameter\InvoiceTagType;
-use ecPay\eInvoice\Parameter\NotifiedType;
-use ecPay\eInvoice\Parameter\NotifyType;
+use CarlLee\EcPayB2C\Content;
+use CarlLee\EcPayB2C\InvoiceInterface;
+use CarlLee\EcPayB2C\Parameter\InvoiceTagType;
+use CarlLee\EcPayB2C\Parameter\NotifiedType;
+use CarlLee\EcPayB2C\Parameter\NotifyType;
 use Exception;
 
 class InvoiceNotify extends Content

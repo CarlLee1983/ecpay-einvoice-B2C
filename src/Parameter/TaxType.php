@@ -1,6 +1,6 @@
 <?php
 
-namespace ecPay\eInvoice\Parameter;
+namespace CarlLee\EcPayB2C\Parameter;
 
 class TaxType
 {

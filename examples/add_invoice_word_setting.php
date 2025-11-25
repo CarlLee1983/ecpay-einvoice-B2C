@@ -2,8 +2,8 @@
 
 require __DIR__ . '/_config.php';
 
-use ecPay\eInvoice\Operations\AddInvoiceWordSetting;
-use ecPay\eInvoice\Parameter\InvType;
+use CarlLee\EcPayB2C\Operations\AddInvoiceWordSetting;
+use CarlLee\EcPayB2C\Parameter\InvType;
 
 $currentRocYear = date('Y') - 1911;
 $currentTerm = (int) ceil(date('n') / 2);

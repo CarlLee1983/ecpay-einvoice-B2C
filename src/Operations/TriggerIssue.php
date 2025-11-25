@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace ecPay\eInvoice\Operations;
+namespace CarlLee\EcPayB2C\Operations;
 
-use ecPay\eInvoice\Content;
-use ecPay\eInvoice\InvoiceInterface;
+use CarlLee\EcPayB2C\Content;
+use CarlLee\EcPayB2C\InvoiceInterface;
 use Exception;
 
 class TriggerIssue extends Content

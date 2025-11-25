@@ -10,7 +10,7 @@ class GetIssueListTest extends \PHPUnit\Framework\TestCase
     private $credentials = [];
 
     /**
-     * @var ecPay\eInvoice\Queries\GetIssueList
+     * @var CarlLee\EcPayB2C\Queries\GetIssueList
      */
     private $instance;
 
@@ -22,7 +22,7 @@ class GetIssueListTest extends \PHPUnit\Framework\TestCase
             'hashIV' => $_ENV['HASH_IV'],
         ];
 
-        $this->instance = new ecPay\eInvoice\Queries\GetIssueList(
+        $this->instance = new CarlLee\EcPayB2C\Queries\GetIssueList(
             $this->credentials['merchantId'],
             $this->credentials['hashKey'],
             $this->credentials['hashIV']

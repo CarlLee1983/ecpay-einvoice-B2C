@@ -1,6 +1,6 @@
 <?php
 
-use ecPay\eInvoice\DTO\RqHeaderDto;
+use CarlLee\EcPayB2C\DTO\RqHeaderDto;
 use PHPUnit\Framework\TestCase;
 
 class RqHeaderDtoTest extends TestCase

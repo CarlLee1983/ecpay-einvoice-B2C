@@ -1,6 +1,6 @@
 <?php
 
-use ecPay\eInvoice\Operations\Invoice;
+use CarlLee\EcPayB2C\Operations\Invoice;
 use PHPUnit\Framework\TestCase;
 
 /**

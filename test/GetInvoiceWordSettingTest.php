@@ -2,8 +2,8 @@
 
 declare(strict_types=1);
 
-use ecPay\eInvoice\Parameter\InvType;
-use ecPay\eInvoice\Queries\GetInvoiceWordSetting;
+use CarlLee\EcPayB2C\Parameter\InvType;
+use CarlLee\EcPayB2C\Queries\GetInvoiceWordSetting;
 use PHPUnit\Framework\TestCase;
 
 class GetInvoiceWordSettingTest extends TestCase

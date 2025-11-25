@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace ecPay\eInvoice\Infrastructure;
+namespace CarlLee\EcPayB2C\Infrastructure;
 
 use Exception;
 

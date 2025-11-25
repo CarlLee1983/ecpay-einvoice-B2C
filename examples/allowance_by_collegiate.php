@@ -2,8 +2,8 @@
 
 require __DIR__ . '/_config.php';
 
-use ecPay\eInvoice\DTO\AllowanceCollegiateItemDto;
-use ecPay\eInvoice\Operations\AllowanceByCollegiate;
+use CarlLee\EcPayB2C\DTO\AllowanceCollegiateItemDto;
+use CarlLee\EcPayB2C\Operations\AllowanceByCollegiate;
 
 $invoiceNo = 'UV11100016';
 $invoiceDate = '2024-01-10';

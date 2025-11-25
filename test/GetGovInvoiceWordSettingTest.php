@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-use ecPay\eInvoice\Queries\GetGovInvoiceWordSetting;
+use CarlLee\EcPayB2C\Queries\GetGovInvoiceWordSetting;
 use PHPUnit\Framework\TestCase;
 
 class GetGovInvoiceWordSettingTest extends TestCase

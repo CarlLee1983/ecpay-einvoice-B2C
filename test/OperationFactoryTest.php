@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace ecPay\eInvoice\Tests;
+namespace CarlLee\EcPayB2C\Tests;
 
-use ecPay\eInvoice\Factories\OperationFactory;
-use ecPay\eInvoice\Operations\InvalidInvoice;
-use ecPay\eInvoice\Operations\Invoice;
+use CarlLee\EcPayB2C\Factories\OperationFactory;
+use CarlLee\EcPayB2C\Operations\InvalidInvoice;
+use CarlLee\EcPayB2C\Operations\Invoice;
 use PHPUnit\Framework\TestCase;
 use ReflectionClass;
 

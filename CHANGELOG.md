@@ -5,6 +5,27 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/zh-TW/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/lang/zh-TW/).
 
+## [3.0.0] - 2025-11-25
+
+### BREAKING CHANGES (破壞性變更)
+- **Namespace 重構**：將所有命名空間從 `ecPay\eInvoice\*` 更改為 `CarlLee\EcPayB2C\*`
+  - 所有 `use ecPay\eInvoice\...` 語句需更改為 `use CarlLee\EcPayB2C\...`
+  - Laravel Service Provider 變更為 `CarlLee\EcPayB2C\Laravel\EcPayServiceProvider`
+  - Facade 變更為 `CarlLee\EcPayB2C\Laravel\Facades\EcPayInvoice` 與 `EcPayQuery`
+  - composer.json autoload 命名空間已同步更新
+
+### Changed (變更)
+- 更新 `composer.json` 中的 PSR-4 autoload 配置
+- 更新 `docs/README.md` 與 `docs/laravel-sandbox-guide.md` 中的 namespace 引用
+- 更新 `readme.md` 中的使用範例
+- 更新 `examples/` 目錄中所有範例檔案的 namespace 引用
+- 更新 `OperationFactory::BASE_NAMESPACE` 常量
+
+### Migration Guide (升級指南)
+1. 搜尋並替換所有 `ecPay\eInvoice` 為 `CarlLee\EcPayB2C`
+2. 執行 `composer dump-autoload` 重新生成 autoload
+3. 若使用 Laravel，設定檔無需更改（auto-discovery 會自動載入新的 Service Provider）
+
 ## [2.3.0] - 2025-11-25
 
 ### Added (新增)
@@ -108,6 +129,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/lang/zh-TW/
 ### Added
 - 初始功能實作
 
+[3.0.0]: https://github.com/CarlLee1983/ecpay-einvoice-B2C/compare/v2.3.1...v3.0.0
 [2.3.0]: https://github.com/CarlLee1983/ecpay-einvoice-B2C/compare/v2.2.0...v2.3.0
 [2.2.0]: https://github.com/CarlLee1983/ecpay-einvoice-B2C/compare/v2.1.0...v2.2.0
 [2.1.0]: https://github.com/CarlLee1983/ecpay-einvoice-B2C/compare/v2.0.0...v2.1.0

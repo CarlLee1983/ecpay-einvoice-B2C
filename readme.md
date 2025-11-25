@@ -36,11 +36,11 @@ $key = 'ejCk326UnaZWKisg';
 $iv = 'q9jcZX8Ib9LM8wYk';
 
 // 初始化 Client
-$client = new ecPay\eInvoice\EcPayClient($server, $key, $iv);
+$client = new CarlLee\EcPayB2C\EcPayClient($server, $key, $iv);
 
-use ecPay\eInvoice\DTO\InvoiceItemDto;
+use CarlLee\EcPayB2C\DTO\InvoiceItemDto;
 // 初始化 Invoice
-$invoice = new ecPay\eInvoice\Operations\Invoice($id, $key, $iv);
+$invoice = new CarlLee\EcPayB2C\Operations\Invoice($id, $key, $iv);
 
 $invoice->setRelateNumber('YEP' . date('YmdHis'))
     ->setCustomerEmail('cylee@chyp.com.tw')
@@ -63,10 +63,10 @@ $data = $response->getData();
 
 ## 模組分群
 
-- `ecPay\eInvoice\Operations\*`：包含開立發票、作廢與折讓等一般發票作業類別（例如 `Invoice`, `InvalidInvoice`, `AllowanceInvoice`）。
-- `ecPay\eInvoice\Queries\*`：封裝查詢與驗證類別（例如 `GetInvoice`, `CheckBarcode`），與作業模組解耦。
-- `ecPay\eInvoice\Notifications\*`：目前提供 `InvoiceNotify`，用於推播發票、折讓或中獎通知。
-- `ecPay\eInvoice\Printing\*`：列印功能尚未實作，`README` 僅為占位，未來若新增列印 API 會在此擴充。
+- `CarlLee\EcPayB2C\Operations\*`：包含開立發票、作廢與折讓等一般發票作業類別（例如 `Invoice`, `InvalidInvoice`, `AllowanceInvoice`）。
+- `CarlLee\EcPayB2C\Queries\*`：封裝查詢與驗證類別（例如 `GetInvoice`, `CheckBarcode`），與作業模組解耦。
+- `CarlLee\EcPayB2C\Notifications\*`：目前提供 `InvoiceNotify`，用於推播發票、折讓或中獎通知。
+- `CarlLee\EcPayB2C\Printing\*`：列印功能尚未實作，`README` 僅為占位，未來若新增列印 API 會在此擴充。
 
 > 以上模組皆繼承共同的 `Content` 基底類別，仍可透過相同的 `EcPayClient` 傳送請求。
 
@@ -83,9 +83,9 @@ $data = $response->getData();
 範例：
 
 ```php
-use ecPay\eInvoice\DTO\InvoiceItemDto;
-use ecPay\eInvoice\EcPayClient;
-use ecPay\eInvoice\Factories\OperationFactory;
+use CarlLee\EcPayB2C\DTO\InvoiceItemDto;
+use CarlLee\EcPayB2C\EcPayClient;
+use CarlLee\EcPayB2C\Factories\OperationFactory;
 
 $factory = new OperationFactory([
     'merchant_id' => $merchantId,
@@ -107,7 +107,7 @@ $data = $client->send($invoice)->getData();
 如需自訂別名或預設欄位，可呼叫 `alias()`、`addInitializer()`：
 
 ```php
-use ecPay\eInvoice\Content;
+use CarlLee\EcPayB2C\Content;
 
 $factory->alias('operations.mobile_invoice', \App\Invoices\MobileInvoice::class);
 $factory->addInitializer(function (Content $content) {
@@ -117,16 +117,16 @@ $factory->addInitializer(function (Content $content) {
 
 ### Laravel Service Container + Facade
 
-- 套件已支援 auto-discovery，或可手動在 `config/app.php` 註冊 `ecPay\eInvoice\Laravel\EcPayServiceProvider::class`。
+- 套件已支援 auto-discovery，或可手動在 `config/app.php` 註冊 `CarlLee\EcPayB2C\Laravel\EcPayServiceProvider::class`。
 - 發布設定檔：`php artisan vendor:publish --tag=ecpay-einvoice-config`
 - 設定檔 `config/ecpay-einvoice.php` 內可調整 MerchantID、別名綁定與初始化器。
 
 使用範例：
 
 ```php
-use ecPay\eInvoice\DTO\InvoiceItemDto;
-use ecPay\eInvoice\Laravel\Facades\EcPayInvoice;
-use ecPay\eInvoice\Laravel\Facades\EcPayQuery;
+use CarlLee\EcPayB2C\DTO\InvoiceItemDto;
+use CarlLee\EcPayB2C\Laravel\Facades\EcPayInvoice;
+use CarlLee\EcPayB2C\Laravel\Facades\EcPayQuery;
 
 $invoice = EcPayInvoice::make()
     ->setRelateNumber('YEP' . now()->format('YmdHis'))
@@ -175,10 +175,10 @@ Key runnable samples live under `examples/`. Common ones include:
 
 ## Quick Start
 ```php
-$client = new ecPay\eInvoice\EcPayClient($server, $hashKey, $hashIV);
-$invoice = new ecPay\eInvoice\Operations\Invoice($merchantId, $hashKey, $hashIV);
+$client = new CarlLee\EcPayB2C\EcPayClient($server, $hashKey, $hashIV);
+$invoice = new CarlLee\EcPayB2C\Operations\Invoice($merchantId, $hashKey, $hashIV);
 
-use ecPay\eInvoice\DTO\InvoiceItemDto;
+use CarlLee\EcPayB2C\DTO\InvoiceItemDto;
 
 $invoice->setRelateNumber('YEP' . date('YmdHis'))
     ->setCustomerEmail('demo@example.com')

@@ -2,7 +2,7 @@
 
 require __DIR__ . '/_config.php';
 
-use ecPay\eInvoice\Queries\GetAllowanceInvalid;
+use CarlLee\EcPayB2C\Queries\GetAllowanceInvalid;
 
 // 請改為實際要查詢的發票號碼與折讓編號
 $invoiceNo = 'UV11100016';

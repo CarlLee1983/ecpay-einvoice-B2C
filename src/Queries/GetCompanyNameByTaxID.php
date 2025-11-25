@@ -1,9 +1,9 @@
 <?php
 
-namespace ecPay\eInvoice\Queries;
+namespace CarlLee\EcPayB2C\Queries;
 
-use ecPay\eInvoice\Content;
-use ecPay\eInvoice\InvoiceInterface;
+use CarlLee\EcPayB2C\Content;
+use CarlLee\EcPayB2C\InvoiceInterface;
 use Exception;
 
 class GetCompanyNameByTaxID extends Content

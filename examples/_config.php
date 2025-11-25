@@ -1,6 +1,6 @@
 <?php
 
-use ecPay\eInvoice\EcPayClient;
+use CarlLee\EcPayB2C\EcPayClient;
 
 // 載入 autoload
 require __DIR__ . '/../vendor/autoload.php';

@@ -2,8 +2,8 @@
 
 require __DIR__ . '/_config.php';
 
-use ecPay\eInvoice\DTO\InvoiceItemDto;
-use ecPay\eInvoice\Operations\EditDelayIssue;
+use CarlLee\EcPayB2C\DTO\InvoiceItemDto;
+use CarlLee\EcPayB2C\Operations\EditDelayIssue;
 
 $tsr = '請填入原延遲開立取得的TSR';
 $relateNumber = 'EDIT' . date('YmdHis');

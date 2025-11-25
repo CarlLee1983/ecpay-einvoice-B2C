@@ -2,13 +2,13 @@
 
 declare(strict_types=1);
 
-namespace ecPay\eInvoice;
+namespace CarlLee\EcPayB2C;
 
-use ecPay\eInvoice\DTO\ItemCollection;
-use ecPay\eInvoice\Parameter\CarrierType;
-use ecPay\eInvoice\Parameter\Donation;
-use ecPay\eInvoice\Parameter\PrintMark;
-use ecPay\eInvoice\Parameter\TaxType;
+use CarlLee\EcPayB2C\DTO\ItemCollection;
+use CarlLee\EcPayB2C\Parameter\CarrierType;
+use CarlLee\EcPayB2C\Parameter\Donation;
+use CarlLee\EcPayB2C\Parameter\PrintMark;
+use CarlLee\EcPayB2C\Parameter\TaxType;
 use Exception;
 
 class InvoiceValidator

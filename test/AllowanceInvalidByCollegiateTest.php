@@ -3,13 +3,13 @@
 class AllowanceInvalidByCollegiateTest extends \PHPUnit\Framework\TestCase
 {
     /**
-     * @var ecPay\eInvoice\Operations\AllowanceInvalidByCollegiate
+     * @var CarlLee\EcPayB2C\Operations\AllowanceInvalidByCollegiate
      */
     private $instance;
 
     protected function setUp(): void
     {
-        $this->instance = new ecPay\eInvoice\Operations\AllowanceInvalidByCollegiate(
+        $this->instance = new CarlLee\EcPayB2C\Operations\AllowanceInvalidByCollegiate(
             $_ENV['MERCHANT_ID'],
             $_ENV['HASH_KEY'],
             $_ENV['HASH_IV']

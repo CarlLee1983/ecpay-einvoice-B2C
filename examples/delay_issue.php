@@ -2,8 +2,8 @@
 
 require __DIR__ . '/_config.php';
 
-use ecPay\eInvoice\DTO\InvoiceItemDto;
-use ecPay\eInvoice\Operations\DelayIssue;
+use CarlLee\EcPayB2C\DTO\InvoiceItemDto;
+use CarlLee\EcPayB2C\Operations\DelayIssue;
 
 $relateNumber = 'DELAY' . date('YmdHis');
 

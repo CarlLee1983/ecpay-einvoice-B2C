@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace ecPay\eInvoice\Laravel\Services;
+namespace CarlLee\EcPayB2C\Laravel\Services;
 
-use ecPay\eInvoice\Content;
-use ecPay\eInvoice\EcPayClient;
-use ecPay\eInvoice\Factories\OperationFactoryInterface;
-use ecPay\eInvoice\Response;
+use CarlLee\EcPayB2C\Content;
+use CarlLee\EcPayB2C\EcPayClient;
+use CarlLee\EcPayB2C\Factories\OperationFactoryInterface;
+use CarlLee\EcPayB2C\Response;
 use InvalidArgumentException;
 
 /**

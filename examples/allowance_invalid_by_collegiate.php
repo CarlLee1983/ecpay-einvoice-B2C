@@ -2,7 +2,7 @@
 
 require __DIR__ . '/_config.php';
 
-use ecPay\eInvoice\Operations\AllowanceInvalidByCollegiate;
+use CarlLee\EcPayB2C\Operations\AllowanceInvalidByCollegiate;
 
 $invoiceNo = 'UV11100016';
 $allowanceNo = '2019091719477262';

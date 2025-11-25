@@ -2,8 +2,8 @@
 
 require __DIR__ . '/_config.php';
 
-use ecPay\eInvoice\Parameter\InvType;
-use ecPay\eInvoice\Queries\GetInvoiceWordSetting;
+use CarlLee\EcPayB2C\Parameter\InvType;
+use CarlLee\EcPayB2C\Queries\GetInvoiceWordSetting;
 
 $query = new GetInvoiceWordSetting($merchantId, $hashKey, $hashIV);
 $query

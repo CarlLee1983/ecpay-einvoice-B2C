@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace ecPay\eInvoice\Laravel\Facades;
+namespace CarlLee\EcPayB2C\Laravel\Facades;
 
-use ecPay\eInvoice\Content;
-use ecPay\eInvoice\Factories\OperationFactoryInterface;
-use ecPay\eInvoice\Laravel\Services\OperationCoordinator;
-use ecPay\eInvoice\Response;
+use CarlLee\EcPayB2C\Content;
+use CarlLee\EcPayB2C\Factories\OperationFactoryInterface;
+use CarlLee\EcPayB2C\Laravel\Services\OperationCoordinator;
+use CarlLee\EcPayB2C\Response;
 use Illuminate\Support\Facades\Facade;
 
 /**

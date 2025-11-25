@@ -1,7 +1,7 @@
 <?php
 
-use ecPay\eInvoice\Infrastructure\CipherService;
-use ecPay\eInvoice\Infrastructure\PayloadEncoder;
+use CarlLee\EcPayB2C\Infrastructure\CipherService;
+use CarlLee\EcPayB2C\Infrastructure\PayloadEncoder;
 use PHPUnit\Framework\TestCase;
 
 class PayloadEncoderTest extends TestCase

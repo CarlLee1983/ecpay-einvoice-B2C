@@ -1,17 +1,17 @@
 <?php
 
-use ecPay\eInvoice\DTO\AllowanceCollegiateItemDto;
+use CarlLee\EcPayB2C\DTO\AllowanceCollegiateItemDto;
 
 class AllowanceByCollegiateTest extends \PHPUnit\Framework\TestCase
 {
     /**
-     * @var ecPay\eInvoice\Operations\AllowanceByCollegiate
+     * @var CarlLee\EcPayB2C\Operations\AllowanceByCollegiate
      */
     private $instance;
 
     protected function setUp(): void
     {
-        $this->instance = new ecPay\eInvoice\Operations\AllowanceByCollegiate(
+        $this->instance = new CarlLee\EcPayB2C\Operations\AllowanceByCollegiate(
             $_ENV['MERCHANT_ID'],
             $_ENV['HASH_KEY'],
             $_ENV['HASH_IV']

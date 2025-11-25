@@ -1,6 +1,6 @@
 <?php
 
-use ecPay\eInvoice\Queries\GetInvalidInvoice;
+use CarlLee\EcPayB2C\Queries\GetInvalidInvoice;
 use PHPUnit\Framework\TestCase;
 
 class GetInvalidInvoiceTest extends TestCase

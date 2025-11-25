@@ -1,7 +1,7 @@
 <?php
 
-use ecPay\eInvoice\DTO\InvoiceItemDto;
-use ecPay\eInvoice\DTO\ItemCollection;
+use CarlLee\EcPayB2C\DTO\InvoiceItemDto;
+use CarlLee\EcPayB2C\DTO\ItemCollection;
 use PHPUnit\Framework\TestCase;
 
 class ItemCollectionTest extends TestCase

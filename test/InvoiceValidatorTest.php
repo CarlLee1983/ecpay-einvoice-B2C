@@ -1,12 +1,12 @@
 <?php
 
-use ecPay\eInvoice\DTO\InvoiceItemDto;
-use ecPay\eInvoice\DTO\ItemCollection;
-use ecPay\eInvoice\InvoiceValidator;
-use ecPay\eInvoice\Parameter\CarrierType;
-use ecPay\eInvoice\Parameter\Donation;
-use ecPay\eInvoice\Parameter\PrintMark;
-use ecPay\eInvoice\Parameter\TaxType;
+use CarlLee\EcPayB2C\DTO\InvoiceItemDto;
+use CarlLee\EcPayB2C\DTO\ItemCollection;
+use CarlLee\EcPayB2C\InvoiceValidator;
+use CarlLee\EcPayB2C\Parameter\CarrierType;
+use CarlLee\EcPayB2C\Parameter\Donation;
+use CarlLee\EcPayB2C\Parameter\PrintMark;
+use CarlLee\EcPayB2C\Parameter\TaxType;
 use PHPUnit\Framework\TestCase;
 
 class InvoiceValidatorTest extends TestCase

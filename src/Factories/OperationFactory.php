@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace ecPay\eInvoice\Factories;
+namespace CarlLee\EcPayB2C\Factories;
 
-use ecPay\eInvoice\Content;
+use CarlLee\EcPayB2C\Content;
 use InvalidArgumentException;
 
 /**
@@ -15,7 +15,7 @@ class OperationFactory implements OperationFactoryInterface
     /**
      * Content 相關類別的基底命名空間。
      */
-    private const BASE_NAMESPACE = 'ecPay\\eInvoice';
+    private const BASE_NAMESPACE = 'CarlLee\\EcPayB2C';
 
     /**
      * 未指定群組時預設使用 Operations。

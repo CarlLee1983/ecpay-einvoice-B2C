@@ -3,13 +3,13 @@
 class GetAllowanceListTest extends \PHPUnit\Framework\TestCase
 {
     /**
-     * @var ecPay\eInvoice\Queries\GetAllowanceList
+     * @var CarlLee\EcPayB2C\Queries\GetAllowanceList
      */
     private $instance;
 
     protected function setUp(): void
     {
-        $this->instance = new ecPay\eInvoice\Queries\GetAllowanceList(
+        $this->instance = new CarlLee\EcPayB2C\Queries\GetAllowanceList(
             $_ENV['MERCHANT_ID'],
             $_ENV['HASH_KEY'],
             $_ENV['HASH_IV']
