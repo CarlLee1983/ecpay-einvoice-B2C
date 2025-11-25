@@ -1,6 +1,20 @@
 {
-    "name": "ecpay/einvoice",
-    "description": "ECPay invoice package.",
+    "name": "carllee1983/ecpay-einvoice-b2c",
+    "description": "ECPay e-Invoice API wrapper with DTO-based operations, Laravel coordinator, and sandbox-ready docs",
+    "keywords": [
+        "ecpay",
+        "einvoice",
+        "laravel",
+        "dto",
+        "taiwan",
+        "sandbox"
+    ],
+    "homepage": "https://github.com/CarlLee1983/ecpay-einvoice-B2C",
+    "support": {
+        "issues": "https://github.com/CarlLee1983/ecpay-einvoice-B2C/issues",
+        "source": "https://github.com/CarlLee1983/ecpay-einvoice-B2C"
+    },
+    "type": "library",
     "license": "MIT",
     "authors": [
         {

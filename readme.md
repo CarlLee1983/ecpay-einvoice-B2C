@@ -149,6 +149,7 @@ $result = app('ecpay.client')->send($query)->getData();
 - `docs/api-overview.md`：快速瀏覽介接流程、模組與共用欄位。
 - `docs/error-codes.md`：常見錯誤碼與程式內部驗證訊息參考。
 - `docs/README.md#使用流程圖--flowcharts`：前置設定、開立發票、折讓/作廢/註銷等 Mermaid 流程圖。
+- `docs/laravel-sandbox-guide.md`：示範如何以 Orchestra Testbench 或獨立 Laravel 專案沙盒驗證與整合本套件。
 - 官方 PDF：<https://developers.ecpay.com.tw/?p=7809>
 
 ---
