@@ -4,6 +4,7 @@
 
 - `api-overview.md`：介接流程、模組分類、請求/回應格式與常見參數。
 - `error-codes.md`：常見錯誤碼與專案內部驗證例外對照。
+- `laravel-sandbox-guide.md`：示範如何在獨立 Laravel / Testbench 沙盒中安裝並驗證此套件。
 
 ## 官方資源
 - 技術支援：<https://developers.ecpay.com.tw/?p=7809>

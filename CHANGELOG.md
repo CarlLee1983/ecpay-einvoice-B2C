@@ -5,6 +5,27 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/zh-TW/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/lang/zh-TW/).
 
+## [2.3.0] - 2025-11-25
+
+### Added (新增)
+- `src/Contracts/CommandInterface.php`：統一 `EcPayClient` 與所有命令物件的介面契約。
+- `src/Infrastructure/CipherService.php` 與 `PayloadEncoder.php`：抽離加解密與傳輸層，提供命令可重複使用的編碼服務。
+- 全新 DTO 與集合：
+  - `DTO/InvoiceItemDto.php`、`AllowanceItemDto.php`、`AllowanceCollegiateItemDto.php`、`ItemCollection.php`、`ItemDtoInterface.php`
+  - `DTO/RqHeaderDto.php` 取代舊陣列欄位並集中驗證邏輯。
+- `Laravel/Services/OperationCoordinator.php`：協調工廠、回呼與 Client，提供 Facade 與應用程式單一入口。
+- `docs/laravel-sandbox-guide.md`：示範如何在 Orchestra Testbench / Laravel sandbox 以本機路徑安裝並驗證套件。
+- 新增 `test/PayloadEncoderTest.php`、擴充 `test/Laravel/EcPayServiceProviderTest.php` 覆蓋多商店／多 server 情境。
+
+### Changed (變更)
+- `EcPayClient::send()` 現在僅接受 `CommandInterface`，並於送出前同步 HashKey/HashIV、統一 Payload encode/decode 流程。
+- `Content` 及各 Operation 皆改用 DTO 生成 Items 與 RqHeader；`setItems()` 支援 DTO 或陣列輸入並自動轉換。
+- `Laravel\EcPayServiceProvider` 綁定新的 OperationCoordinator，Facade (`EcPayInvoice`/`EcPayQuery`) 可直接透過協調器送出作業。
+- README、examples、docs 調整為 DTO 寫法並加入協調器說明與 sandbox 測試指南。
+
+### Tests (測試)
+- 新增多個與 DTO、PayloadEncoder、OperationCoordinator 相關的單元與整合測試，覆蓋多商店/多伺服器重綁、工廠別名與 Payload 編碼流程。
+
 ## [2.2.0] - 2025-11-23
 
 ### Added (新增)
@@ -87,6 +108,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/lang/zh-TW/
 ### Added
 - 初始功能實作
 
+[2.3.0]: https://github.com/CarlLee1983/ecpay-einvoice-B2C/compare/v2.2.0...v2.3.0
 [2.2.0]: https://github.com/CarlLee1983/ecpay-einvoice-B2C/compare/v2.1.0...v2.2.0
 [2.1.0]: https://github.com/CarlLee1983/ecpay-einvoice-B2C/compare/v2.0.0...v2.1.0
 [2.0.0]: https://github.com/CarlLee1983/ecpay-einvoice-B2C/compare/v1.3.0...v2.0.0
