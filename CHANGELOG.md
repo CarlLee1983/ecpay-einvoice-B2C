@@ -5,6 +5,36 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/zh-TW/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/lang/zh-TW/).
 
+## [4.0.0] - 2025-11-26
+
+### BREAKING CHANGES (破壞性變更)
+- **Parameter Enum 改造**：所有 `src/Parameter/` 類別從常數類別改為 PHP 8.1 String-backed Enum
+  - 受影響類別：`AllowanceNotifyType`, `CarrierType`, `ClearanceMark`, `Donation`, `InvoiceTagType`, `InvType`, `NotifiedType`, `NotifyType`, `PrintMark`, `SpecialTaxType`, `TaxType`, `VatType`
+  - 使用方式變更：`TaxType::DUTIABLE` → `TaxType::DUTIABLE->value`
+
+### Added (新增)
+- PHP 8.3 Typed Class Constants：所有常數加上類型宣告（`const int`, `const string`）
+- PHP 8.3 `#[\Override]` 屬性：標記所有實作介面的方法
+- PHP 8.2 Readonly Classes：`InvoiceItemDto`, `AllowanceItemDto`, `AllowanceCollegiateItemDto` 改為 `readonly class`
+- 所有 Parameter 類別加入 `declare(strict_types=1)`
+- 每個 Enum 類別加入中文 DocBlock 說明
+
+### Changed (變更)
+- `CipherService`：使用 constructor property promotion
+- `PayloadEncoder`：使用 constructor property promotion
+- `OperationCoordinator`：使用 constructor property promotion
+- `InvoiceValidator`：調整程式碼以適應 Enum 變更
+- 所有 Operations/Queries/Notifications 中的常數引用更新為 Enum 語法
+
+### Tests (測試)
+- 更新 5 個測試檔案以適應 Enum 變更
+- 更新 3 個範例檔案
+
+### Migration Guide (升級指南)
+1. 搜尋並替換所有 `Parameter::CONSTANT` 為 `Parameter::CONSTANT->value`
+2. 或使用 Enum 的原生方法（如 `TaxType::tryFrom()`）進行值解析
+3. 執行 `composer test` 確認所有測試通過
+
 ## [3.0.0] - 2025-11-25
 
 ### BREAKING CHANGES (破壞性變更)
@@ -129,6 +159,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/lang/zh-TW/
 ### Added
 - 初始功能實作
 
+[4.0.0]: https://github.com/CarlLee1983/ecpay-einvoice-B2C/compare/v3.0.0...v4.0.0
 [3.0.0]: https://github.com/CarlLee1983/ecpay-einvoice-B2C/compare/v2.3.1...v3.0.0
 [2.3.0]: https://github.com/CarlLee1983/ecpay-einvoice-B2C/compare/v2.2.0...v2.3.0
 [2.2.0]: https://github.com/CarlLee1983/ecpay-einvoice-B2C/compare/v2.1.0...v2.2.0
