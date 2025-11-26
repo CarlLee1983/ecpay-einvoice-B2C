@@ -1,5 +1,41 @@
 # 錯誤碼與驗證訊息對照
 
+## 例外類型階層
+
+本套件提供專屬的例外類型階層，方便精確捕捉不同類型的錯誤：
+
+```
+EcPayException (基礎例外)
+├── ValidationException      - 資料驗證失敗（業務邏輯驗證）
+├── InvalidParameterException - 參數格式或值無效
+├── EncryptionException      - 加解密相關錯誤
+├── RequestException         - API 請求錯誤
+└── ConfigurationException   - 設定錯誤（MerchantID、金鑰等）
+```
+
+### 使用範例
+
+```php
+use CarlLee\EcPayB2C\Exceptions\EcPayException;
+use CarlLee\EcPayB2C\Exceptions\ValidationException;
+use CarlLee\EcPayB2C\Exceptions\InvalidParameterException;
+
+try {
+    $response = $client->send($invoice);
+} catch (ValidationException $e) {
+    // 處理驗證錯誤（如缺少必填欄位、金額不符等）
+    log('驗證失敗: ' . $e->getMessage());
+} catch (InvalidParameterException $e) {
+    // 處理參數格式錯誤（如日期格式、載具長度等）
+    log('參數錯誤: ' . $e->getMessage());
+} catch (EcPayException $e) {
+    // 捕捉所有套件內部例外
+    log('發生錯誤: ' . $e->getMessage());
+}
+```
+
+---
+
 ## HTTP 狀態碼
 
 在呼叫綠界 API 時，可能會收到以下 HTTP 狀態碼，請依據狀況進行處理：
@@ -25,17 +61,26 @@
 
 ## 2. 本套件內部驗證例外
 
-在送出 API 前，程式會先透過 `InvoiceValidator` 與各模組的 `validation()` 進行檢查；若不符合條件會直接丟出 `Exception`。以下彙整常見訊息：
+在送出 API 前，程式會先透過 `InvoiceValidator` 與各模組的 `validation()` 進行檢查；若不符合條件會丟出對應的專屬例外。以下彙整常見訊息：
 
-### 2.1 基本連線/身分
+### 2.1 設定錯誤 (`ConfigurationException`)
 
 | 訊息 | 觸發條件 |
 | --- | --- |
 | `MerchantID is empty.` | 未設定 `setMerchantID()` 或建構子沒有帶入 `MerchantID`。 |
 | `HashKey is empty.` / `HashIV is empty.` | `EcPayClient` 未注入金鑰，或手動建立類別未設定。 |
-| `The invoice date format is invalid.` | `setInvoiceDate()` 非 `Y-m-d` 格式。 |
 
-### 2.2 發票開立常見錯誤
+### 2.2 參數錯誤 (`InvalidParameterException`)
+
+| 訊息 | 觸發條件 |
+| --- | --- |
+| `The invoice date format is invalid.` | `setInvoiceDate()` 非 `Y-m-d` 格式。 |
+| `The invoice RelateNumber length over 30.` | `RelateNumber` 超過 30 字元。 |
+| `Invoice clearance mark format is invalid.` | `ClearanceMark` 值不在允許範圍。 |
+| `Invoice carrier type format is wrong.` | `CarrierType` 值不在允許範圍。 |
+| `Invoice tax type format is invalid.` | `TaxType` 值不在允許範圍。 |
+
+### 2.3 驗證錯誤 (`ValidationException`)
 
 | 訊息 | 說明 |
 | --- | --- |
@@ -55,7 +100,7 @@
 | `Invoice data items is Empty.` | 商品項目不得為空。 |
 | `The calculated sales amount is not equal to the set sales amount.` | 手動設定的 `SalesAmount` 與項目金額相加不符。 |
 
-### 2.3 查詢/折讓/通知常見錯誤
+### 2.4 查詢/折讓/通知常見錯誤
 
 | 模組 | 訊息 | 說明 |
 | --- | --- | --- |
@@ -65,3 +110,18 @@
 | InvoiceNotify | `Phone number or mail should be set.`、`Invoice tag is empty.`、`Notified is empty.` | 通知 API 需指定發票/折讓標記與聯絡方式。 |
 
 > 建議在除錯時將例外訊息一併記錄；若訊息不在上述列表，代表邏輯可能來自其他模組，需對照對應 PHP 類別或官方文件。
+
+### 2.5 加解密錯誤 (`EncryptionException`)
+
+| 訊息 | 觸發條件 |
+| --- | --- |
+| `Encryption failed.` | AES 加密過程失敗。 |
+| `Decryption failed.` | AES 解密過程失敗或資料損壞。 |
+
+### 2.6 請求錯誤 (`RequestException`)
+
+| 訊息 | 觸發條件 |
+| --- | --- |
+| `Request Error: ...` | 與綠界 API 通訊失敗（網路錯誤、HTTP 錯誤等）。 |
+
+> `RequestException` 會包含原始 Guzzle 例外作為 `$previous`，可透過 `$e->getPrevious()` 取得更多細節。
