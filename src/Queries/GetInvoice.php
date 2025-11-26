@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CarlLee\EcPayB2C\Queries;
 
 use CarlLee\EcPayB2C\Content;
