@@ -1,7 +1,18 @@
 <?php
 
 use CarlLee\EcPayB2C\DTO\InvoiceItemDto;
+use CarlLee\EcPayB2C\Exceptions\InvalidParameterException;
+use CarlLee\EcPayB2C\Exceptions\ValidationException;
 
+/**
+ * 發票測試類別。
+ *
+ * 注意：此檔案包含整合測試（需要網路連線）。
+ * 建議使用 test/Unit/InvoiceUnitTest.php 進行單元測試，
+ * 或使用 test/Integration/InvoiceIntegrationTest.php 進行整合測試。
+ *
+ * @deprecated 將在未來版本移除，請改用 Unit/InvoiceUnitTest 和 Integration/InvoiceIntegrationTest
+ */
 class InvoiceTest extends \PHPUnit\Framework\TestCase
 {
     /**
@@ -92,7 +103,7 @@ class InvoiceTest extends \PHPUnit\Framework\TestCase
      */
     public function testErrorMissingRelateNumber()
     {
-        $this->expectException(Exception::class);
+        $this->expectException(ValidationException::class);
         $this->expectExceptionMessage('The invoice RelateNumber is empty.');
 
         $this->instance
@@ -108,7 +119,7 @@ class InvoiceTest extends \PHPUnit\Framework\TestCase
      */
     public function testErrorMissingCustomerContact()
     {
-        $this->expectException(Exception::class);
+        $this->expectException(ValidationException::class);
         $this->expectExceptionMessage('You should be settings either of customer phone and email.');
 
         $this->instance
@@ -124,7 +135,7 @@ class InvoiceTest extends \PHPUnit\Framework\TestCase
      */
     public function testErrorEmptyItems()
     {
-        $this->expectException(Exception::class);
+        $this->expectException(ValidationException::class);
         $this->expectExceptionMessage('The calculated sales amount is not equal to the set sales amount.');
 
         $this->instance
@@ -140,7 +151,7 @@ class InvoiceTest extends \PHPUnit\Framework\TestCase
      */
     public function testErrorSalesAmountMismatch()
     {
-        $this->expectException(Exception::class);
+        $this->expectException(ValidationException::class);
         $this->expectExceptionMessage('The calculated sales amount is not equal to the set sales amount.');
 
         $this->instance
@@ -157,7 +168,7 @@ class InvoiceTest extends \PHPUnit\Framework\TestCase
      */
     public function testErrorDonationWithoutLoveCode()
     {
-        $this->expectException(Exception::class);
+        $this->expectException(ValidationException::class);
         $this->expectExceptionMessage('Donation is yes, love code required.');
 
         $this->instance
@@ -175,7 +186,7 @@ class InvoiceTest extends \PHPUnit\Framework\TestCase
      */
     public function testErrorIdentifierWithDonation()
     {
-        $this->expectException(Exception::class);
+        $this->expectException(ValidationException::class);
         $this->expectExceptionMessage('Customer identifier not empty, donation can not be yes.');
 
         $this->instance
@@ -198,7 +209,7 @@ class InvoiceTest extends \PHPUnit\Framework\TestCase
      */
     public function testErrorCarrierWithPrintMark()
     {
-        $this->expectException(Exception::class);
+        $this->expectException(ValidationException::class);
         $this->expectExceptionMessage('Carrier type is not empty, invoice can not be print.');
 
         $this->instance
@@ -219,7 +230,7 @@ class InvoiceTest extends \PHPUnit\Framework\TestCase
      */
     public function testErrorInvalidCellphoneCarrier()
     {
-        $this->expectException(Exception::class);
+        $this->expectException(ValidationException::class);
         $this->expectExceptionMessage('Invoice carrier type is Cellphone, carrier number length must be 8.');
 
         $this->instance

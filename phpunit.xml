@@ -1,11 +1,44 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<phpunit colors="true" bootstrap="vendor/autoload.php">
+<phpunit
+    colors="true"
+    bootstrap="vendor/autoload.php"
+    cacheDirectory=".phpunit.cache"
+    executionOrder="depends,defects"
+    beStrictAboutOutputDuringTests="true"
+>
     <testsuites>
-        <testsuite name="ECPay eInvoice test">
+        <!-- 單元測試：不需要網路，可快速執行 -->
+        <testsuite name="unit">
+            <directory>test/Unit</directory>
+            <file>test/AESTest.php</file>
+            <file>test/ContentTest.php</file>
+            <file>test/EcPayClientTest.php</file>
+            <file>test/InvoiceValidatorTest.php</file>
+            <file>test/ItemCollectionTest.php</file>
+            <file>test/OperationFactoryTest.php</file>
+            <file>test/PayloadEncoderTest.php</file>
+            <file>test/RequestTest.php</file>
+            <file>test/ResponseTest.php</file>
+            <file>test/RqHeaderDtoTest.php</file>
+            <file>test/Laravel/EcPayServiceProviderTest.php</file>
+        </testsuite>
+
+        <!-- 整合測試：需要網路連線，會呼叫 ECPay 測試伺服器 -->
+        <testsuite name="integration">
+            <directory>test/Integration</directory>
+        </testsuite>
+
+        <!-- 舊版測試（包含整合測試，將逐步遷移） -->
+        <testsuite name="legacy">
             <directory>test</directory>
+            <exclude>test/Unit</exclude>
+            <exclude>test/Integration</exclude>
+            <exclude>test/Laravel</exclude>
         </testsuite>
     </testsuites>
+
     <php>
+        <!-- ECPay 測試環境設定 -->
         <env name="SERVER" value="https://einvoice-stage.ecpay.com.tw"/>
         <env name="MERCHANT_ID" value="2000132"/>
         <env name="HASH_KEY" value="ejCk326UnaZWKisg"/>
@@ -14,4 +47,10 @@
         <env name="LOVECODE" value="9527"/>
         <env name="UNIFIED_BUSINESS_NO" value="97025978"/>
     </php>
+
+    <source>
+        <include>
+            <directory>src</directory>
+        </include>
+    </source>
 </phpunit>

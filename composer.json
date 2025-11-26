@@ -28,6 +28,11 @@
             "CarlLee\\EcPayB2C\\": "src"
         }
     },
+    "autoload-dev": {
+        "psr-4": {
+            "CarlLee\\EcPayB2C\\Tests\\": "test"
+        }
+    },
     "require": {
         "php": "^8.3",
         "guzzlehttp/guzzle": "^7.0"
@@ -40,7 +45,10 @@
         "squizlabs/php_codesniffer": "^4.0"
     },
     "scripts": {
-        "test": "phpunit",
+        "test": "phpunit --testsuite unit",
+        "test:unit": "phpunit --testsuite unit",
+        "test:integration": "phpunit --testsuite integration",
+        "test:all": "phpunit --testsuite all",
         "phpcs": "phpcs",
         "phpcbf": "phpcbf"
     },
