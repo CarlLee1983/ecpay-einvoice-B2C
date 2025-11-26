@@ -13,14 +13,14 @@ class EditDelayIssue extends DelayIssue
      *
      * @var string
      */
-    protected $requestPath = '/B2CInvoice/EditDelayIssue';
+    protected string $requestPath = '/B2CInvoice/EditDelayIssue';
 
     /**
      * 驗證內容。
      *
      * @return void
      */
-    public function validation()
+    protected function validation(): void
     {
         parent::validation();
 

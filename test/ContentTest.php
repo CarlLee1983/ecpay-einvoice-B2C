@@ -9,9 +9,9 @@ use PHPUnit\Framework\TestCase;
  */
 class TestableContent extends Content
 {
-    protected $requestPath = '/test/path';
+    protected string $requestPath = '/test/path';
 
-    protected function initContent()
+    protected function initContent(): void
     {
         $this->content['Data'] = [
             'MerchantID' => $this->merchantID,
@@ -19,7 +19,7 @@ class TestableContent extends Content
         ];
     }
 
-    public function validation()
+    protected function validation(): void
     {
         $this->validatorBaseParam();
     }
@@ -61,7 +61,7 @@ class ContentTest extends TestCase
     public function testConstructor()
     {
         $this->assertInstanceOf(Content::class, $this->content);
-        $this->assertInstanceOf(Response::class, $this->content->response);
+        $this->assertInstanceOf(Response::class, $this->content->getResponse());
     }
 
     /**
@@ -142,7 +142,7 @@ class ContentTest extends TestCase
     public function testSetRelateNumberTooLong()
     {
         $this->expectException(Exception::class);
-        $this->expectExceptionMessage('The invoice RelateNumber length over 30.');
+        $this->expectExceptionMessage('RelateNumber 不可超過 30 個字元');
 
         $longRelateNumber = str_repeat('A', 31);
         $this->content->setRelateNumber($longRelateNumber);
@@ -195,7 +195,7 @@ class ContentTest extends TestCase
                 $this->content->setInvoiceDate($date);
                 $this->fail("應該拋出異常，但沒有：{$date}");
             } catch (Exception $e) {
-                $this->assertEquals('The invoice date format is invalid.', $e->getMessage());
+                $this->assertStringContainsString('InvoiceDate', $e->getMessage());
             }
         }
     }
@@ -309,7 +309,7 @@ class ContentTest extends TestCase
     public function testValidation()
     {
         $this->expectNotToPerformAssertions();
-        $this->content->validation();
+        $this->content->getPayload();
     }
 
     /**

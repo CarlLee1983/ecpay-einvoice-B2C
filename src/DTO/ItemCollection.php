@@ -4,50 +4,21 @@ declare(strict_types=1);
 
 namespace CarlLee\EcPayB2C\DTO;
 
-use ArrayIterator;
+use CarlLee\EcPay\Core\DTO\ItemCollection as CoreItemCollection;
+use CarlLee\EcPay\Core\DTO\ItemDtoInterface;
 use InvalidArgumentException;
-use IteratorAggregate;
-use Traversable;
 
 /**
- * 商品集合的 Value Object。
+ * 項目集合類別。
  *
- * @implements IteratorAggregate<int, ItemDtoInterface>
+ * 繼承自 Core 的 ItemCollection，保持向下相容。
  */
-final class ItemCollection implements IteratorAggregate, \Countable
+class ItemCollection extends CoreItemCollection
 {
-    /**
-     * @var array<int,ItemDtoInterface>
-     */
-    private array $items = [];
-
-    /**
-     * @param array<int,ItemDtoInterface> $items
-     */
-    public function __construct(array $items = [])
-    {
-        foreach ($items as $item) {
-            $this->add($item);
-        }
-    }
-
-    /**
-     * add
-     *
-     * @param ItemDtoInterface $item
-     * @return self
-     */
-    public function add(ItemDtoInterface $item): self
-    {
-        $this->items[] = $item;
-
-        return $this;
-    }
-
     /**
      * 由混合輸入（陣列或 DTO）建立集合。
      *
-     * @param array<int,ItemDtoInterface|array<string,mixed>> $items
+     * @param array<int, ItemDtoInterface|array<string, mixed>> $items
      * @param callable $arrayConverter
      * @return self
      */
@@ -71,37 +42,24 @@ final class ItemCollection implements IteratorAggregate, \Countable
     }
 
     /**
-     * @return Traversable<int,ItemDtoInterface>
-     */
-    #[\Override]
-    public function getIterator(): Traversable
-    {
-        return new ArrayIterator($this->items);
-    }
-
-    /**
-     * count
+     * 轉換為 payload 陣列，可對每個項目進行額外轉換。
      *
-     * @return int
+     * @param callable(array<string, mixed>, ItemDtoInterface): array<string, mixed> $transform
+     * @return array<int, array<string, mixed>>
      */
-    #[\Override]
-    public function count(): int
+    public function mapPayload(callable $transform): array
     {
-        return count($this->items);
+        $payload = [];
+
+        foreach ($this->all() as $item) {
+            $payload[] = $transform($item->toArray(), $item);
+        }
+
+        return $payload;
     }
 
     /**
-     * isEmpty
-     *
-     * @return bool
-     */
-    public function isEmpty(): bool
-    {
-        return $this->items === [];
-    }
-
-    /**
-     * sumAmount
+     * 計算所有項目的金額總和。
      *
      * @return float
      */
@@ -109,38 +67,11 @@ final class ItemCollection implements IteratorAggregate, \Countable
     {
         $total = 0.0;
 
-        foreach ($this->items as $item) {
-            $total += $item->getAmount();
+        foreach ($this->all() as $item) {
+            $amount = $item->toArray()['ItemAmount'] ?? 0;
+            $total += (float) $amount;
         }
 
         return $total;
-    }
-
-    /**
-     * toArray
-     *
-     * @return array<int,array<string,mixed>>
-     */
-    public function toArray(): array
-    {
-        return array_map(
-            static fn (ItemDtoInterface $item): array => $item->toPayload(),
-            $this->items
-        );
-    }
-
-    /**
-     * @param callable $transform
-     * @return array<int,array<string,mixed>>
-     */
-    public function mapPayload(callable $transform): array
-    {
-        $payload = [];
-
-        foreach ($this->items as $item) {
-            $payload[] = $transform($item->toPayload(), $item);
-        }
-
-        return $payload;
     }
 }

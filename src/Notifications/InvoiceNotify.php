@@ -38,12 +38,12 @@ class InvoiceNotify extends Content
      *
      * @var string
      */
-    protected $requestPath = '/B2CInvoice/InvoiceNotify';
+    protected string $requestPath = '/B2CInvoice/InvoiceNotify';
 
     /**
      * Initialize invoice content.
      */
-    protected function initContent()
+    protected function initContent(): void
     {
         $this->content['Data'] = [
             'MerchantID' => $this->merchantID,
@@ -206,7 +206,7 @@ class InvoiceNotify extends Content
      *
      * @throws Exception
      */
-    public function validation()
+    protected function validation(): void
     {
         $this->validatorBaseParam();
         $data = $this->content['Data'];

@@ -131,7 +131,7 @@ class AllowanceInvalidTest extends TestCase
             ->setAllowanceNo('1234567890123456')
             ->setReason('退貨');
 
-        $this->allowanceInvalid->validation();
+        $this->allowanceInvalid->getPayload();
     }
 
     /**
@@ -146,7 +146,7 @@ class AllowanceInvalidTest extends TestCase
             ->setInvoiceNo('AB12345678')
             ->setReason('退貨');
 
-        $this->allowanceInvalid->validation();
+        $this->allowanceInvalid->getPayload();
     }
 
     /**
@@ -161,7 +161,7 @@ class AllowanceInvalidTest extends TestCase
             ->setInvoiceNo('AB12345678')
             ->setAllowanceNo('1234567890123456');
 
-        $this->allowanceInvalid->validation();
+        $this->allowanceInvalid->getPayload();
     }
 
     /**
@@ -175,7 +175,7 @@ class AllowanceInvalidTest extends TestCase
             ->setReason('客戶要求退貨，商品有瑕疵');
 
         $this->expectNotToPerformAssertions();
-        $this->allowanceInvalid->validation();
+        $this->allowanceInvalid->getPayload();
     }
 
     /**

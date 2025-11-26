@@ -15,14 +15,14 @@ class GetCompanyNameByTaxID extends Content
      *
      * @var string
      */
-    protected $requestPath = '/B2CInvoice/GetCompanyNameByTaxID';
+    protected string $requestPath = '/B2CInvoice/GetCompanyNameByTaxID';
 
     /**
      * 初始化查詢內容。
      *
      * @return void
      */
-    protected function initContent()
+    protected function initContent(): void
     {
         $this->content['Data'] = [
             'MerchantID' => $this->merchantID,
@@ -52,7 +52,7 @@ class GetCompanyNameByTaxID extends Content
      *
      * @return void
      */
-    public function validation()
+    protected function validation(): void
     {
         $this->validatorBaseParam();
 

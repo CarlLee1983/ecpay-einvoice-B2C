@@ -14,14 +14,14 @@ class DelayIssue extends Invoice
      *
      * @var string
      */
-    protected $requestPath = '/B2CInvoice/DelayIssue';
+    protected string $requestPath = '/B2CInvoice/DelayIssue';
 
     /**
      * 延遲開立相關欄位的預設值。
      *
      * @return void
      */
-    protected function initContent()
+    protected function initContent(): void
     {
         parent::initContent();
 
@@ -122,7 +122,7 @@ class DelayIssue extends Invoice
      *
      * @return void
      */
-    public function validation()
+    protected function validation(): void
     {
         parent::validation();
 

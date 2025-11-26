@@ -95,7 +95,7 @@ class GetInvalidInvoiceTest extends TestCase
         $this->expectException(Exception::class);
         $this->expectExceptionMessage('The invoice no is empty.');
 
-        $this->getInvalidInvoice->validation();
+        $this->getInvalidInvoice->getPayload();
     }
 
     /**
@@ -106,7 +106,7 @@ class GetInvalidInvoiceTest extends TestCase
         $this->getInvalidInvoice->setInvoiceNo('AB12345678');
 
         $this->expectNotToPerformAssertions();
-        $this->getInvalidInvoice->validation();
+        $this->getInvalidInvoice->getPayload();
     }
 
     /**

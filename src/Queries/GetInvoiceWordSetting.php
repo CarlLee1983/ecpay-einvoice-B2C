@@ -16,14 +16,14 @@ class GetInvoiceWordSetting extends Content
      *
      * @var string
      */
-    protected $requestPath = '/B2CInvoice/GetInvoiceWordSetting';
+    protected string $requestPath = '/B2CInvoice/GetInvoiceWordSetting';
 
     /**
      * Initialize request payload.
      *
      * @return void
      */
-    protected function initContent()
+    protected function initContent(): void
     {
         $this->content['Data'] = [
             'MerchantID' => $this->merchantID,
@@ -167,7 +167,7 @@ class GetInvoiceWordSetting extends Content
      *
      * @return void
      */
-    public function validation()
+    protected function validation(): void
     {
         $this->validatorBaseParam();
 

@@ -15,12 +15,12 @@ class AllowanceInvalidByCollegiate extends Content
      *
      * @var string
      */
-    protected $requestPath = '/B2CInvoice/AllowanceInvalidByCollegiate';
+    protected string $requestPath = '/B2CInvoice/AllowanceInvalidByCollegiate';
 
     /**
      * 初始化內容。
      */
-    protected function initContent()
+    protected function initContent(): void
     {
         $this->content['Data'] = [
             'MerchantID' => $this->merchantID,
@@ -88,7 +88,7 @@ class AllowanceInvalidByCollegiate extends Content
     /**
      * 驗證內容。
      */
-    public function validation()
+    protected function validation(): void
     {
         $this->validatorBaseParam();
 

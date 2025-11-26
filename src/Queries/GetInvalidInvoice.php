@@ -15,14 +15,14 @@ class GetInvalidInvoice extends Content
      *
      * @var string
      */
-    protected $requestPath = '/B2CInvoice/GetInvalid';
+    protected string $requestPath = '/B2CInvoice/GetInvalid';
 
     /**
      * Initialize invoice content.
      *
      * @return void
      */
-    protected function initContent()
+    protected function initContent(): void
     {
         $this->content['Data'] = [
             'MerchantID' => $this->merchantID,
@@ -54,7 +54,7 @@ class GetInvalidInvoice extends Content
      *
      * @return void
      */
-    public function validation()
+    protected function validation(): void
     {
         $this->validatorBaseParam();
 

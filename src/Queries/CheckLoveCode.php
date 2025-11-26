@@ -15,12 +15,12 @@ class CheckLoveCode extends Content
      *
      * @var string
      */
-    protected $requestPath = '/B2CInvoice/CheckLoveCode';
+    protected string $requestPath = '/B2CInvoice/CheckLoveCode';
 
     /**
      * Initialize invoice content.
      */
-    protected function initContent()
+    protected function initContent(): void
     {
         $this->content['Data'] = [
             'MerchantID' => $this->merchantID,
@@ -48,7 +48,7 @@ class CheckLoveCode extends Content
     /**
      * Validation content.
      */
-    public function validation()
+    protected function validation(): void
     {
         $this->validatorBaseParam();
 

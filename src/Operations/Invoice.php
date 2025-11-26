@@ -25,7 +25,7 @@ class Invoice extends Content
      *
      * @var string
      */
-    protected $requestPath = '/B2CInvoice/Issue';
+    protected string $requestPath = '/B2CInvoice/Issue';
 
     /**
      * The invoice tax type.
@@ -39,7 +39,7 @@ class Invoice extends Content
      *
      * @var array
      */
-    protected $content = [];
+    protected array $content = [];
 
     /**
      * @var ItemCollection
@@ -56,7 +56,7 @@ class Invoice extends Content
     /**
      * Initialize invoice content.
      */
-    protected function initContent()
+    protected function initContent(): void
     {
         $this->content['Data'] = [
             'MerchantID' => $this->merchantID,
@@ -355,7 +355,7 @@ class Invoice extends Content
      *
      * @throws ValidationException
      */
-    public function validation()
+    protected function validation(): void
     {
         $this->validatorBaseParam();
         $this->content['Data']['Items'] = $this->buildItemsPayload();

@@ -304,7 +304,7 @@ class AllowanceInvoiceTest extends TestCase
 
         $this->allowance->setItems($this->buildItems());
 
-        $this->allowance->validation();
+        $this->allowance->getPayload();
     }
 
     /**
@@ -320,7 +320,7 @@ class AllowanceInvoiceTest extends TestCase
         $invoice->setInvoiceNo('AB12345678');
         $invoice->setItems($this->buildItems());
 
-        $this->allowance->validation();
+        $this->allowance->getPayload();
     }
 
     /**
@@ -339,7 +339,7 @@ class AllowanceInvoiceTest extends TestCase
         $invoice->setAllowanceNotify(AllowanceNotifyType::EMAIL->value);
         $invoice->setItems($this->buildItems());
 
-        $this->allowance->validation();
+        $this->allowance->getPayload();
     }
 
     /**
@@ -358,7 +358,7 @@ class AllowanceInvoiceTest extends TestCase
         $invoice->setAllowanceNotify(AllowanceNotifyType::SMS->value);
         $invoice->setItems($this->buildItems());
 
-        $this->allowance->validation();
+        $this->allowance->getPayload();
     }
 
     /**
@@ -376,7 +376,7 @@ class AllowanceInvoiceTest extends TestCase
         $invoice->setInvoiceNo('AB12345678');
         $invoice->setAllowanceAmount(0);
 
-        $this->allowance->validation();
+        $this->allowance->getPayload();
     }
 
     /**
@@ -394,7 +394,7 @@ class AllowanceInvoiceTest extends TestCase
         $invoice->setInvoiceNo('AB12345678');
         $invoice->setAllowanceAmount(100);
 
-        $this->allowance->validation();
+        $this->allowance->getPayload();
     }
 
     /**
@@ -430,7 +430,7 @@ class AllowanceInvoiceTest extends TestCase
         $contentProperty->setValue($this->allowance, $content);
 
         $this->expectNotToPerformAssertions();
-        $this->allowance->validation();
+        $this->allowance->getPayload();
     }
 
     /**

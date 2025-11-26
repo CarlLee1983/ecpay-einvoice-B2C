@@ -14,14 +14,14 @@ class CancelDelayIssue extends Content
      *
      * @var string
      */
-    protected $requestPath = '/B2CInvoice/CancelDelayIssue';
+    protected string $requestPath = '/B2CInvoice/CancelDelayIssue';
 
     /**
      * 初始化取消延遲開立資料。
      *
      * @return void
      */
-    protected function initContent()
+    protected function initContent(): void
     {
         $this->content['Data'] = [
             'MerchantID' => $this->merchantID,
@@ -51,7 +51,7 @@ class CancelDelayIssue extends Content
      *
      * @return void
      */
-    public function validation()
+    protected function validation(): void
     {
         $this->validatorBaseParam();
 

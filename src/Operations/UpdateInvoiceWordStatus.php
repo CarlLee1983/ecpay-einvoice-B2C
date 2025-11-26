@@ -15,14 +15,14 @@ class UpdateInvoiceWordStatus extends Content
      *
      * @var string
      */
-    protected $requestPath = '/B2CInvoice/UpdateInvoiceWordStatus';
+    protected string $requestPath = '/B2CInvoice/UpdateInvoiceWordStatus';
 
     /**
      * Initialize request payload.
      *
      * @return void
      */
-    protected function initContent()
+    protected function initContent(): void
     {
         $this->content['Data'] = [
             'MerchantID' => $this->merchantID,
@@ -76,7 +76,7 @@ class UpdateInvoiceWordStatus extends Content
      *
      * @return void
      */
-    public function validation()
+    protected function validation(): void
     {
         $this->validatorBaseParam();
 

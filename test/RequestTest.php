@@ -192,7 +192,7 @@ class RequestTest extends TestCase
     public function testSendRequestExceptionWithoutResponse()
     {
         $this->expectException(Exception::class);
-        $this->expectExceptionMessage('Request Error: Connection timeout');
+        $this->expectExceptionMessage('HTTP 請求失敗');
 
         $mock = new MockHandler([
             new RequestException(
@@ -215,7 +215,7 @@ class RequestTest extends TestCase
     public function testSendNetworkError()
     {
         $this->expectException(Exception::class);
-        $this->expectExceptionMessage('Request Error:');
+        $this->expectExceptionMessage('HTTP 請求失敗');
 
         $mock = new MockHandler([
             new RequestException(

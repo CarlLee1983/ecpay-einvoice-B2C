@@ -15,12 +15,12 @@ class AllowanceInvalid extends Content
      *
      * @var string
      */
-    protected $requestPath = '/B2CInvoice/AllowanceInvalid';
+    protected string $requestPath = '/B2CInvoice/AllowanceInvalid';
 
     /**
      * Initialize invoice content.
      */
-    protected function initContent()
+    protected function initContent(): void
     {
         $this->content['Data'] = [
             'MerchantID' => $this->merchantID,
@@ -80,7 +80,7 @@ class AllowanceInvalid extends Content
     /**
      * Validation content.
      */
-    public function validation()
+    protected function validation(): void
     {
         $this->validatorBaseParam();
 

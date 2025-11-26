@@ -4,8 +4,7 @@ declare(strict_types=1);
 
 namespace CarlLee\EcPayB2C\Tests\Unit;
 
-use CarlLee\EcPayB2C\Exceptions\ConfigurationException;
-use CarlLee\EcPayB2C\Exceptions\EncryptionException;
+use CarlLee\EcPay\Core\Exceptions\EncryptionException;
 use CarlLee\EcPayB2C\Infrastructure\CipherService;
 
 /**
@@ -141,7 +140,7 @@ class CipherServiceTest extends UnitTestCase
     public function testDecryptInvalidBase64(): void
     {
         $this->expectException(EncryptionException::class);
-        $this->expectExceptionMessage('Decryption failed.');
+        $this->expectExceptionMessage('AES 解密失敗');
 
         $this->cipherService->decrypt('invalid base64 string!!!');
     }
@@ -152,6 +151,7 @@ class CipherServiceTest extends UnitTestCase
     public function testDecryptEmptyString(): void
     {
         $this->expectException(EncryptionException::class);
+        $this->expectExceptionMessage('資料為空');
 
         $this->cipherService->decrypt('');
     }
@@ -174,7 +174,7 @@ class CipherServiceTest extends UnitTestCase
         );
 
         $this->expectException(EncryptionException::class);
-        $this->expectExceptionMessage('Decryption failed.');
+        $this->expectExceptionMessage('AES 解密失敗');
 
         $wrongKeyService->decrypt($encrypted);
     }
@@ -243,8 +243,8 @@ class CipherServiceTest extends UnitTestCase
      */
     public function testEmptyHashKeyThrows(): void
     {
-        $this->expectException(ConfigurationException::class);
-        $this->expectExceptionMessage('HashKey is empty.');
+        $this->expectException(EncryptionException::class);
+        $this->expectExceptionMessage('HashKey');
 
         new CipherService('', $this->hashIV);
     }
@@ -254,8 +254,8 @@ class CipherServiceTest extends UnitTestCase
      */
     public function testEmptyHashIVThrows(): void
     {
-        $this->expectException(ConfigurationException::class);
-        $this->expectExceptionMessage('HashIV is empty.');
+        $this->expectException(EncryptionException::class);
+        $this->expectExceptionMessage('HashIV');
 
         new CipherService($this->hashKey, '');
     }

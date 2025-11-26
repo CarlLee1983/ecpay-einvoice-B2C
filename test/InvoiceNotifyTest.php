@@ -325,7 +325,7 @@ class InvoiceNotifyTest extends TestCase
             ->setInvoiceTag(InvoiceTagType::INVOICE->value)
             ->setNotified(NotifiedType::CUSTOMER->value);
 
-        $this->invoiceNotify->validation();
+        $this->invoiceNotify->getPayload();
     }
 
     /**
@@ -343,7 +343,7 @@ class InvoiceNotifyTest extends TestCase
             ->setInvoiceTag(InvoiceTagType::ALLOWANCE->value)
             ->setNotified(NotifiedType::CUSTOMER->value);
 
-        $this->invoiceNotify->validation();
+        $this->invoiceNotify->getPayload();
     }
 
     /**
@@ -360,7 +360,7 @@ class InvoiceNotifyTest extends TestCase
             ->setInvoiceTag(InvoiceTagType::INVOICE->value)
             ->setNotified(NotifiedType::CUSTOMER->value);
 
-        $this->invoiceNotify->validation();
+        $this->invoiceNotify->getPayload();
     }
 
     /**
@@ -377,7 +377,7 @@ class InvoiceNotifyTest extends TestCase
             ->setInvoiceTag(InvoiceTagType::INVOICE->value)
             ->setNotified(NotifiedType::CUSTOMER->value);
 
-        $this->invoiceNotify->validation();
+        $this->invoiceNotify->getPayload();
     }
 
     /**
@@ -394,7 +394,7 @@ class InvoiceNotifyTest extends TestCase
             ->setNotify(NotifyType::SMS->value)
             ->setNotified(NotifiedType::CUSTOMER->value);
 
-        $this->invoiceNotify->validation();
+        $this->invoiceNotify->getPayload();
     }
 
     /**
@@ -411,7 +411,7 @@ class InvoiceNotifyTest extends TestCase
             ->setNotify(NotifyType::SMS->value)
             ->setInvoiceTag(InvoiceTagType::INVOICE->value);
 
-        $this->invoiceNotify->validation();
+        $this->invoiceNotify->getPayload();
     }
 
     /**
@@ -427,7 +427,7 @@ class InvoiceNotifyTest extends TestCase
             ->setNotified(NotifiedType::CUSTOMER->value);
 
         $this->expectNotToPerformAssertions();
-        $this->invoiceNotify->validation();
+        $this->invoiceNotify->getPayload();
     }
 
     /**
@@ -444,7 +444,7 @@ class InvoiceNotifyTest extends TestCase
             ->setNotified(NotifiedType::CUSTOMER->value);
 
         $this->expectNotToPerformAssertions();
-        $this->invoiceNotify->validation();
+        $this->invoiceNotify->getPayload();
     }
 
     /**

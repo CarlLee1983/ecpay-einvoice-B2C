@@ -15,14 +15,14 @@ class TriggerIssue extends Content
      *
      * @var string
      */
-    protected $requestPath = '/B2CInvoice/TriggerIssue';
+    protected string $requestPath = '/B2CInvoice/TriggerIssue';
 
     /**
      * 初始化觸發開立資料。
      *
      * @return void
      */
-    protected function initContent()
+    protected function initContent(): void
     {
         $this->content['Data'] = [
             'MerchantID' => $this->merchantID,
@@ -70,7 +70,7 @@ class TriggerIssue extends Content
      *
      * @return void
      */
-    public function validation()
+    protected function validation(): void
     {
         $this->validatorBaseParam();
 

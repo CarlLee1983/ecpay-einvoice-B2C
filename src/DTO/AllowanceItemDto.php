@@ -68,7 +68,6 @@ final readonly class AllowanceItemDto implements ItemDtoInterface
      * @param array $item
      * @return self
      */
-    #[\Override]
     public static function fromArray(array $item): self
     {
         foreach (['name', 'quantity', 'unit', 'price'] as $field) {
@@ -86,9 +85,18 @@ final readonly class AllowanceItemDto implements ItemDtoInterface
     }
 
     /**
+     * 轉換為陣列（實作 ItemDtoInterface）。
+     *
+     * @return array<string,mixed>
+     */
+    public function toArray(): array
+    {
+        return $this->toPayload();
+    }
+
+    /**
      * @return array
      */
-    #[\Override]
     public function toPayload(): array
     {
         return [
@@ -103,7 +111,6 @@ final readonly class AllowanceItemDto implements ItemDtoInterface
     /**
      * @return float
      */
-    #[\Override]
     public function getAmount(): float
     {
         return (float) ($this->quantity * $this->price);

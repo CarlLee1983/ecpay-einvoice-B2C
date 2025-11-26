@@ -15,12 +15,12 @@ class InvoicePrint extends Content
      *
      * @var string
      */
-    protected $requestPath = '/B2CInvoice/InvoicePrint';
+    protected string $requestPath = '/B2CInvoice/InvoicePrint';
 
     /**
      * 初始化內容。
      */
-    protected function initContent()
+    protected function initContent(): void
     {
         $this->content['Data'] = [
             'MerchantID' => $this->merchantID,
@@ -112,7 +112,7 @@ class InvoicePrint extends Content
     /**
      * 驗證內容。
      */
-    public function validation()
+    protected function validation(): void
     {
         $this->validatorBaseParam();
 

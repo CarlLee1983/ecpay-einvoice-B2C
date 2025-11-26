@@ -15,14 +15,14 @@ class GetIssueList extends Content
      *
      * @var string
      */
-    protected $requestPath = '/B2CInvoice/GetIssueList';
+    protected string $requestPath = '/B2CInvoice/GetIssueList';
 
     /**
      * 初始化查詢內容。
      *
      * @return void
      */
-    protected function initContent()
+    protected function initContent(): void
     {
         $this->content['Data'] = [
             'MerchantID' => $this->merchantID,
@@ -113,7 +113,7 @@ class GetIssueList extends Content
      *
      * @return void
      */
-    public function validation()
+    protected function validation(): void
     {
         $this->validatorBaseParam();
 

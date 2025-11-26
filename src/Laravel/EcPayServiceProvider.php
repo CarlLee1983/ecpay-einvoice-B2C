@@ -4,16 +4,18 @@ declare(strict_types=1);
 
 namespace CarlLee\EcPayB2C\Laravel;
 
+use CarlLee\EcPay\Core\Laravel\AbstractEcPayServiceProvider;
 use CarlLee\EcPayB2C\EcPayClient;
 use CarlLee\EcPayB2C\Factories\OperationFactory;
 use CarlLee\EcPayB2C\Factories\OperationFactoryInterface;
 use CarlLee\EcPayB2C\Laravel\Services\OperationCoordinator;
 use CarlLee\EcPayB2C\Request;
 use Illuminate\Contracts\Foundation\Application;
-use Illuminate\Support\ServiceProvider;
 
 /**
  * Laravel Service Provider：負責載入設定並綁定 Service Container。
+ *
+ * 繼承自 Core 的 AbstractEcPayServiceProvider，提供 B2C 特定的配置。
  *
  * 根據綠界電子發票 API 介接注意事項：
  * - 僅支援 HTTPS (443 port) 連線
@@ -21,45 +23,51 @@ use Illuminate\Support\ServiceProvider;
  *
  * @see https://developers.ecpay.com.tw/?p=7809
  */
-class EcPayServiceProvider extends ServiceProvider
+class EcPayServiceProvider extends AbstractEcPayServiceProvider
 {
     /**
-     * 註冊服務。
+     * @inheritDoc
      */
-    public function register()
+    protected function getConfigName(): string
     {
-        $this->mergeConfigFrom(__DIR__ . '/../../config/ecpay-einvoice.php', 'ecpay-einvoice');
-
-        $this->configureRequest();
-        $this->registerFactory();
-        $this->registerClient();
-        $this->registerOperationBindings();
-        $this->registerCoordinator();
+        return 'ecpay-einvoice';
     }
 
     /**
-     * 根據設定檔配置 Request 類別。
+     * @inheritDoc
+     */
+    protected function getConfigPath(): string
+    {
+        return __DIR__ . '/../../config/ecpay-einvoice.php';
+    }
+
+    /**
+     * @inheritDoc
+     */
+    protected function getServicePrefix(): string
+    {
+        return 'ecpay';
+    }
+
+    /**
+     * @inheritDoc
+     */
+    protected function getFactoryInterface(): string
+    {
+        return OperationFactoryInterface::class;
+    }
+
+    /**
+     * @inheritDoc
      */
     protected function configureRequest(): void
     {
-        $verifySsl = $this->app['config']->get('ecpay-einvoice.verify_ssl', true);
+        $verifySsl = $this->config('verify_ssl', true);
         Request::setVerifySsl((bool) $verifySsl);
     }
 
     /**
-     * 啟動服務（提供 config publish）。
-     */
-    public function boot()
-    {
-        if ($this->app->runningInConsole()) {
-            $this->publishes([
-                __DIR__ . '/../../config/ecpay-einvoice.php' => $this->configPath('ecpay-einvoice.php'),
-            ], 'ecpay-einvoice-config');
-        }
-    }
-
-    /**
-     * 綁定工廠實例。
+     * @inheritDoc
      */
     protected function registerFactory(): void
     {
@@ -88,7 +96,7 @@ class EcPayServiceProvider extends ServiceProvider
     }
 
     /**
-     * 綁定 EcPayClient。
+     * @inheritDoc
      */
     protected function registerClient(): void
     {
@@ -106,7 +114,7 @@ class EcPayServiceProvider extends ServiceProvider
     }
 
     /**
-     * 綁定協調器。
+     * @inheritDoc
      */
     protected function registerCoordinator(): void
     {
@@ -118,62 +126,5 @@ class EcPayServiceProvider extends ServiceProvider
         });
 
         $this->app->alias(OperationCoordinator::class, 'ecpay.coordinator');
-    }
-
-    /**
-     * 將設定檔內的便利別名註冊至容器。
-     */
-    protected function registerOperationBindings(): void
-    {
-        $bindings = $this->app['config']->get('ecpay-einvoice.bindings', []);
-
-        foreach ($bindings as $name => $alias) {
-            $serviceId = strpos($name, 'ecpay.') === 0 ? $name : 'ecpay.' . $name;
-
-            $this->app->bind($serviceId, function (Application $app) use ($alias) {
-                /** @var OperationFactoryInterface $factory */
-                $factory = $app->make(OperationFactoryInterface::class);
-
-                return $factory->make((string) $alias);
-            });
-        }
-    }
-
-    /**
-     * 將設定值轉為可呼叫的初始化邏輯。
-     *
-     * @param mixed $initializer
-     * @param Application $app
-     * @return callable|null
-     */
-    protected function resolveInitializer($initializer, Application $app): ?callable
-    {
-        if (is_string($initializer) && class_exists($initializer)) {
-            $callable = $app->make($initializer);
-            if (is_callable($callable)) {
-                return $callable;
-            }
-        }
-
-        if (is_callable($initializer)) {
-            return $initializer;
-        }
-
-        return null;
-    }
-
-    /**
-     * 取得 config 儲存路徑，在非 Laravel 環境提供後援。
-     *
-     * @param string $file
-     * @return string
-     */
-    protected function configPath(string $file): string
-    {
-        if (function_exists('config_path')) {
-            return config_path($file);
-        }
-
-        return $this->app->basePath('config/' . $file);
     }
 }

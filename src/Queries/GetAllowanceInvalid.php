@@ -15,14 +15,14 @@ class GetAllowanceInvalid extends Content
      *
      * @var string
      */
-    protected $requestPath = '/B2CInvoice/GetAllowanceInvalid';
+    protected string $requestPath = '/B2CInvoice/GetAllowanceInvalid';
 
     /**
      * 初始化查詢內容。
      *
      * @return void
      */
-    protected function initContent()
+    protected function initContent(): void
     {
         $this->content['Data'] = [
             'MerchantID' => $this->merchantID,
@@ -70,7 +70,7 @@ class GetAllowanceInvalid extends Content
      *
      * @return void
      */
-    public function validation()
+    protected function validation(): void
     {
         $this->validatorBaseParam();
 
