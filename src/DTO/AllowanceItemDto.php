@@ -9,7 +9,7 @@ use InvalidArgumentException;
 /**
  * 一般折讓作業的商品 DTO（以整數計價）。
  */
-final class AllowanceItemDto implements ItemDtoInterface
+final readonly class AllowanceItemDto implements ItemDtoInterface
 {
     /**
      * @var string
@@ -39,14 +39,14 @@ final class AllowanceItemDto implements ItemDtoInterface
      */
     public function __construct(string $name, int $quantity, string $unit, $price)
     {
-        $name = trim($name);
-        $unit = trim($unit);
+        $trimmedName = trim($name);
+        $trimmedUnit = trim($unit);
 
-        if ($name === '') {
+        if ($trimmedName === '') {
             throw new InvalidArgumentException('Allowance item name cannot be empty.');
         }
 
-        if ($unit === '') {
+        if ($trimmedUnit === '') {
             throw new InvalidArgumentException('Allowance item unit cannot be empty.');
         }
 
@@ -58,9 +58,9 @@ final class AllowanceItemDto implements ItemDtoInterface
             throw new InvalidArgumentException('Allowance item price must be greater than 0.');
         }
 
-        $this->name = $name;
+        $this->name = $trimmedName;
         $this->quantity = $quantity;
-        $this->unit = $unit;
+        $this->unit = $trimmedUnit;
         $this->price = (float) $price;
     }
 

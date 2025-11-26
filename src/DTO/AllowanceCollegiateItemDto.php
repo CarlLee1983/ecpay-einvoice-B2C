@@ -9,7 +9,7 @@ use InvalidArgumentException;
 /**
  * 跨機關折讓作業的商品 DTO，需要指定稅別並允許小數。
  */
-final class AllowanceCollegiateItemDto implements ItemDtoInterface
+final readonly class AllowanceCollegiateItemDto implements ItemDtoInterface
 {
     /**
      * @var string
@@ -45,19 +45,19 @@ final class AllowanceCollegiateItemDto implements ItemDtoInterface
      */
     public function __construct(string $name, float $quantity, string $unit, float $price, string $taxType)
     {
-        $name = trim($name);
-        $unit = trim($unit);
-        $taxType = trim($taxType);
+        $trimmedName = trim($name);
+        $trimmedUnit = trim($unit);
+        $trimmedTaxType = trim($taxType);
 
-        if ($name === '') {
+        if ($trimmedName === '') {
             throw new InvalidArgumentException('Allowance collegiate item name cannot be empty.');
         }
 
-        if ($unit === '') {
+        if ($trimmedUnit === '') {
             throw new InvalidArgumentException('Allowance collegiate item unit cannot be empty.');
         }
 
-        if ($taxType === '') {
+        if ($trimmedTaxType === '') {
             throw new InvalidArgumentException('Allowance collegiate item tax type cannot be empty.');
         }
 
@@ -69,11 +69,11 @@ final class AllowanceCollegiateItemDto implements ItemDtoInterface
             throw new InvalidArgumentException('Allowance collegiate item price must be greater than 0.');
         }
 
-        $this->name = $name;
+        $this->name = $trimmedName;
         $this->quantity = $quantity;
-        $this->unit = $unit;
+        $this->unit = $trimmedUnit;
         $this->price = $price;
-        $this->taxType = $taxType;
+        $this->taxType = $trimmedTaxType;
     }
 
     /**

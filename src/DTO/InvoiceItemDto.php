@@ -9,7 +9,7 @@ use InvalidArgumentException;
 /**
  * 一般開立發票的商品 DTO。
  */
-final class InvoiceItemDto implements ItemDtoInterface
+final readonly class InvoiceItemDto implements ItemDtoInterface
 {
     /**
      * @var string
@@ -45,14 +45,14 @@ final class InvoiceItemDto implements ItemDtoInterface
      */
     public function __construct(string $name, float $quantity, string $unit, float $price, ?string $taxType = null)
     {
-        $name = trim($name);
-        $unit = trim($unit);
+        $trimmedName = trim($name);
+        $trimmedUnit = trim($unit);
 
-        if ($name === '') {
+        if ($trimmedName === '') {
             throw new InvalidArgumentException('Item name cannot be empty.');
         }
 
-        if ($unit === '') {
+        if ($trimmedUnit === '') {
             throw new InvalidArgumentException('Item unit cannot be empty.');
         }
 
@@ -64,9 +64,9 @@ final class InvoiceItemDto implements ItemDtoInterface
             throw new InvalidArgumentException('Item price must be greater than 0.');
         }
 
-        $this->name = $name;
+        $this->name = $trimmedName;
         $this->quantity = $quantity;
-        $this->unit = $unit;
+        $this->unit = $trimmedUnit;
         $this->price = $price;
         $this->taxType = $taxType !== null ? trim($taxType) : null;
     }
