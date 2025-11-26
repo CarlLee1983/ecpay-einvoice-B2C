@@ -16,23 +16,13 @@ use InvalidArgumentException;
 class OperationCoordinator
 {
     /**
-     * @var OperationFactoryInterface
-     */
-    private OperationFactoryInterface $factory;
-
-    /**
-     * @var EcPayClient
-     */
-    private EcPayClient $client;
-
-    /**
      * @param OperationFactoryInterface $factory
      * @param EcPayClient $client
      */
-    public function __construct(OperationFactoryInterface $factory, EcPayClient $client)
-    {
-        $this->factory = $factory;
-        $this->client = $client;
+    public function __construct(
+        private readonly OperationFactoryInterface $factory,
+        private readonly EcPayClient $client,
+    ) {
     }
 
     /**

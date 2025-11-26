@@ -12,18 +12,13 @@ use Exception;
 class PayloadEncoder
 {
     /**
-     * @var CipherService
-     */
-    private $cipherService;
-
-    /**
      * __construct
      *
      * @param CipherService $cipherService
      */
-    public function __construct(CipherService $cipherService)
-    {
-        $this->cipherService = $cipherService;
+    public function __construct(
+        private readonly CipherService $cipherService,
+    ) {
     }
 
     /**

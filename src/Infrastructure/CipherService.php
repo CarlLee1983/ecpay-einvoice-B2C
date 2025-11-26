@@ -12,23 +12,15 @@ use Exception;
 class CipherService
 {
     /**
-     * @var string
-     */
-    private $hashKey;
-
-    /**
-     * @var string
-     */
-    private $hashIV;
-
-    /**
      * __construct
      *
      * @param string $hashKey
      * @param string $hashIV
      */
-    public function __construct(string $hashKey, string $hashIV)
-    {
+    public function __construct(
+        private readonly string $hashKey,
+        private readonly string $hashIV,
+    ) {
         if ($hashKey === '') {
             throw new Exception('HashKey is empty.');
         }
@@ -36,9 +28,6 @@ class CipherService
         if ($hashIV === '') {
             throw new Exception('HashIV is empty.');
         }
-
-        $this->hashKey = $hashKey;
-        $this->hashIV = $hashIV;
     }
 
     /**
