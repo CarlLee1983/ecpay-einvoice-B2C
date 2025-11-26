@@ -7,6 +7,42 @@ and this project adheres to [Semantic Versioning](https://semver.org/lang/zh-TW/
 
 ## [Unreleased]
 
+## [4.1.0] - 2025-11-26
+
+### Added (新增)
+- **例外類別架構改善**
+  - `EcPayException` - 基礎例外類別，新增 context 追蹤機制（`getContext()`, `setContext()`, `addContext()`）
+  - `ValidationException` - 新增靜態工廠方法（`required()`, `invalid()`, `tooLong()`, `notInRange()`）
+  - `EncryptionException` - 新增靜態工廠方法（`encryptionFailed()`, `decryptionFailed()`, `invalidKey()`）
+  - `ApiException` - 新增 API 請求/回應錯誤例外類別
+  - `PayloadException` - 新增 Payload 結構/資料無效例外類別
+  - `ConfigurationException` - 新增靜態工廠方法（`missing()`, `invalid()`）
+  - `InvalidParameterException` - 新增靜態工廠方法（已標記 deprecated）
+- **Response 類別新增便利方法**
+  - `isSuccess()` - `success()` 的別名
+  - `isError()` - 檢查是否為錯誤回應
+  - `getCode()` - 取得回應代碼（RtnCode）
+  - `toArray()` - 轉換為陣列
+  - `throw()` - 若為錯誤則拋出 `ApiException`
+- **Request 類別改善**
+  - `MIN_TLS_VERSION` 常數 - 最低 TLS 版本設定
+  - `setVerifySsl()` 靜態方法 - SSL 驗證開關
+  - `createDefaultClient()` 方法 - 分離 HTTP Client 建立邏輯
+  - 新增 timeout 和 connect_timeout 設定
+- **config 新增 `verify_ssl` 設定選項**
+- **EcPayServiceProvider 新增 `configureRequest()` 方法**
+
+### Changed (變更)
+- **統一 PHP 8.3 現代語法**
+  - `Content` 和 `EcPayClient` 使用 typed properties
+  - `CipherService` 使用新的例外靜態工廠方法
+  - `PayloadEncoder` 使用 `json_validate()` (PHP 8.3) 與新例外類別
+- **Request 類別改用 `ApiException` 處理錯誤**
+
+### Internal (內部改進)
+- 與 B2B 專案架構同步，提升程式碼一致性
+- 核心類別統一使用自訂例外的靜態工廠方法
+
 ## [4.0.1] - 2025-11-26
 
 ### Removed (移除)
@@ -163,7 +199,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/lang/zh-TW/
 ### Added (新增)
 - 初始功能實作
 
-[Unreleased]: https://github.com/CarlLee1983/ecpay-einvoice-B2C/compare/v4.0.1...HEAD
+[Unreleased]: https://github.com/CarlLee1983/ecpay-einvoice-B2C/compare/v4.1.0...HEAD
+[4.1.0]: https://github.com/CarlLee1983/ecpay-einvoice-B2C/compare/v4.0.1...v4.1.0
 [4.0.1]: https://github.com/CarlLee1983/ecpay-einvoice-B2C/compare/v4.0.0...v4.0.1
 [4.0.0]: https://github.com/CarlLee1983/ecpay-einvoice-B2C/compare/v3.0.0...v4.0.0
 [3.0.0]: https://github.com/CarlLee1983/ecpay-einvoice-B2C/compare/v2.3.0...v3.0.0
