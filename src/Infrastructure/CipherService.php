@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace CarlLee\EcPayB2C\Infrastructure;
 
-use CarlLee\EcPayB2C\Exceptions\ConfigurationException;
 use CarlLee\EcPayB2C\Exceptions\EncryptionException;
 
 /**
@@ -13,22 +12,34 @@ use CarlLee\EcPayB2C\Exceptions\EncryptionException;
 class CipherService
 {
     /**
+     * @var string
+     */
+    private string $hashKey;
+
+    /**
+     * @var string
+     */
+    private string $hashIV;
+
+    /**
      * __construct
      *
      * @param string $hashKey
      * @param string $hashIV
+     * @throws EncryptionException
      */
-    public function __construct(
-        private readonly string $hashKey,
-        private readonly string $hashIV,
-    ) {
+    public function __construct(string $hashKey, string $hashIV)
+    {
         if ($hashKey === '') {
-            throw new ConfigurationException('HashKey is empty.');
+            throw EncryptionException::invalidKey('HashKey');
         }
 
         if ($hashIV === '') {
-            throw new ConfigurationException('HashIV is empty.');
+            throw EncryptionException::invalidKey('HashIV');
         }
+
+        $this->hashKey = $hashKey;
+        $this->hashIV = $hashIV;
     }
 
     /**
@@ -49,7 +60,7 @@ class CipherService
         );
 
         if ($encrypted === false) {
-            throw new EncryptionException('Encryption failed.');
+            throw EncryptionException::encryptionFailed();
         }
 
         return \base64_encode($encrypted);
@@ -65,12 +76,12 @@ class CipherService
     public function decrypt(string $data): string
     {
         if ($data === '') {
-            throw new EncryptionException('Decryption failed.');
+            throw EncryptionException::decryptionFailed('資料為空');
         }
 
         $decoded = \base64_decode($data, true);
         if ($decoded === false) {
-            throw new EncryptionException('Decryption failed.');
+            throw EncryptionException::decryptionFailed('Base64 解碼失敗');
         }
 
         $decrypted = \openssl_decrypt(
@@ -82,7 +93,7 @@ class CipherService
         );
 
         if ($decrypted === false) {
-            throw new EncryptionException('Decryption failed.');
+            throw EncryptionException::decryptionFailed('AES 解密失敗');
         }
 
         return $decrypted;

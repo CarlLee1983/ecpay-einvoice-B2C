@@ -8,11 +8,18 @@ use CarlLee\EcPayB2C\EcPayClient;
 use CarlLee\EcPayB2C\Factories\OperationFactory;
 use CarlLee\EcPayB2C\Factories\OperationFactoryInterface;
 use CarlLee\EcPayB2C\Laravel\Services\OperationCoordinator;
+use CarlLee\EcPayB2C\Request;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Support\ServiceProvider;
 
 /**
  * Laravel Service Provider：負責載入設定並綁定 Service Container。
+ *
+ * 根據綠界電子發票 API 介接注意事項：
+ * - 僅支援 HTTPS (443 port) 連線
+ * - 支援 TLS 1.1 以上加密通訊協定
+ *
+ * @see https://developers.ecpay.com.tw/?p=7809
  */
 class EcPayServiceProvider extends ServiceProvider
 {
@@ -23,10 +30,20 @@ class EcPayServiceProvider extends ServiceProvider
     {
         $this->mergeConfigFrom(__DIR__ . '/../../config/ecpay-einvoice.php', 'ecpay-einvoice');
 
+        $this->configureRequest();
         $this->registerFactory();
         $this->registerClient();
         $this->registerOperationBindings();
         $this->registerCoordinator();
+    }
+
+    /**
+     * 根據設定檔配置 Request 類別。
+     */
+    protected function configureRequest(): void
+    {
+        $verifySsl = $this->app['config']->get('ecpay-einvoice.verify_ssl', true);
+        Request::setVerifySsl((bool) $verifySsl);
     }
 
     /**

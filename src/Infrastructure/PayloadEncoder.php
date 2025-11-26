@@ -4,7 +4,8 @@ declare(strict_types=1);
 
 namespace CarlLee\EcPayB2C\Infrastructure;
 
-use CarlLee\EcPayB2C\Exceptions\InvalidParameterException;
+use CarlLee\EcPayB2C\Exceptions\ApiException;
+use CarlLee\EcPayB2C\Exceptions\PayloadException;
 
 /**
  * 將領域資料轉換為傳輸格式並提供解碼功能。
@@ -24,19 +25,19 @@ class PayloadEncoder
     /**
      * 將內容轉成 ECPay 要求的傳輸格式。
      *
-     * @param array $payload
-     * @throws InvalidParameterException
-     * @return array
+     * @param array<string, mixed> $payload
+     * @throws PayloadException
+     * @return array<string, mixed>
      */
     public function encodePayload(array $payload): array
     {
         if (!isset($payload['Data'])) {
-            throw new InvalidParameterException('The payload structure is invalid.');
+            throw PayloadException::missingData();
         }
 
         $encodedData = json_encode($payload['Data']);
-        if (json_last_error() !== JSON_ERROR_NONE) {
-            throw new InvalidParameterException('The invoice data format is invalid.');
+        if ($encodedData === false) {
+            throw PayloadException::invalidData('JSON 編碼失敗');
         }
 
         $encodedData = urlencode($encodedData);
@@ -51,19 +52,20 @@ class PayloadEncoder
      * 將回傳的 Data 還原為陣列欄位。
      *
      * @param string $encryptedData
-     * @throws InvalidParameterException
-     * @return array
+     * @throws ApiException
+     * @return array<string, mixed>
      */
     public function decodeData(string $encryptedData): array
     {
         $decrypted = $this->cipherService->decrypt($encryptedData);
-        $decoded = json_decode(urldecode($decrypted), true);
+        $urlDecoded = urldecode($decrypted);
 
-        if (json_last_error() !== JSON_ERROR_NONE) {
-            throw new InvalidParameterException('The response data format is invalid.');
+        // PHP 8.3: 使用 json_validate() 先驗證 JSON 格式
+        if (!json_validate($urlDecoded)) {
+            throw ApiException::invalidResponse('回應資料 JSON 格式無效');
         }
 
-        return $decoded;
+        return json_decode($urlDecoded, true);
     }
 
     /**
