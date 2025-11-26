@@ -5,9 +5,9 @@ declare(strict_types=1);
 namespace CarlLee\EcPayB2C;
 
 use CarlLee\EcPayB2C\Contracts\CommandInterface;
+use CarlLee\EcPayB2C\Exceptions\EcPayException;
 use CarlLee\EcPayB2C\Infrastructure\CipherService;
 use CarlLee\EcPayB2C\Infrastructure\PayloadEncoder;
-use Exception;
 
 class EcPayClient
 {
@@ -68,7 +68,7 @@ class EcPayClient
      *
      * @param CommandInterface $command
      * @return Response
-     * @throws Exception
+     * @throws EcPayException
      */
     public function send(CommandInterface $command): Response
     {

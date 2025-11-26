@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace CarlLee\EcPayB2C\Operations;
 
-use Exception;
+use CarlLee\EcPayB2C\Exceptions\ValidationException;
 
 class EditDelayIssue extends DelayIssue
 {
@@ -25,7 +25,7 @@ class EditDelayIssue extends DelayIssue
         parent::validation();
 
         if (empty($this->content['Data']['Tsr'])) {
-            throw new Exception('編輯延遲開立發票時必須帶入 Tsr。');
+            throw new ValidationException('編輯延遲開立發票時必須帶入 Tsr。');
         }
     }
 }

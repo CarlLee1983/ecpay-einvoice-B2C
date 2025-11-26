@@ -5,7 +5,8 @@ declare(strict_types=1);
 namespace CarlLee\EcPayB2C\Queries;
 
 use CarlLee\EcPayB2C\Content;
-use Exception;
+use CarlLee\EcPayB2C\Exceptions\InvalidParameterException;
+use CarlLee\EcPayB2C\Exceptions\ValidationException;
 
 class GetAllowanceInvalid extends Content
 {
@@ -39,7 +40,7 @@ class GetAllowanceInvalid extends Content
     public function setInvoiceNo(string $invoiceNo): self
     {
         if (!preg_match('/^[A-Z]{2}[0-9]{8}$/', $invoiceNo)) {
-            throw new Exception('InvoiceNo 格式錯誤，需為 2 碼英文 + 8 碼數字。');
+            throw new InvalidParameterException('InvoiceNo 格式錯誤，需為 2 碼英文 + 8 碼數字。');
         }
 
         $this->content['Data']['InvoiceNo'] = strtoupper($invoiceNo);
@@ -56,7 +57,7 @@ class GetAllowanceInvalid extends Content
     public function setAllowanceNo(string $allowanceNo): self
     {
         if (strlen($allowanceNo) !== 16) {
-            throw new Exception('AllowanceNo 長度需為 16 碼。');
+            throw new InvalidParameterException('AllowanceNo 長度需為 16 碼。');
         }
 
         $this->content['Data']['AllowanceNo'] = $allowanceNo;
@@ -74,11 +75,11 @@ class GetAllowanceInvalid extends Content
         $this->validatorBaseParam();
 
         if (empty($this->content['Data']['InvoiceNo'])) {
-            throw new Exception('InvoiceNo 不可為空。');
+            throw new InvalidParameterException('InvoiceNo 不可為空。');
         }
 
         if (empty($this->content['Data']['AllowanceNo'])) {
-            throw new Exception('AllowanceNo 不可為空。');
+            throw new InvalidParameterException('AllowanceNo 不可為空。');
         }
     }
 }

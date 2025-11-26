@@ -7,8 +7,9 @@ namespace CarlLee\EcPayB2C\Operations;
 use CarlLee\EcPayB2C\Content;
 use CarlLee\EcPayB2C\DTO\AllowanceItemDto;
 use CarlLee\EcPayB2C\DTO\ItemCollection;
+use CarlLee\EcPayB2C\Exceptions\InvalidParameterException;
+use CarlLee\EcPayB2C\Exceptions\ValidationException;
 use CarlLee\EcPayB2C\Parameter\AllowanceNotifyType;
-use Exception;
 
 class AllowanceInvoice extends Content
 {
@@ -60,7 +61,7 @@ class AllowanceInvoice extends Content
     public function setInvoiceNo(string $invoiceNo): self
     {
         if (strlen($invoiceNo) != 10) {
-            throw new Exception('The invoice no length should be 10.');
+            throw new InvalidParameterException('The invoice no length should be 10.');
         }
 
         $this->content['Data']['InvoiceNo'] = $invoiceNo;
@@ -84,7 +85,7 @@ class AllowanceInvoice extends Content
         ];
 
         if (!in_array($type, $allownaceType)) {
-            throw new Exception('The invoice allowance notify type is invalid.');
+            throw new InvalidParameterException('The invoice allowance notify type is invalid.');
         }
 
         $this->content['Data']['AllowanceNotify'] = $type;
@@ -101,7 +102,7 @@ class AllowanceInvoice extends Content
     public function setCustomerName(string $name): self
     {
         if (empty($name)) {
-            throw new Exception('Customer name is empty.');
+            throw new InvalidParameterException('Customer name is empty.');
         }
 
         $this->content['Data']['CustomerName'] = $name;
@@ -118,11 +119,11 @@ class AllowanceInvoice extends Content
     public function setNotifyMail(string $email): self
     {
         if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-            throw new Exception('Invalid email format');
+            throw new InvalidParameterException('Invalid email format');
         }
 
         if (strlen($email) > 100) {
-            throw new Exception('Email length must be less than 100 characters.');
+            throw new InvalidParameterException('Email length must be less than 100 characters.');
         }
 
         $this->content['Data']['NotifyMail'] = $email;
@@ -139,7 +140,7 @@ class AllowanceInvoice extends Content
     public function setNotifyPhone(string $number): self
     {
         if (strlen($number) > 20) {
-            throw new Exception('Phone number length must be less than 21 characters.');
+            throw new InvalidParameterException('Phone number length must be less than 21 characters.');
         }
 
         $this->content['Data']['NotifyPhone'] = $number;
@@ -173,7 +174,7 @@ class AllowanceInvoice extends Content
             }
 
             if (!$item instanceof AllowanceItemDto) {
-                throw new Exception('Each allowance item must be an AllowanceItemDto or array definition.');
+                throw new InvalidParameterException('Each allowance item must be an AllowanceItemDto or array definition.');
             }
 
             $collection->add($item);
@@ -219,33 +220,33 @@ class AllowanceInvoice extends Content
         $this->content['Data']['Items'] = $itemsPayload;
 
         if (empty($this->content['Data']['InvoiceNo'])) {
-            throw new Exception('The invoice no is empty.');
+            throw new InvalidParameterException('The invoice no is empty.');
         }
 
         if (empty($this->content['Data']['InvoiceDate'])) {
-            throw new Exception('The invoice date is empty.');
+            throw new InvalidParameterException('The invoice date is empty.');
         }
 
         if (
             $this->content['Data']['AllowanceNotify'] == AllowanceNotifyType::EMAIL->value
             && empty($this->content['Data']['NotifyMail'])
         ) {
-            throw new Exception('The allowance notify is mail, email should be setting.');
+            throw new InvalidParameterException('The allowance notify is mail, email should be setting.');
         }
 
         if (
             $this->content['Data']['AllowanceNotify'] == AllowanceNotifyType::SMS->value
             && empty($this->content['Data']['NotifyPhone'])
         ) {
-            throw new Exception('The allowance notify is SMS, phone number should be setting.');
+            throw new InvalidParameterException('The allowance notify is SMS, phone number should be setting.');
         }
 
         if ($this->content['Data']['AllowanceAmount'] <= 0) {
-            throw new Exception('The allowance amount should be greater than 0.');
+            throw new InvalidParameterException('The allowance amount should be greater than 0.');
         }
 
         if ($this->items->isEmpty()) {
-            throw new Exception('The items is empty.');
+            throw new InvalidParameterException('The items is empty.');
         }
     }
 }

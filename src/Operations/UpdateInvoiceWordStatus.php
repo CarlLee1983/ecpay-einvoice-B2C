@@ -5,7 +5,8 @@ declare(strict_types=1);
 namespace CarlLee\EcPayB2C\Operations;
 
 use CarlLee\EcPayB2C\Content;
-use Exception;
+use CarlLee\EcPayB2C\Exceptions\InvalidParameterException;
+use CarlLee\EcPayB2C\Exceptions\ValidationException;
 
 class UpdateInvoiceWordStatus extends Content
 {
@@ -41,11 +42,11 @@ class UpdateInvoiceWordStatus extends Content
         $trackId = trim($trackId);
 
         if ($trackId === '') {
-            throw new Exception('TrackID cannot be empty.');
+            throw new InvalidParameterException('TrackID cannot be empty.');
         }
 
         if (!preg_match('/^[A-Za-z0-9]{1,10}$/', $trackId)) {
-            throw new Exception('TrackID must be 1-10 alphanumeric characters.');
+            throw new InvalidParameterException('TrackID must be 1-10 alphanumeric characters.');
         }
 
         $this->content['Data']['TrackID'] = $trackId;
@@ -62,7 +63,7 @@ class UpdateInvoiceWordStatus extends Content
     public function setInvoiceStatus(int $status): self
     {
         if (!in_array($status, [0, 1, 2], true)) {
-            throw new Exception('InvoiceStatus only supports 0(disable), 1(pause), or 2(enable).');
+            throw new InvalidParameterException('InvoiceStatus only supports 0(disable), 1(pause), or 2(enable).');
         }
 
         $this->content['Data']['InvoiceStatus'] = $status;
@@ -80,15 +81,15 @@ class UpdateInvoiceWordStatus extends Content
         $this->validatorBaseParam();
 
         if (empty($this->content['Data']['TrackID'])) {
-            throw new Exception('TrackID cannot be empty.');
+            throw new InvalidParameterException('TrackID cannot be empty.');
         }
 
         if (!preg_match('/^[A-Za-z0-9]{1,10}$/', $this->content['Data']['TrackID'])) {
-            throw new Exception('TrackID must be 1-10 alphanumeric characters.');
+            throw new InvalidParameterException('TrackID must be 1-10 alphanumeric characters.');
         }
 
         if (!in_array($this->content['Data']['InvoiceStatus'], [0, 1, 2], true)) {
-            throw new Exception('InvoiceStatus only supports 0(disable), 1(pause), or 2(enable).');
+            throw new InvalidParameterException('InvoiceStatus only supports 0(disable), 1(pause), or 2(enable).');
         }
     }
 }

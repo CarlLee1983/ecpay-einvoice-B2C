@@ -5,8 +5,9 @@ declare(strict_types=1);
 namespace CarlLee\EcPayB2C\Queries;
 
 use CarlLee\EcPayB2C\Content;
+use CarlLee\EcPayB2C\Exceptions\InvalidParameterException;
+use CarlLee\EcPayB2C\Exceptions\ValidationException;
 use CarlLee\EcPayB2C\Parameter\InvType;
-use Exception;
 
 class GetInvoiceWordSetting extends Content
 {
@@ -86,7 +87,7 @@ class GetInvoiceWordSetting extends Content
     public function setInvoiceCategory(int $category): self
     {
         if ($category !== 1) {
-            throw new Exception('InvoiceCategory must be 1.');
+            throw new InvalidParameterException('InvoiceCategory must be 1.');
         }
 
         $this->content['Data']['InvoiceCategory'] = $category;
@@ -103,7 +104,7 @@ class GetInvoiceWordSetting extends Content
     public function setInvType(string $type): self
     {
         if (!in_array($type, [InvType::GENERAL->value, InvType::SPECIAL->value], true)) {
-            throw new Exception('InvType only supports 07 or 08.');
+            throw new InvalidParameterException('InvType only supports 07 or 08.');
         }
 
         $this->content['Data']['InvType'] = $type;
@@ -128,7 +129,7 @@ class GetInvoiceWordSetting extends Content
         }
 
         if (!preg_match('/^[A-Za-z0-9]{1,10}$/', $productServiceId)) {
-            throw new Exception('ProductServiceId must be 1-10 alphanumeric characters.');
+            throw new InvalidParameterException('ProductServiceId must be 1-10 alphanumeric characters.');
         }
 
         $this->content['Data']['ProductServiceId'] = $productServiceId;
@@ -153,7 +154,7 @@ class GetInvoiceWordSetting extends Content
         }
 
         if (!preg_match('/^[A-Z]{2}$/', $header)) {
-            throw new Exception('InvoiceHeader must contain exactly two letters.');
+            throw new InvalidParameterException('InvoiceHeader must contain exactly two letters.');
         }
 
         $this->content['Data']['InvoiceHeader'] = $header;
@@ -171,35 +172,35 @@ class GetInvoiceWordSetting extends Content
         $this->validatorBaseParam();
 
         if (empty($this->content['Data']['InvoiceYear'])) {
-            throw new Exception('InvoiceYear cannot be empty.');
+            throw new InvalidParameterException('InvoiceYear cannot be empty.');
         }
 
         $this->assertInvoiceTerm($this->content['Data']['InvoiceTerm']);
         $this->assertUseStatus($this->content['Data']['UseStatus']);
 
         if ($this->content['Data']['InvoiceCategory'] !== 1) {
-            throw new Exception('InvoiceCategory must be 1.');
+            throw new InvalidParameterException('InvoiceCategory must be 1.');
         }
 
         if (
             !empty($this->content['Data']['InvType']) &&
             !in_array($this->content['Data']['InvType'], [InvType::GENERAL->value, InvType::SPECIAL->value], true)
         ) {
-            throw new Exception('InvType only supports 07 or 08.');
+            throw new InvalidParameterException('InvType only supports 07 or 08.');
         }
 
         if (
             !empty($this->content['Data']['ProductServiceId']) &&
             !preg_match('/^[A-Za-z0-9]{1,10}$/', $this->content['Data']['ProductServiceId'])
         ) {
-            throw new Exception('ProductServiceId must be 1-10 alphanumeric characters.');
+            throw new InvalidParameterException('ProductServiceId must be 1-10 alphanumeric characters.');
         }
 
         if (
             !empty($this->content['Data']['InvoiceHeader']) &&
             !preg_match('/^[A-Z]{2}$/', $this->content['Data']['InvoiceHeader'])
         ) {
-            throw new Exception('InvoiceHeader must contain exactly two letters.');
+            throw new InvalidParameterException('InvoiceHeader must contain exactly two letters.');
         }
     }
 
@@ -212,7 +213,7 @@ class GetInvoiceWordSetting extends Content
     private function assertInvoiceTerm(int $term): void
     {
         if ($term < 0 || $term > 6) {
-            throw new Exception('InvoiceTerm must be between 0 and 6.');
+            throw new InvalidParameterException('InvoiceTerm must be between 0 and 6.');
         }
     }
 
@@ -225,7 +226,7 @@ class GetInvoiceWordSetting extends Content
     private function assertUseStatus(int $status): void
     {
         if ($status < 0 || $status > 6) {
-            throw new Exception('UseStatus must be between 0 and 6.');
+            throw new InvalidParameterException('UseStatus must be between 0 and 6.');
         }
     }
 
@@ -244,25 +245,25 @@ class GetInvoiceWordSetting extends Content
         $year = trim($year);
 
         if ($year === '') {
-            throw new Exception('InvoiceYear cannot be empty.');
+            throw new InvalidParameterException('InvoiceYear cannot be empty.');
         }
 
         if (!ctype_digit($year)) {
-            throw new Exception('InvoiceYear must be numeric.');
+            throw new InvalidParameterException('InvoiceYear must be numeric.');
         }
 
         if (strlen($year) === 4) {
             $converted = (int) $year - 1911;
 
             if ($converted <= 0) {
-                throw new Exception('Gregorian year must be greater than 1911.');
+                throw new InvalidParameterException('Gregorian year must be greater than 1911.');
             }
 
             $year = (string) $converted;
         }
 
         if (strlen($year) > 3) {
-            throw new Exception('InvoiceYear must be 3 digits in ROC format.');
+            throw new InvalidParameterException('InvoiceYear must be 3 digits in ROC format.');
         }
 
         $yearValue = (int) $year;
@@ -272,7 +273,7 @@ class GetInvoiceWordSetting extends Content
         $max = $current + 1;
 
         if ($yearValue < $min || $yearValue > $max) {
-            throw new Exception('InvoiceYear can only target last, current, or next year.');
+            throw new InvalidParameterException('InvoiceYear can only target last, current, or next year.');
         }
 
         return str_pad((string) $yearValue, 3, '0', STR_PAD_LEFT);

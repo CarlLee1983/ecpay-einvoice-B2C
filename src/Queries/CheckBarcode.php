@@ -5,7 +5,8 @@ declare(strict_types=1);
 namespace CarlLee\EcPayB2C\Queries;
 
 use CarlLee\EcPayB2C\Content;
-use Exception;
+use CarlLee\EcPayB2C\Exceptions\InvalidParameterException;
+use CarlLee\EcPayB2C\Exceptions\ValidationException;
 
 class CheckBarcode extends Content
 {
@@ -52,7 +53,7 @@ class CheckBarcode extends Content
         $this->validatorBaseParam();
 
         if (empty($this->content['Data']['BarCode'])) {
-            throw new Exception('Phone barcode is empty.');
+            throw new InvalidParameterException('Phone barcode is empty.');
         }
 
         $this->assertBarcodeFormat($this->content['Data']['BarCode']);
@@ -66,7 +67,7 @@ class CheckBarcode extends Content
     private function assertBarcodeFormat(string $code): void
     {
         if (!preg_match('/^\/[0-9A-Z+\-.]{7}$/', $code)) {
-            throw new Exception('Phone barcode format invalid.');
+            throw new InvalidParameterException('Phone barcode format invalid.');
         }
     }
 }

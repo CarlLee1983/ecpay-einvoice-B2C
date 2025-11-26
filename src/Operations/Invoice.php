@@ -7,6 +7,8 @@ namespace CarlLee\EcPayB2C\Operations;
 use CarlLee\EcPayB2C\Content;
 use CarlLee\EcPayB2C\DTO\InvoiceItemDto;
 use CarlLee\EcPayB2C\DTO\ItemCollection;
+use CarlLee\EcPayB2C\Exceptions\InvalidParameterException;
+use CarlLee\EcPayB2C\Exceptions\ValidationException;
 use CarlLee\EcPayB2C\InvoiceValidator;
 use CarlLee\EcPayB2C\Parameter\CarrierType;
 use CarlLee\EcPayB2C\Parameter\ClearanceMark;
@@ -15,7 +17,6 @@ use CarlLee\EcPayB2C\Parameter\InvType;
 use CarlLee\EcPayB2C\Parameter\PrintMark;
 use CarlLee\EcPayB2C\Parameter\TaxType;
 use CarlLee\EcPayB2C\Parameter\VatType;
-use Exception;
 
 class Invoice extends Content
 {
@@ -155,7 +156,7 @@ class Invoice extends Content
     public function setClearanceMark(string $mark): self
     {
         if (!in_array($mark, [ClearanceMark::YES->value, ClearanceMark::NO->value])) {
-            throw new Exception('Invoice clearance mark format is invalid.');
+            throw new InvalidParameterException('Invoice clearance mark format is invalid.');
         }
 
         $this->content['Data']['ClearanceMark'] = $mark;
@@ -172,7 +173,7 @@ class Invoice extends Content
     public function setPrintMark(string $mark): self
     {
         if ($mark != PrintMark::YES->value && $mark != PrintMark::NO->value) {
-            throw new Exception('Invoice print mark format is wrong.');
+            throw new InvalidParameterException('Invoice print mark format is wrong.');
         }
 
         $this->content['Data']['Print'] = (string) $mark;
@@ -189,7 +190,7 @@ class Invoice extends Content
     public function setDonation(string $donation): self
     {
         if (!in_array($donation, [Donation::YES->value, Donation::NO->value])) {
-            throw new Exception('Invoice donation format is wrong.');
+            throw new InvalidParameterException('Invoice donation format is wrong.');
         }
 
         $this->content['Data']['Donation'] = (string) $donation;
@@ -208,7 +209,7 @@ class Invoice extends Content
         $counter = strlen($code);
 
         if ($counter > 7 || $counter < 3) {
-            throw new Exception('Invoice love code is wrong.');
+            throw new InvalidParameterException('Invoice love code is wrong.');
         }
 
         $this->content['Data']['LoveCode'] = (string) $code;
@@ -232,7 +233,7 @@ class Invoice extends Content
         ];
 
         if (!in_array($type, $carrierType)) {
-            throw new Exception('Invoice carrier type format is wrong.');
+            throw new InvalidParameterException('Invoice carrier type format is wrong.');
         }
 
         $this->content['Data']['CarrierType'] = (string) $type;
@@ -286,7 +287,7 @@ class Invoice extends Content
         ];
 
         if (!in_array($type, $taxType)) {
-            throw new Exception('Invoice tax type format is invalid.');
+            throw new InvalidParameterException('Invoice tax type format is invalid.');
         }
 
         $this->taxType = $type;
@@ -317,7 +318,7 @@ class Invoice extends Content
     public function setSalesAmount($amount): self
     {
         if ($amount <= 0) {
-            throw new Exception('Invoice sales amount is invalid.');
+            throw new InvalidParameterException('Invoice sales amount is invalid.');
         }
 
         $this->content['Data']['SalesAmount'] = $amount;
@@ -338,7 +339,7 @@ class Invoice extends Content
             }
 
             if (!$item instanceof InvoiceItemDto) {
-                throw new Exception('Each invoice item must be an InvoiceItemDto or array definition.');
+                throw new InvalidParameterException('Each invoice item must be an InvoiceItemDto or array definition.');
             }
 
             $collection->add($item);
@@ -352,7 +353,7 @@ class Invoice extends Content
     /**
      * Validation content.
      *
-     * @throws Exception
+     * @throws ValidationException
      */
     public function validation()
     {
@@ -363,7 +364,7 @@ class Invoice extends Content
         $amount = round($this->items->sumAmount());
 
         if (!empty($this->content['Data']['SalesAmount']) && $this->content['Data']['SalesAmount'] != $amount) {
-            throw new Exception('The calculated sales amount is not equal to the set sales amount.');
+            throw new ValidationException('The calculated sales amount is not equal to the set sales amount.');
         }
 
         $this->content['Data']['SalesAmount'] = $amount;

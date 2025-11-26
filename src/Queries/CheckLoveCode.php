@@ -5,7 +5,8 @@ declare(strict_types=1);
 namespace CarlLee\EcPayB2C\Queries;
 
 use CarlLee\EcPayB2C\Content;
-use Exception;
+use CarlLee\EcPayB2C\Exceptions\InvalidParameterException;
+use CarlLee\EcPayB2C\Exceptions\ValidationException;
 
 class CheckLoveCode extends Content
 {
@@ -36,7 +37,7 @@ class CheckLoveCode extends Content
     public function setLoveCode(string $code): self
     {
         if (strlen($code) < 3 || strlen($code) > 7) {
-            throw new Exception('The donate code length must be between 3 and 7 characters.');
+            throw new InvalidParameterException('The donate code length must be between 3 and 7 characters.');
         }
 
         $this->content['Data']['LoveCode'] = $code;
@@ -52,7 +53,7 @@ class CheckLoveCode extends Content
         $this->validatorBaseParam();
 
         if (empty($this->content['Data']['LoveCode'])) {
-            throw new Exception('Love code is empty.');
+            throw new InvalidParameterException('Love code is empty.');
         }
     }
 }

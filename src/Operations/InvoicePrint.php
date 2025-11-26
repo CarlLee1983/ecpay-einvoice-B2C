@@ -5,7 +5,8 @@ declare(strict_types=1);
 namespace CarlLee\EcPayB2C\Operations;
 
 use CarlLee\EcPayB2C\Content;
-use Exception;
+use CarlLee\EcPayB2C\Exceptions\InvalidParameterException;
+use CarlLee\EcPayB2C\Exceptions\ValidationException;
 
 class InvoicePrint extends Content
 {
@@ -40,7 +41,7 @@ class InvoicePrint extends Content
     public function setInvoiceNo(string $invoiceNo): self
     {
         if (!preg_match('/^[A-Z]{2}[0-9]{8}$/', strtoupper($invoiceNo))) {
-            throw new Exception('InvoiceNo 格式錯誤，需為 2 碼英文 + 8 碼數字。');
+            throw new InvalidParameterException('InvoiceNo 格式錯誤，需為 2 碼英文 + 8 碼數字。');
         }
 
         $this->content['Data']['InvoiceNo'] = strtoupper($invoiceNo);
@@ -70,7 +71,7 @@ class InvoicePrint extends Content
     public function setPrintStyle(int $style): self
     {
         if (!in_array($style, [1, 2, 3, 4, 5], true)) {
-            throw new Exception('PrintStyle 僅支援 1~5。');
+            throw new InvalidParameterException('PrintStyle 僅支援 1~5。');
         }
 
         $this->content['Data']['PrintStyle'] = $style;
@@ -100,7 +101,7 @@ class InvoicePrint extends Content
     public function setShowingDetail(int $value): self
     {
         if (!in_array($value, [1, 2], true)) {
-            throw new Exception('IsShowingDetail 僅支援 1 或 2。');
+            throw new InvalidParameterException('IsShowingDetail 僅支援 1 或 2。');
         }
 
         $this->content['Data']['IsShowingDetail'] = $value;
@@ -116,26 +117,26 @@ class InvoicePrint extends Content
         $this->validatorBaseParam();
 
         if (empty($this->content['Data']['InvoiceNo'])) {
-            throw new Exception('InvoiceNo 不可為空。');
+            throw new InvalidParameterException('InvoiceNo 不可為空。');
         }
 
         if (empty($this->content['Data']['InvoiceDate'])) {
-            throw new Exception('InvoiceDate 不可為空。');
+            throw new InvalidParameterException('InvoiceDate 不可為空。');
         }
 
         if (!in_array($this->content['Data']['PrintStyle'], [1, 2, 3, 4, 5], true)) {
-            throw new Exception('PrintStyle 僅支援 1~5。');
+            throw new InvalidParameterException('PrintStyle 僅支援 1~5。');
         }
 
         if ($this->content['Data']['IsReprintInvoice'] !== '' && $this->content['Data']['IsReprintInvoice'] !== 'Y') {
-            throw new Exception('IsReprintInvoice 僅能為空字串或 Y。');
+            throw new InvalidParameterException('IsReprintInvoice 僅能為空字串或 Y。');
         }
 
         if (
             $this->content['Data']['IsShowingDetail'] !== null
             && !in_array($this->content['Data']['IsShowingDetail'], [1, 2], true)
         ) {
-            throw new Exception('IsShowingDetail 僅支援 1 或 2。');
+            throw new InvalidParameterException('IsShowingDetail 僅支援 1 或 2。');
         }
     }
 
@@ -157,6 +158,6 @@ class InvoicePrint extends Content
             }
         }
 
-        throw new Exception('InvoiceDate 格式需為 yyyy-MM-dd 或 yyyy/MM/dd。');
+        throw new InvalidParameterException('InvoiceDate 格式需為 yyyy-MM-dd 或 yyyy/MM/dd。');
     }
 }

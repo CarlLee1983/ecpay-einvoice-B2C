@@ -5,7 +5,8 @@ declare(strict_types=1);
 namespace CarlLee\EcPayB2C\Queries;
 
 use CarlLee\EcPayB2C\Content;
-use Exception;
+use CarlLee\EcPayB2C\Exceptions\InvalidParameterException;
+use CarlLee\EcPayB2C\Exceptions\ValidationException;
 
 class GetGovInvoiceWordSetting extends Content
 {
@@ -53,7 +54,7 @@ class GetGovInvoiceWordSetting extends Content
         $this->validatorBaseParam();
 
         if (empty($this->content['Data']['InvoiceYear'])) {
-            throw new Exception('InvoiceYear cannot be empty.');
+            throw new InvalidParameterException('InvoiceYear cannot be empty.');
         }
 
         $this->assertInvoiceYearRange((int) $this->content['Data']['InvoiceYear']);
@@ -74,31 +75,31 @@ class GetGovInvoiceWordSetting extends Content
         $year = trim($year);
 
         if ($year === '') {
-            throw new Exception('InvoiceYear cannot be empty.');
+            throw new InvalidParameterException('InvoiceYear cannot be empty.');
         }
 
         if (!ctype_digit($year)) {
-            throw new Exception('InvoiceYear must be numeric.');
+            throw new InvalidParameterException('InvoiceYear must be numeric.');
         }
 
         if (strlen($year) === 4) {
             $converted = (int) $year - 1911;
 
             if ($converted <= 0) {
-                throw new Exception('Gregorian year must be greater than 1911.');
+                throw new InvalidParameterException('Gregorian year must be greater than 1911.');
             }
 
             $year = (string) $converted;
         }
 
         if (strlen($year) > 3) {
-            throw new Exception('InvoiceYear must be 3 digits in ROC format.');
+            throw new InvalidParameterException('InvoiceYear must be 3 digits in ROC format.');
         }
 
         $yearValue = (int) $year;
 
         if ($yearValue <= 0) {
-            throw new Exception('InvoiceYear must be a positive integer.');
+            throw new InvalidParameterException('InvoiceYear must be a positive integer.');
         }
 
         $this->assertInvoiceYearRange($yearValue);
@@ -119,7 +120,7 @@ class GetGovInvoiceWordSetting extends Content
         $max = $currentRocYear + 1;
 
         if ($year < $min || $year > $max) {
-            throw new Exception('InvoiceYear can only target last, current, or next year.');
+            throw new InvalidParameterException('InvoiceYear can only target last, current, or next year.');
         }
     }
 }

@@ -7,8 +7,9 @@ namespace CarlLee\EcPayB2C\Operations;
 use CarlLee\EcPayB2C\Content;
 use CarlLee\EcPayB2C\DTO\AllowanceCollegiateItemDto;
 use CarlLee\EcPayB2C\DTO\ItemCollection;
+use CarlLee\EcPayB2C\Exceptions\InvalidParameterException;
+use CarlLee\EcPayB2C\Exceptions\ValidationException;
 use CarlLee\EcPayB2C\Parameter\AllowanceNotifyType;
-use Exception;
 
 class AllowanceByCollegiate extends Content
 {
@@ -58,7 +59,7 @@ class AllowanceByCollegiate extends Content
     public function setInvoiceNo(string $invoiceNo): self
     {
         if (!preg_match('/^[A-Z]{2}[0-9]{8}$/', strtoupper($invoiceNo))) {
-            throw new Exception('InvoiceNo 格式錯誤，需為 2 碼英文 + 8 碼數字。');
+            throw new InvalidParameterException('InvoiceNo 格式錯誤，需為 2 碼英文 + 8 碼數字。');
         }
 
         $this->content['Data']['InvoiceNo'] = strtoupper($invoiceNo);
@@ -75,7 +76,7 @@ class AllowanceByCollegiate extends Content
     public function setCustomerName(string $name): self
     {
         if (empty($name)) {
-            throw new Exception('CustomerName 不可為空。');
+            throw new InvalidParameterException('CustomerName 不可為空。');
         }
 
         $this->content['Data']['CustomerName'] = $name;
@@ -94,12 +95,12 @@ class AllowanceByCollegiate extends Content
         $list = array_filter(array_map('trim', explode(';', $emails)));
 
         if (empty($list)) {
-            throw new Exception('NotifyMail 至少需要一個有效 Email。');
+            throw new InvalidParameterException('NotifyMail 至少需要一個有效 Email。');
         }
 
         foreach ($list as $email) {
             if (strlen($email) > 100 || !filter_var($email, FILTER_VALIDATE_EMAIL)) {
-                throw new Exception('NotifyMail 格式錯誤。');
+                throw new InvalidParameterException('NotifyMail 格式錯誤。');
             }
         }
 
@@ -117,11 +118,11 @@ class AllowanceByCollegiate extends Content
     public function setReturnURL(string $url): self
     {
         if (empty($url)) {
-            throw new Exception('ReturnURL 不可為空。');
+            throw new InvalidParameterException('ReturnURL 不可為空。');
         }
 
         if (strlen($url) > 200) {
-            throw new Exception('ReturnURL 長度需小於等於 200。');
+            throw new InvalidParameterException('ReturnURL 長度需小於等於 200。');
         }
 
         $this->content['Data']['ReturnURL'] = $url;
@@ -143,7 +144,7 @@ class AllowanceByCollegiate extends Content
             }
 
             if (!$item instanceof AllowanceCollegiateItemDto) {
-                throw new Exception('折讓項目須為 AllowanceCollegiateItemDto 或陣列定義。');
+                throw new InvalidParameterException('折讓項目須為 AllowanceCollegiateItemDto 或陣列定義。');
             }
 
             $collection->add($item);
@@ -164,31 +165,31 @@ class AllowanceByCollegiate extends Content
         $this->content['Data']['Items'] = $this->items->toArray();
 
         if (empty($this->content['Data']['InvoiceNo'])) {
-            throw new Exception('InvoiceNo 不可為空。');
+            throw new InvalidParameterException('InvoiceNo 不可為空。');
         }
 
         if (empty($this->content['Data']['InvoiceDate'])) {
-            throw new Exception('InvoiceDate 不可為空。');
+            throw new InvalidParameterException('InvoiceDate 不可為空。');
         }
 
         if ($this->content['Data']['AllowanceNotify'] !== AllowanceNotifyType::EMAIL->value) {
-            throw new Exception('AllowanaceNotify 僅支援電子郵件 (E)。');
+            throw new InvalidParameterException('AllowanaceNotify 僅支援電子郵件 (E)。');
         }
 
         if (empty($this->content['Data']['NotifyMail'])) {
-            throw new Exception('NotifyMail 不可為空。');
+            throw new InvalidParameterException('NotifyMail 不可為空。');
         }
 
         if (empty($this->content['Data']['ReturnURL'])) {
-            throw new Exception('ReturnURL 不可為空。');
+            throw new InvalidParameterException('ReturnURL 不可為空。');
         }
 
         if ($this->content['Data']['AllowanceAmount'] <= 0) {
-            throw new Exception('AllowanceAmount 必須大於 0。');
+            throw new InvalidParameterException('AllowanceAmount 必須大於 0。');
         }
 
         if ($this->items->isEmpty()) {
-            throw new Exception('折讓項目不可為空。');
+            throw new InvalidParameterException('折讓項目不可為空。');
         }
     }
 }

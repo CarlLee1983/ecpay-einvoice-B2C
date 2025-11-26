@@ -5,7 +5,8 @@ declare(strict_types=1);
 namespace CarlLee\EcPayB2C\Queries;
 
 use CarlLee\EcPayB2C\Content;
-use Exception;
+use CarlLee\EcPayB2C\Exceptions\InvalidParameterException;
+use CarlLee\EcPayB2C\Exceptions\ValidationException;
 
 class GetCompanyNameByTaxID extends Content
 {
@@ -56,7 +57,7 @@ class GetCompanyNameByTaxID extends Content
         $this->validatorBaseParam();
 
         if (empty($this->content['Data']['UnifiedBusinessNo'])) {
-            throw new Exception('統一編號不可為空值。');
+            throw new InvalidParameterException('統一編號不可為空值。');
         }
 
         $this->assertUnifiedBusinessNoFormat($this->content['Data']['UnifiedBusinessNo']);
@@ -71,7 +72,7 @@ class GetCompanyNameByTaxID extends Content
     private function assertUnifiedBusinessNoFormat(string $taxId): void
     {
         if (strlen($taxId) !== 8 || !ctype_digit($taxId)) {
-            throw new Exception('統一編號需為 8 碼阿拉伯數字。');
+            throw new InvalidParameterException('統一編號需為 8 碼阿拉伯數字。');
         }
     }
 }

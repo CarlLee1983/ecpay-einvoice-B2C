@@ -5,7 +5,8 @@ declare(strict_types=1);
 namespace CarlLee\EcPayB2C\Operations;
 
 use CarlLee\EcPayB2C\Content;
-use Exception;
+use CarlLee\EcPayB2C\Exceptions\InvalidParameterException;
+use CarlLee\EcPayB2C\Exceptions\ValidationException;
 
 class InvalidInvoice extends Content
 {
@@ -41,7 +42,7 @@ class InvalidInvoice extends Content
     public function setInvoiceNo(string $invoiceNo): self
     {
         if (strlen($invoiceNo) != 10) {
-            throw new Exception('The invoice no length should be 10.');
+            throw new ValidationException('The invoice no length should be 10.');
         }
 
         $this->content['Data']['InvoiceNo'] = $invoiceNo;
@@ -89,15 +90,15 @@ class InvalidInvoice extends Content
         $this->validatorBaseParam();
 
         if (empty($this->content['Data']['InvoiceNo'])) {
-            throw new Exception('The invoice no is empty.');
+            throw new ValidationException('The invoice no is empty.');
         }
 
         if (empty($this->content['Data']['InvoiceDate'])) {
-            throw new Exception('The invoice date is empty.');
+            throw new ValidationException('The invoice date is empty.');
         }
 
         if (empty($this->content['Data']['Reason'])) {
-            throw new Exception('The invoice invalid reason is empty.');
+            throw new ValidationException('The invoice invalid reason is empty.');
         }
     }
 }

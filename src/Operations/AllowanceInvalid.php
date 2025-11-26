@@ -5,7 +5,8 @@ declare(strict_types=1);
 namespace CarlLee\EcPayB2C\Operations;
 
 use CarlLee\EcPayB2C\Content;
-use Exception;
+use CarlLee\EcPayB2C\Exceptions\InvalidParameterException;
+use CarlLee\EcPayB2C\Exceptions\ValidationException;
 
 class AllowanceInvalid extends Content
 {
@@ -18,8 +19,6 @@ class AllowanceInvalid extends Content
 
     /**
      * Initialize invoice content.
-     *
-     * @return void
      */
     protected function initContent()
     {
@@ -40,7 +39,7 @@ class AllowanceInvalid extends Content
     public function setInvoiceNo(string $invoiceNo): self
     {
         if (strlen($invoiceNo) != 10) {
-            throw new Exception('The invoice no length should be 10.');
+            throw new InvalidParameterException('The invoice no length should be 10.');
         }
 
         $this->content['Data']['InvoiceNo'] = $invoiceNo;
@@ -57,7 +56,7 @@ class AllowanceInvalid extends Content
     public function setAllowanceNo(string $number): self
     {
         if (strlen($number) != 16) {
-            throw new Exception('The invoice allowance no length should be 16.');
+            throw new InvalidParameterException('The invoice allowance no length should be 16.');
         }
 
         $this->content['Data']['AllowanceNo'] = $number;
@@ -80,23 +79,21 @@ class AllowanceInvalid extends Content
 
     /**
      * Validation content.
-     *
-     * @return void
      */
     public function validation()
     {
         $this->validatorBaseParam();
 
         if (empty($this->content['Data']['InvoiceNo'])) {
-            throw new Exception('The invoice no is empty.');
+            throw new InvalidParameterException('The invoice no is empty.');
         }
 
         if (empty($this->content['Data']['AllowanceNo'])) {
-            throw new Exception('The invoice allowance no is empty.');
+            throw new InvalidParameterException('The invoice allowance no is empty.');
         }
 
         if (empty($this->content['Data']['Reason'])) {
-            throw new Exception('The invoice invalid reason is empty.');
+            throw new InvalidParameterException('The invoice invalid reason is empty.');
         }
     }
 }

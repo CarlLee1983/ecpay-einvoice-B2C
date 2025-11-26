@@ -4,7 +4,8 @@ declare(strict_types=1);
 
 namespace CarlLee\EcPayB2C\Infrastructure;
 
-use Exception;
+use CarlLee\EcPayB2C\Exceptions\ConfigurationException;
+use CarlLee\EcPayB2C\Exceptions\EncryptionException;
 
 /**
  * 專責處理 AES 加解密。
@@ -22,11 +23,11 @@ class CipherService
         private readonly string $hashIV,
     ) {
         if ($hashKey === '') {
-            throw new Exception('HashKey is empty.');
+            throw new ConfigurationException('HashKey is empty.');
         }
 
         if ($hashIV === '') {
-            throw new Exception('HashIV is empty.');
+            throw new ConfigurationException('HashIV is empty.');
         }
     }
 
@@ -34,7 +35,7 @@ class CipherService
      * 進行 AES/CBC/PKCS7 加密。
      *
      * @param string $data
-     * @throws Exception
+     * @throws EncryptionException
      * @return string
      */
     public function encrypt(string $data): string
@@ -48,7 +49,7 @@ class CipherService
         );
 
         if ($encrypted === false) {
-            throw new Exception('Encryption failed.');
+            throw new EncryptionException('Encryption failed.');
         }
 
         return \base64_encode($encrypted);
@@ -58,18 +59,18 @@ class CipherService
      * 進行 AES/CBC/PKCS7 解密。
      *
      * @param string $data
-     * @throws Exception
+     * @throws EncryptionException
      * @return string
      */
     public function decrypt(string $data): string
     {
         if ($data === '') {
-            throw new Exception('Decryption failed.');
+            throw new EncryptionException('Decryption failed.');
         }
 
         $decoded = \base64_decode($data, true);
         if ($decoded === false) {
-            throw new Exception('Decryption failed.');
+            throw new EncryptionException('Decryption failed.');
         }
 
         $decrypted = \openssl_decrypt(
@@ -81,7 +82,7 @@ class CipherService
         );
 
         if ($decrypted === false) {
-            throw new Exception('Decryption failed.');
+            throw new EncryptionException('Decryption failed.');
         }
 
         return $decrypted;

@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace CarlLee\EcPayB2C\Operations;
 
 use CarlLee\EcPayB2C\Content;
-use Exception;
+use CarlLee\EcPayB2C\Exceptions\ValidationException;
 
 class CancelDelayIssue extends Content
 {
@@ -38,7 +38,7 @@ class CancelDelayIssue extends Content
     public function setTsr(string $tsr): self
     {
         if ($tsr === '' || strlen($tsr) > 30) {
-            throw new Exception('Tsr 長度需介於 1~30 字。');
+            throw new ValidationException('Tsr 長度需介於 1~30 字。');
         }
 
         $this->content['Data']['Tsr'] = $tsr;
@@ -56,7 +56,7 @@ class CancelDelayIssue extends Content
         $this->validatorBaseParam();
 
         if (empty($this->content['Data']['Tsr'])) {
-            throw new Exception('Tsr 不可為空。');
+            throw new ValidationException('Tsr 不可為空。');
         }
     }
 }

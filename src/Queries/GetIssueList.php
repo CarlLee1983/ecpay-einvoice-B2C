@@ -5,7 +5,8 @@ declare(strict_types=1);
 namespace CarlLee\EcPayB2C\Queries;
 
 use CarlLee\EcPayB2C\Content;
-use Exception;
+use CarlLee\EcPayB2C\Exceptions\InvalidParameterException;
+use CarlLee\EcPayB2C\Exceptions\ValidationException;
 
 class GetIssueList extends Content
 {
@@ -82,7 +83,7 @@ class GetIssueList extends Content
     public function setShowingPage(int $page): self
     {
         if ($page < 1) {
-            throw new Exception('ShowingPage 必須大於等於 1。');
+            throw new InvalidParameterException('ShowingPage 必須大於等於 1。');
         }
 
         $this->content['Data']['ShowingPage'] = $page;
@@ -99,7 +100,7 @@ class GetIssueList extends Content
     public function setFormat(string $format): self
     {
         if (!in_array($format, ['1', '2'], true)) {
-            throw new Exception('Format 僅支援 1(JSON) 或 2(CSV)。');
+            throw new InvalidParameterException('Format 僅支援 1(JSON) 或 2(CSV)。');
         }
 
         $this->content['Data']['Format'] = $format;
@@ -117,28 +118,28 @@ class GetIssueList extends Content
         $this->validatorBaseParam();
 
         if (empty($this->content['Data']['BeginDate'])) {
-            throw new Exception('BeginDate 不可為空。');
+            throw new InvalidParameterException('BeginDate 不可為空。');
         }
 
         if (empty($this->content['Data']['EndDate'])) {
-            throw new Exception('EndDate 不可為空。');
+            throw new InvalidParameterException('EndDate 不可為空。');
         }
 
         $this->assertPerPageRange((int) $this->content['Data']['NumPerPage']);
 
         if ((int) $this->content['Data']['ShowingPage'] < 1) {
-            throw new Exception('ShowingPage 必須大於等於 1。');
+            throw new InvalidParameterException('ShowingPage 必須大於等於 1。');
         }
 
         if (!in_array($this->content['Data']['Format'], ['1', '2'], true)) {
-            throw new Exception('Format 僅支援 1(JSON) 或 2(CSV)。');
+            throw new InvalidParameterException('Format 僅支援 1(JSON) 或 2(CSV)。');
         }
 
         $begin = new \DateTime($this->content['Data']['BeginDate']);
         $end = new \DateTime($this->content['Data']['EndDate']);
 
         if ($begin > $end) {
-            throw new Exception('BeginDate 不得晚於 EndDate。');
+            throw new InvalidParameterException('BeginDate 不得晚於 EndDate。');
         }
     }
 
@@ -151,7 +152,7 @@ class GetIssueList extends Content
     private function assertPerPageRange(int $number): void
     {
         if ($number < 1 || $number > 200) {
-            throw new Exception('NumPerPage 必須介於 1 到 200。');
+            throw new InvalidParameterException('NumPerPage 必須介於 1 到 200。');
         }
     }
 
@@ -173,6 +174,6 @@ class GetIssueList extends Content
             }
         }
 
-        throw new Exception('日期格式需為 yyyy-MM-dd 或 yyyy/MM/dd。');
+        throw new InvalidParameterException('日期格式需為 yyyy-MM-dd 或 yyyy/MM/dd。');
     }
 }

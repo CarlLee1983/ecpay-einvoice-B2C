@@ -5,7 +5,8 @@ declare(strict_types=1);
 namespace CarlLee\EcPayB2C\Operations;
 
 use CarlLee\EcPayB2C\Content;
-use Exception;
+use CarlLee\EcPayB2C\Exceptions\InvalidParameterException;
+use CarlLee\EcPayB2C\Exceptions\ValidationException;
 
 class AllowanceInvalidByCollegiate extends Content
 {
@@ -38,7 +39,7 @@ class AllowanceInvalidByCollegiate extends Content
     public function setInvoiceNo(string $invoiceNo): self
     {
         if (!preg_match('/^[A-Z]{2}[0-9]{8}$/', strtoupper($invoiceNo))) {
-            throw new Exception('InvoiceNo 格式錯誤，需為 2 碼英文 + 8 碼數字。');
+            throw new InvalidParameterException('InvoiceNo 格式錯誤，需為 2 碼英文 + 8 碼數字。');
         }
 
         $this->content['Data']['InvoiceNo'] = strtoupper($invoiceNo);
@@ -55,7 +56,7 @@ class AllowanceInvalidByCollegiate extends Content
     public function setAllowanceNo(string $allowanceNo): self
     {
         if (strlen($allowanceNo) !== 16) {
-            throw new Exception('AllowanceNo 長度需為 16 碼。');
+            throw new InvalidParameterException('AllowanceNo 長度需為 16 碼。');
         }
 
         $this->content['Data']['AllowanceNo'] = $allowanceNo;
@@ -72,11 +73,11 @@ class AllowanceInvalidByCollegiate extends Content
     public function setReason(string $reason): self
     {
         if (empty($reason)) {
-            throw new Exception('Reason 不可為空。');
+            throw new InvalidParameterException('Reason 不可為空。');
         }
 
         if (mb_strlen($reason) > 20) {
-            throw new Exception('Reason 長度需小於等於 20。');
+            throw new InvalidParameterException('Reason 長度需小於等於 20。');
         }
 
         $this->content['Data']['Reason'] = $reason;
@@ -92,15 +93,15 @@ class AllowanceInvalidByCollegiate extends Content
         $this->validatorBaseParam();
 
         if (empty($this->content['Data']['InvoiceNo'])) {
-            throw new Exception('InvoiceNo 不可為空。');
+            throw new InvalidParameterException('InvoiceNo 不可為空。');
         }
 
         if (empty($this->content['Data']['AllowanceNo'])) {
-            throw new Exception('AllowanceNo 不可為空。');
+            throw new InvalidParameterException('AllowanceNo 不可為空。');
         }
 
         if (empty($this->content['Data']['Reason'])) {
-            throw new Exception('Reason 不可為空。');
+            throw new InvalidParameterException('Reason 不可為空。');
         }
     }
 }

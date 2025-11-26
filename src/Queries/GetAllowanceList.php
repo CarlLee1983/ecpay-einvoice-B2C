@@ -5,7 +5,8 @@ declare(strict_types=1);
 namespace CarlLee\EcPayB2C\Queries;
 
 use CarlLee\EcPayB2C\Content;
-use Exception;
+use CarlLee\EcPayB2C\Exceptions\InvalidParameterException;
+use CarlLee\EcPayB2C\Exceptions\ValidationException;
 
 class GetAllowanceList extends Content
 {
@@ -41,7 +42,7 @@ class GetAllowanceList extends Content
     public function setSearchType(string $type): self
     {
         if (!in_array($type, ['0', '1', '2'], true)) {
-            throw new Exception('SearchType 僅能為 0、1 或 2。');
+            throw new InvalidParameterException('SearchType 僅能為 0、1 或 2。');
         }
 
         $this->content['Data']['SearchType'] = $type;
@@ -58,7 +59,7 @@ class GetAllowanceList extends Content
     public function setAllowanceNo(string $allowanceNo): self
     {
         if (strlen($allowanceNo) !== 16) {
-            throw new Exception('AllowanceNo 長度需為 16 碼。');
+            throw new InvalidParameterException('AllowanceNo 長度需為 16 碼。');
         }
 
         $this->content['Data']['AllowanceNo'] = $allowanceNo;
@@ -75,7 +76,7 @@ class GetAllowanceList extends Content
     public function setInvoiceNo(string $invoiceNo): self
     {
         if (!preg_match('/^[A-Z]{2}[0-9]{8}$/', $invoiceNo)) {
-            throw new Exception('InvoiceNo 格式錯誤，需為 2 碼英文 + 8 碼數字。');
+            throw new InvalidParameterException('InvoiceNo 格式錯誤，需為 2 碼英文 + 8 碼數字。');
         }
 
         $this->content['Data']['InvoiceNo'] = strtoupper($invoiceNo);
@@ -108,20 +109,20 @@ class GetAllowanceList extends Content
         $type = $this->content['Data']['SearchType'];
 
         if (!in_array($type, ['0', '1', '2'], true)) {
-            throw new Exception('SearchType 僅能為 0、1 或 2。');
+            throw new InvalidParameterException('SearchType 僅能為 0、1 或 2。');
         }
 
         if ($type === '0') {
             if (empty($this->content['Data']['AllowanceNo'])) {
-                throw new Exception('SearchType 為 0 時，AllowanceNo 為必填。');
+                throw new InvalidParameterException('SearchType 為 0 時，AllowanceNo 為必填。');
             }
         } else {
             if (empty($this->content['Data']['InvoiceNo'])) {
-                throw new Exception('SearchType 為 1 或 2 時，InvoiceNo 為必填。');
+                throw new InvalidParameterException('SearchType 為 1 或 2 時，InvoiceNo 為必填。');
             }
 
             if (empty($this->content['Data']['Date'])) {
-                throw new Exception('SearchType 為 1 或 2 時，Date 為必填。');
+                throw new InvalidParameterException('SearchType 為 1 或 2 時，Date 為必填。');
             }
         }
     }
@@ -144,6 +145,6 @@ class GetAllowanceList extends Content
             }
         }
 
-        throw new Exception('Date 格式需為 yyyy-MM-dd 或 yyyy/MM/dd。');
+        throw new InvalidParameterException('Date 格式需為 yyyy-MM-dd 或 yyyy/MM/dd。');
     }
 }

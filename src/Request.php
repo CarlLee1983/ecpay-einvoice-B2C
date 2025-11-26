@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace CarlLee\EcPayB2C;
 
-use Exception;
+use CarlLee\EcPayB2C\Exceptions\RequestException as EcPayRequestException;
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\RequestException;
 
@@ -58,7 +58,7 @@ class Request
      *
      * @param string $url
      * @param array $content
-     * @throws Exception
+     * @throws EcPayRequestException
      * @return array
      */
     public function send(string $url = '', array $content = []): array
@@ -82,10 +82,10 @@ class Request
             if ($exception->hasResponse()) {
                 $response = $exception->getResponse();
 
-                throw new Exception($response->getBody()->getContents());
+                throw new EcPayRequestException($response->getBody()->getContents(), 0, $exception);
             }
 
-            throw new Exception('Request Error: ' . $exception->getMessage());
+            throw new EcPayRequestException('Request Error: ' . $exception->getMessage(), 0, $exception);
         }
     }
 }

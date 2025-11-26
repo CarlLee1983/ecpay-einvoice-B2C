@@ -6,9 +6,10 @@ namespace CarlLee\EcPayB2C;
 
 use CarlLee\EcPayB2C\Contracts\CommandInterface;
 use CarlLee\EcPayB2C\DTO\RqHeaderDto;
+use CarlLee\EcPayB2C\Exceptions\ConfigurationException;
+use CarlLee\EcPayB2C\Exceptions\InvalidParameterException;
 use CarlLee\EcPayB2C\Infrastructure\CipherService;
 use CarlLee\EcPayB2C\Infrastructure\PayloadEncoder;
-use Exception;
 
 abstract class Content implements InvoiceInterface, CommandInterface
 {
@@ -232,7 +233,7 @@ abstract class Content implements InvoiceInterface, CommandInterface
     public function setRelateNumber(string $relateNumber): self
     {
         if (strlen($relateNumber) > self::RELATE_NUMBER_MAX_LENGTH) {
-            throw new Exception('The invoice RelateNumber length over ' . self::RELATE_NUMBER_MAX_LENGTH . '.');
+            throw new InvalidParameterException('The invoice RelateNumber length over ' . self::RELATE_NUMBER_MAX_LENGTH . '.');
         }
 
         $this->content['Data']['RelateNumber'] = $relateNumber;
@@ -252,7 +253,7 @@ abstract class Content implements InvoiceInterface, CommandInterface
         $dateTime = \DateTime::createFromFormat($format, $date);
 
         if (!($dateTime && $dateTime->format($format) === $date)) {
-            throw new Exception('The invoice date format is invalid.');
+            throw new InvalidParameterException('The invoice date format is invalid.');
         }
 
         $this->content['Data']['InvoiceDate'] = $date;
@@ -317,21 +318,21 @@ abstract class Content implements InvoiceInterface, CommandInterface
     /**
      * Validator base parameters.
      *
-     * @throws Exception
+     * @throws ConfigurationException
      */
     protected function validatorBaseParam(bool $requireCredentials = false)
     {
         if (empty($this->content['MerchantID']) || empty($this->content['Data']['MerchantID'])) {
-            throw new Exception('MerchantID is empty.');
+            throw new ConfigurationException('MerchantID is empty.');
         }
 
         if ($requireCredentials) {
             if (empty($this->hashKey)) {
-                throw new Exception('HashKey is empty.');
+                throw new ConfigurationException('HashKey is empty.');
             }
 
             if (empty($this->hashIV)) {
-                throw new Exception('HashIV is empty.');
+                throw new ConfigurationException('HashIV is empty.');
             }
         }
     }

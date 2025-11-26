@@ -5,7 +5,8 @@ declare(strict_types=1);
 namespace CarlLee\EcPayB2C\Operations;
 
 use CarlLee\EcPayB2C\Content;
-use Exception;
+use CarlLee\EcPayB2C\Exceptions\InvalidParameterException;
+use CarlLee\EcPayB2C\Exceptions\ValidationException;
 
 class TriggerIssue extends Content
 {
@@ -39,7 +40,7 @@ class TriggerIssue extends Content
     public function setTsr(string $tsr): self
     {
         if ($tsr === '' || strlen($tsr) > 30) {
-            throw new Exception('Tsr 長度需介於 1~30 字。');
+            throw new ValidationException('Tsr 長度需介於 1~30 字。');
         }
 
         $this->content['Data']['Tsr'] = $tsr;
@@ -56,7 +57,7 @@ class TriggerIssue extends Content
     public function setPayType(string $type): self
     {
         if ($type !== '2') {
-            throw new Exception('PayType 僅支援 2。');
+            throw new ValidationException('PayType 僅支援 2。');
         }
 
         $this->content['Data']['PayType'] = $type;
@@ -74,11 +75,11 @@ class TriggerIssue extends Content
         $this->validatorBaseParam();
 
         if (empty($this->content['Data']['Tsr'])) {
-            throw new Exception('Tsr 不可為空。');
+            throw new ValidationException('Tsr 不可為空。');
         }
 
         if ($this->content['Data']['PayType'] !== '2') {
-            throw new Exception('PayType 僅支援 2。');
+            throw new ValidationException('PayType 僅支援 2。');
         }
     }
 }

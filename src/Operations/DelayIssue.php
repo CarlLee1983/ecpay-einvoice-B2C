@@ -4,7 +4,8 @@ declare(strict_types=1);
 
 namespace CarlLee\EcPayB2C\Operations;
 
-use Exception;
+use CarlLee\EcPayB2C\Exceptions\InvalidParameterException;
+use CarlLee\EcPayB2C\Exceptions\ValidationException;
 
 class DelayIssue extends Invoice
 {
@@ -40,7 +41,7 @@ class DelayIssue extends Invoice
     public function setDelayFlag(string $flag): self
     {
         if (!in_array($flag, ['1', '2'], true)) {
-            throw new Exception('DelayFlag 僅能為 1(延遲) 或 2(觸發)。');
+            throw new InvalidParameterException('DelayFlag 僅能為 1(延遲) 或 2(觸發)。');
         }
 
         $this->content['Data']['DelayFlag'] = $flag;
@@ -57,7 +58,7 @@ class DelayIssue extends Invoice
     public function setDelayDay(int $day): self
     {
         if ($day < 1 || $day > 15) {
-            throw new Exception('DelayDay 必須介於 1 到 15 天。');
+            throw new InvalidParameterException('DelayDay 必須介於 1 到 15 天。');
         }
 
         $this->content['Data']['DelayDay'] = $day;
@@ -74,7 +75,7 @@ class DelayIssue extends Invoice
     public function setTsr(string $tsr): self
     {
         if ($tsr === '' || strlen($tsr) > 30) {
-            throw new Exception('Tsr 長度需介於 1~30 字。');
+            throw new InvalidParameterException('Tsr 長度需介於 1~30 字。');
         }
 
         $this->content['Data']['Tsr'] = $tsr;
@@ -91,7 +92,7 @@ class DelayIssue extends Invoice
     public function setPayType(string $type): self
     {
         if (!in_array($type, ['2'], true)) {
-            throw new Exception('PayType 目前僅支援 2(綠界代收)。');
+            throw new InvalidParameterException('PayType 目前僅支援 2(綠界代收)。');
         }
 
         $this->content['Data']['PayType'] = $type;
@@ -108,7 +109,7 @@ class DelayIssue extends Invoice
     public function setPayAct(string $account): self
     {
         if ($account === '' || strlen($account) > 16) {
-            throw new Exception('PayAct 長度需介於 1~16 字。');
+            throw new InvalidParameterException('PayAct 長度需介於 1~16 字。');
         }
 
         $this->content['Data']['PayAct'] = $account;
@@ -129,24 +130,24 @@ class DelayIssue extends Invoice
         $day = $this->content['Data']['DelayDay'];
 
         if ($flag === '') {
-            throw new Exception('DelayFlag 不可為空。');
+            throw new InvalidParameterException('DelayFlag 不可為空。');
         }
 
         if ($day < 1 || $day > 15) {
-            throw new Exception('DelayDay 必須介於 1 到 15 天。');
+            throw new InvalidParameterException('DelayDay 必須介於 1 到 15 天。');
         }
 
         if ($flag === '2') {
             if (empty($this->content['Data']['Tsr'])) {
-                throw new Exception('觸發開立時 Tsr 為必填。');
+                throw new InvalidParameterException('觸發開立時 Tsr 為必填。');
             }
 
             if ($this->content['Data']['PayType'] !== '2') {
-                throw new Exception('觸發開立僅支援 PayType = 2。');
+                throw new InvalidParameterException('觸發開立僅支援 PayType = 2。');
             }
 
             if (empty($this->content['Data']['PayAct'])) {
-                throw new Exception('觸發開立時 PayAct 為必填。');
+                throw new InvalidParameterException('觸發開立時 PayAct 為必填。');
             }
         }
     }
