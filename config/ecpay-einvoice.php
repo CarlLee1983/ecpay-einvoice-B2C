@@ -19,8 +19,13 @@ return [
     | 商店憑證設定
     |--------------------------------------------------------------------------
     |
-    | MerchantID/HashKey/HashIV 為綠界提供的專屬金鑰。建議透過
-    | .env 檔配置，避免直接寫在程式碼中。
+    | MerchantID/HashKey/HashIV 為綠界提供的專屬金鑰。
+    |
+    | ⚠️  安全性警告：
+    | - 請勿將金鑰資訊（HashKey、HashIV）存放或顯示於前端網頁，
+    |   如 JavaScript、HTML、CSS 等，避免金鑰被盜取造成損失及資料外洩。
+    | - 務必透過 .env 檔案配置金鑰，並確保 .env 不納入版本控制（已於 .gitignore 排除）。
+    | - 切勿將金鑰硬編碼於程式碼或設定檔中。
     |
     */
     'merchant_id' => env('ECPAY_EINVOICE_MERCHANT_ID', ''),

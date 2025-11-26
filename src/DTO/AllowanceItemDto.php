@@ -27,17 +27,17 @@ final class AllowanceItemDto implements ItemDtoInterface
     private string $unit;
 
     /**
-     * @var int
+     * @var float
      */
-    private int $price;
+    private float $price;
 
     /**
      * @param string $name
      * @param int $quantity
      * @param string $unit
-     * @param int $price
+     * @param float|int $price
      */
-    public function __construct(string $name, int $quantity, string $unit, int $price)
+    public function __construct(string $name, int $quantity, string $unit, $price)
     {
         $name = trim($name);
         $unit = trim($unit);
@@ -61,7 +61,7 @@ final class AllowanceItemDto implements ItemDtoInterface
         $this->name = $name;
         $this->quantity = $quantity;
         $this->unit = $unit;
-        $this->price = $price;
+        $this->price = (float) $price;
     }
 
     /**
@@ -80,7 +80,7 @@ final class AllowanceItemDto implements ItemDtoInterface
             (string) $item['name'],
             (int) $item['quantity'],
             (string) $item['unit'],
-            (int) $item['price']
+            $item['price']
         );
     }
 

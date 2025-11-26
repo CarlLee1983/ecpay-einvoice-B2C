@@ -178,7 +178,24 @@ class AllowanceInvoice extends Content
         }
 
         $this->items = $collection;
-        $this->content['Data']['AllowanceAmount'] = (int) $this->items->sumAmount();
+        $this->content['Data']['AllowanceAmount'] = (int) round($this->items->sumAmount());
+
+        return $this;
+    }
+
+    /**
+     * Setting the invoice date.
+     *
+     * @param \DateTimeInterface|string $invoiceDate
+     * @return $this
+     */
+    public function setInvoiceDate($invoiceDate): self
+    {
+        if ($invoiceDate instanceof \DateTimeInterface) {
+            $invoiceDate = $invoiceDate->format('Y-m-d');
+        }
+
+        $this->content['Data']['InvoiceDate'] = $invoiceDate;
 
         return $this;
     }
@@ -191,7 +208,13 @@ class AllowanceInvoice extends Content
     public function validation()
     {
         $this->validatorBaseParam();
-        $this->content['Data']['Items'] = $this->items->toArray();
+        
+        // Auto-generate ItemSeq for items
+        $itemsPayload = $this->items->toArray();
+        foreach ($itemsPayload as $index => &$item) {
+            $item['ItemSeq'] = $index + 1;
+        }
+        $this->content['Data']['Items'] = $itemsPayload;
 
         if (empty($this->content['Data']['InvoiceNo'])) {
             throw new Exception('The invoice no is empty.');

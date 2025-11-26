@@ -49,6 +49,23 @@ class InvalidInvoice extends Content
     }
 
     /**
+     * Setting the invoice date.
+     *
+     * @param \DateTimeInterface|string $invoiceDate
+     * @return $this
+     */
+    public function setInvoiceDate($invoiceDate): self
+    {
+        if ($invoiceDate instanceof \DateTimeInterface) {
+            $invoiceDate = $invoiceDate->format('Y-m-d');
+        }
+
+        $this->content['Data']['InvoiceDate'] = $invoiceDate;
+
+        return $this;
+    }
+
+    /**
      * Setting invoice invalid reason.
      *
      * @param string $reason

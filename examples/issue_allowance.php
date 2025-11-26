@@ -17,7 +17,7 @@ $allowance = new AllowanceInvoice($merchantId, $hashKey, $hashIV);
 
 // 2. 設定參數
 $allowance->setInvoiceNo($invoiceNo)
-    ->setInvoiceDate($invoiceDate)
+    ->setInvoiceDate(new DateTime())
     ->setAllowanceNotify('E') // 通知方式: E-Email, S-SMS, A-All, N-None
     ->setCustomerName('測試客戶') // 客戶名稱 (必填)
     ->setNotifyMail('test@example.com') // 若通知方式含 Email 則必填

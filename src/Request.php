@@ -65,7 +65,9 @@ class Request
     {
         try {
             if (!self::$client) {
-                self::$client = new Client(['verify' => false]);
+                self::$client = new Client([
+                    'verify' => true,
+                ]);
             }
 
             $sendContent = $content ?: $this->content;

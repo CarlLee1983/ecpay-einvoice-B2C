@@ -254,6 +254,23 @@ class Invoice extends Content
     }
 
     /**
+     * Setting the invoice date.
+     *
+     * @param \DateTimeInterface|string $invoiceDate
+     * @return $this
+     */
+    public function setInvoiceDate($invoiceDate): self
+    {
+        if ($invoiceDate instanceof \DateTimeInterface) {
+            $invoiceDate = $invoiceDate->format('Y-m-d');
+        }
+
+        $this->content['Data']['InvoiceDate'] = $invoiceDate;
+
+        return $this;
+    }
+
+    /**
      * Set the invoice tax type.
      *
      * @param string $type
@@ -343,7 +360,7 @@ class Invoice extends Content
         $this->content['Data']['Items'] = $this->buildItemsPayload();
 
         // Sync SalesAmount with Items sum
-        $amount = $this->items->sumAmount();
+        $amount = round($this->items->sumAmount());
 
         if (!empty($this->content['Data']['SalesAmount']) && $this->content['Data']['SalesAmount'] != $amount) {
             throw new Exception('The calculated sales amount is not equal to the set sales amount.');
@@ -360,10 +377,13 @@ class Invoice extends Content
      */
     private function buildItemsPayload(): array
     {
-        return $this->items->mapPayload(function (array $payload): array {
+        $index = 1;
+        return $this->items->mapPayload(function (array $payload) use (&$index): array {
             if (!isset($payload['ItemTaxType'])) {
                 $payload['ItemTaxType'] = $this->taxType;
             }
+
+            $payload['ItemSeq'] = $index++;
 
             return $payload;
         });
