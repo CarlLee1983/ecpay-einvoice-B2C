@@ -5,7 +5,7 @@ require __DIR__ . '/_config.php';
 use CarlLee\EcPayB2C\Operations\AllowanceInvalid;
 
 // 欲作廢的折讓單號
-$allowanceNo = '2025112222177023'; 
+$allowanceNo = '2025112222177023';
 // 原發票號碼 (必填)
 $invoiceNo = 'DM20028782';
 $reason = '開錯折讓';
@@ -28,4 +28,3 @@ try {
 } catch (Exception $e) {
     echo '作廢折讓發生錯誤: ' . $e->getMessage();
 }
-

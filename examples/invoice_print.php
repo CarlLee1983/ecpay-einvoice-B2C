@@ -27,4 +27,3 @@ try {
 } catch (Exception $e) {
     echo '取得列印連結失敗：' . $e->getMessage() . PHP_EOL;
 }
-

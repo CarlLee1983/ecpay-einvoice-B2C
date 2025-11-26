@@ -28,4 +28,3 @@ try {
 } catch (Exception $e) {
     echo '查詢統一編號發生錯誤：' . $e->getMessage();
 }
-

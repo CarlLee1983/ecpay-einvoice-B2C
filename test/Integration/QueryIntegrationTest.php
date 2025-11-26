@@ -136,4 +136,3 @@ class QueryIntegrationTest extends IntegrationTestCase
         $this->assertTrue($invalidResponse->success(), '作廢發票失敗: ' . $invalidResponse->getMessage());
     }
 }
-

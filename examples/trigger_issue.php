@@ -26,4 +26,3 @@ try {
 } catch (Exception $e) {
     echo '觸發開立發票失敗：' . $e->getMessage() . PHP_EOL;
 }
-

@@ -5,7 +5,7 @@ require __DIR__ . '/_config.php';
 use CarlLee\EcPayB2C\Queries\GetInvalidInvoice;
 
 // 欲查詢的發票相關編號 (RelateNumber)
-$relateNumber = 'ECPAY20251122221613592'; 
+$relateNumber = 'ECPAY20251122221613592';
 // 作廢發票號碼 (必填)
 $invoiceNo = 'DM20028781';
 $invoiceDate = date('Y-m-d');
@@ -28,4 +28,3 @@ try {
 } catch (Exception $e) {
     echo '查詢作廢發票發生錯誤: ' . $e->getMessage();
 }
-

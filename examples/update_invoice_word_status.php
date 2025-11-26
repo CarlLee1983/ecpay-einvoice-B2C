@@ -16,4 +16,3 @@ try {
 } catch (Exception $e) {
     echo '更新字軌狀態失敗：' . $e->getMessage() . PHP_EOL;
 }
-

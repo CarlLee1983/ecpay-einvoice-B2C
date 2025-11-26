@@ -74,4 +74,3 @@ abstract class IntegrationTestCase extends TestCase
         return $prefix . date('YmdHis') . rand(10, 99);
     }
 }
-

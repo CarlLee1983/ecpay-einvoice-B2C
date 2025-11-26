@@ -46,4 +46,3 @@ abstract class UnitTestCase extends TestCase
         );
     }
 }
-

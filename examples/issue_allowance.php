@@ -36,11 +36,10 @@ try {
     $response = $client->send($allowance);
     $data = $response->getData();
     printResult($data);
-    
+
     if (isset($data['IA_Allow_No'])) {
-        echo "折讓單號: " . $data['IA_Allow_No'] . "\n";
+        echo '折讓單號: ' . $data['IA_Allow_No'] . "\n";
     }
 } catch (Exception $e) {
     echo '開立折讓發生錯誤: ' . $e->getMessage();
 }
-

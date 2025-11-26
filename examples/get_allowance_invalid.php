@@ -21,4 +21,3 @@ try {
 } catch (Exception $e) {
     echo '查詢作廢折讓失敗：' . $e->getMessage() . PHP_EOL;
 }
-

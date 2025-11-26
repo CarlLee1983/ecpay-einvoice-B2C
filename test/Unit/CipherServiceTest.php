@@ -260,4 +260,3 @@ class CipherServiceTest extends UnitTestCase
         new CipherService($this->hashKey, '');
     }
 }
-

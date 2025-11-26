@@ -287,4 +287,3 @@ class InvoiceUnitTest extends UnitTestCase
         $this->assertTrue($response->success());
     }
 }
-

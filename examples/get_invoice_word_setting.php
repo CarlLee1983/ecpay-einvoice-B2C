@@ -34,4 +34,3 @@ try {
 } catch (Exception $e) {
     echo '查詢字軌失敗：' . $e->getMessage() . PHP_EOL;
 }
-

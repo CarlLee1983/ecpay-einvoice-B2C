@@ -14,4 +14,3 @@ use Exception;
 class EcPayException extends Exception
 {
 }
-

@@ -7,7 +7,7 @@ use CarlLee\EcPayB2C\Queries\GetInvoice;
 // 假設我們要查詢的發票資訊
 // 注意：這裡需要填入實際存在的 RelateNumber 或 InvoiceNo (兩者擇一或皆填，視 API 需求)
 // 測試時請替換為您剛剛開立成功的 RelateNumber
-$relateNumber = 'ECPAY20251122221613592'; 
+$relateNumber = 'ECPAY20251122221613592';
 $invoiceNo = 'DM20028781';
 $invoiceDate = date('Y-m-d'); // 發票開立日期
 
@@ -37,8 +37,6 @@ try {
         // 但 GetInvoice 的實作回傳結構可能包含詳細 Items，請依實際回傳為準。
         print_r($data['Data']);
     }
-
 } catch (Exception $e) {
     echo '查詢發票發生錯誤: ' . $e->getMessage();
 }
-

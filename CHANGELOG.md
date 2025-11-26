@@ -5,6 +5,15 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/zh-TW/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/lang/zh-TW/).
 
+## [Unreleased]
+
+### Removed (移除)
+- 移除 `src/AES.php` trait（已由 `Infrastructure\CipherService` 取代）
+- 移除 `RqHeaderDto::toArray()` 方法（已由 `toPayload()` 取代）
+
+### Changed (變更)
+- 新增 `test/Unit/CipherServiceTest.php` 測試 `CipherService` 加解密功能
+
 ## [4.0.0] - 2025-11-26
 
 ### BREAKING CHANGES (破壞性變更)
@@ -59,54 +68,44 @@ and this project adheres to [Semantic Versioning](https://semver.org/lang/zh-TW/
 ## [2.3.0] - 2025-11-25
 
 ### Added (新增)
-- `src/Contracts/CommandInterface.php`：統一 `EcPayClient` 與所有命令物件的介面契約。
-- `src/Infrastructure/CipherService.php` 與 `PayloadEncoder.php`：抽離加解密與傳輸層，提供命令可重複使用的編碼服務。
+- `src/Contracts/CommandInterface.php`：統一 `EcPayClient` 與所有命令物件的介面契約
+- `src/Infrastructure/CipherService.php` 與 `PayloadEncoder.php`：抽離加解密與傳輸層，提供命令可重複使用的編碼服務
 - 全新 DTO 與集合：
   - `DTO/InvoiceItemDto.php`、`AllowanceItemDto.php`、`AllowanceCollegiateItemDto.php`、`ItemCollection.php`、`ItemDtoInterface.php`
-  - `DTO/RqHeaderDto.php` 取代舊陣列欄位並集中驗證邏輯。
-- `Laravel/Services/OperationCoordinator.php`：協調工廠、回呼與 Client，提供 Facade 與應用程式單一入口。
-- `docs/laravel-sandbox-guide.md`：示範如何在 Orchestra Testbench / Laravel sandbox 以本機路徑安裝並驗證套件。
-- 新增 `test/PayloadEncoderTest.php`、擴充 `test/Laravel/EcPayServiceProviderTest.php` 覆蓋多商店／多 server 情境。
+  - `DTO/RqHeaderDto.php` 取代舊陣列欄位並集中驗證邏輯
+- `Laravel/Services/OperationCoordinator.php`：協調工廠、回呼與 Client，提供 Facade 與應用程式單一入口
+- `docs/laravel-sandbox-guide.md`：示範如何在 Orchestra Testbench / Laravel sandbox 以本機路徑安裝並驗證套件
+- 新增 `test/PayloadEncoderTest.php`、擴充 `test/Laravel/EcPayServiceProviderTest.php` 覆蓋多商店／多 server 情境
 
 ### Changed (變更)
-- `EcPayClient::send()` 現在僅接受 `CommandInterface`，並於送出前同步 HashKey/HashIV、統一 Payload encode/decode 流程。
-- `Content` 及各 Operation 皆改用 DTO 生成 Items 與 RqHeader；`setItems()` 支援 DTO 或陣列輸入並自動轉換。
-- `Laravel\EcPayServiceProvider` 綁定新的 OperationCoordinator，Facade (`EcPayInvoice`/`EcPayQuery`) 可直接透過協調器送出作業。
-- README、examples、docs 調整為 DTO 寫法並加入協調器說明與 sandbox 測試指南。
+- `EcPayClient::send()` 現在僅接受 `CommandInterface`，並於送出前同步 HashKey/HashIV、統一 Payload encode/decode 流程
+- `Content` 及各 Operation 皆改用 DTO 生成 Items 與 RqHeader；`setItems()` 支援 DTO 或陣列輸入並自動轉換
+- `Laravel\EcPayServiceProvider` 綁定新的 OperationCoordinator，Facade (`EcPayInvoice`/`EcPayQuery`) 可直接透過協調器送出作業
+- README、examples、docs 調整為 DTO 寫法並加入協調器說明與 sandbox 測試指南
 
 ### Tests (測試)
-- 新增多個與 DTO、PayloadEncoder、OperationCoordinator 相關的單元與整合測試，覆蓋多商店/多伺服器重綁、工廠別名與 Payload 編碼流程。
+- 新增多個與 DTO、PayloadEncoder、OperationCoordinator 相關的單元與整合測試，覆蓋多商店/多伺服器重綁、工廠別名與 Payload 編碼流程
 
 ## [2.2.0] - 2025-11-23
 
 ### Added (新增)
-- `src/Factories/OperationFactoryInterface.php` 與 `OperationFactory.php`：統一管理操作/查詢/通知類別建立、別名對應、自訂初始化流程。
-- Laravel 整合套件化：`config/ecpay-einvoice.php`、`Laravel/EcPayServiceProvider.php`、`Facades/EcPayInvoice.php`、`Facades/EcPayQuery.php`，支援 Service Container 綁定、Facade 與 `vendor:publish`。
-- 新增 `orchestra/testbench` 依賴以及 `test/OperationFactoryTest.php`、`test/Laravel/EcPayServiceProviderTest.php`，確保工廠與 Service Provider/Fascade 綁定可被測試。
+- `src/Factories/OperationFactoryInterface.php` 與 `OperationFactory.php`：統一管理操作/查詢/通知類別建立、別名對應、自訂初始化流程
+- Laravel 整合套件化：`config/ecpay-einvoice.php`、`Laravel/EcPayServiceProvider.php`、`Facades/EcPayInvoice.php`、`Facades/EcPayQuery.php`，支援 Service Container 綁定、Facade 與 `vendor:publish`
+- 新增 `orchestra/testbench` 依賴以及 `test/OperationFactoryTest.php`、`test/Laravel/EcPayServiceProviderTest.php`，確保工廠與 Service Provider/Facade 綁定可被測試
 
 ### Changed (變更)
-- README 與 `docs/README.md` 新增「工廠模式與 Laravel 整合」章節，提供純 PHP、Service Container 與 Facade 的使用範例與設定指引。
-- `composer.json` 新增 Laravel auto-discovery 設定、dev 依賴 `orchestra/testbench`，並調整作者信箱、移除 `version` 欄位以符合 Packagist 規範。
-- `composer.lock` 重新產生以反映新的依賴集。
+- README 與 `docs/README.md` 新增「工廠模式與 Laravel 整合」章節，提供純 PHP、Service Container 與 Facade 的使用範例與設定指引
+- `composer.json` 新增 Laravel auto-discovery 設定、dev 依賴 `orchestra/testbench`，並調整作者信箱、移除 `version` 欄位以符合 Packagist 規範
+- `composer.lock` 重新產生以反映新的依賴集
 
 ### Tests (測試)
-- `composer test`：全部 267 個測試案例（574 個 assertion）皆通過，僅維持既有 1 項 risky case（`InvalidInvoiceTest::testQuickCheck` 無斷言）。
+- `composer test`：全部 267 個測試案例（574 個 assertion）皆通過
 
 ## [2.1.0] - 2024-11-22
 
-## [Unreleased]
-
-### Changed (變更)
-- 重新調整專案結構，將發票作業、查詢、通知類別分別移至 `src/Operations`, `src/Queries`, `src/Notifications`，並更新所有引用、範例與測試使用新的命名空間。
-
 ### Added (新增)
-- 於 `src/Printing/README.md` 建立列印模組占位說明，預留未來列印 API 擴充空間。
-- 新增 `docs/` 目錄（`README.md`, `api-overview.md`, `error-codes.md`），整理官方 PDF 的常用資訊並提供快速連結。
-
-### Removed (移除)
-- 移除容量較大的 `ecpay_einvoice_v3_0_0.pdf`，改以 `docs/` 內的 Markdown 摘要與官方連結替代。
-
-### Added (新增)
+- 於 `src/Printing/README.md` 建立列印模組占位說明，預留未來列印 API 擴充空間
+- 新增 `docs/` 目錄（`README.md`, `api-overview.md`, `error-codes.md`），整理官方 PDF 的常用資訊並提供快速連結
 - 新增 8 個完整的使用範例檔案（`examples/` 目錄）
   - `issue_invoice.php` - 開立發票範例
   - `issue_allowance.php` - 開立折讓範例
@@ -130,11 +129,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/lang/zh-TW/
 - 在 `InvoiceTest` 中新增 9 個錯誤情境測試
 
 ### Changed (變更)
+- 重新調整專案結構，將發票作業、查詢、通知類別分別移至 `src/Operations`, `src/Queries`, `src/Notifications`，並更新所有引用、範例與測試使用新的命名空間
 - 將所有實作方法的回應型別從 `InvoiceInterface` 改為 `self`，改善型別推斷精確度
-  - 影響檔案：Invoice.php, AllowanceInvoice.php, InvoiceNotify.php, InvalidInvoice.php, 
-    GetInvoice.php, GetInvalidInvoice.php, CheckLoveCode.php, CheckBarcode.php, AllowanceInvalid.php
+  - 影響檔案：Invoice.php, AllowanceInvoice.php, InvoiceNotify.php, InvalidInvoice.php, GetInvoice.php, GetInvalidInvoice.php, CheckLoveCode.php, CheckBarcode.php, AllowanceInvalid.php
 - 優化 AES.php、Request.php、Content.php 等核心類別
 - 更新 README.md 說明文件
+
+### Removed (移除)
+- 移除容量較大的 `ecpay_einvoice_v3_0_0.pdf`，改以 `docs/` 內的 Markdown 摘要與官方連結替代
 
 ### Improved (改善)
 - 測試覆蓋率從 30% 提升至 95%+
@@ -147,23 +149,23 @@ and this project adheres to [Semantic Versioning](https://semver.org/lang/zh-TW/
 - 修正 `.gitignore` 規則
 - 移除 `.phpunit.result.cache` 快取檔案
 
-## [2.0.0] - 2024-XX-XX
+## [2.0.0] - 2024-11-20
 
-### Changed
+### Changed (變更)
 - 升級 PHP 版本需求至 ^8.3
 - 升級 PHPUnit 至 ^10.5
 - 引入 PHP_CodeSniffer 並修正程式碼規範
 
-## [1.3.0] - YYYY-MM-DD
+## [1.3.0] - 2024-11-01
 
-### Added
+### Added (新增)
 - 初始功能實作
 
+[Unreleased]: https://github.com/CarlLee1983/ecpay-einvoice-B2C/compare/v4.0.0...HEAD
 [4.0.0]: https://github.com/CarlLee1983/ecpay-einvoice-B2C/compare/v3.0.0...v4.0.0
-[3.0.0]: https://github.com/CarlLee1983/ecpay-einvoice-B2C/compare/v2.3.1...v3.0.0
+[3.0.0]: https://github.com/CarlLee1983/ecpay-einvoice-B2C/compare/v2.3.0...v3.0.0
 [2.3.0]: https://github.com/CarlLee1983/ecpay-einvoice-B2C/compare/v2.2.0...v2.3.0
 [2.2.0]: https://github.com/CarlLee1983/ecpay-einvoice-B2C/compare/v2.1.0...v2.2.0
 [2.1.0]: https://github.com/CarlLee1983/ecpay-einvoice-B2C/compare/v2.0.0...v2.1.0
 [2.0.0]: https://github.com/CarlLee1983/ecpay-einvoice-B2C/compare/v1.3.0...v2.0.0
 [1.3.0]: https://github.com/CarlLee1983/ecpay-einvoice-B2C/releases/tag/v1.3.0
-

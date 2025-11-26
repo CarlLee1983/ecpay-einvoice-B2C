@@ -31,4 +31,3 @@ try {
 } catch (Exception $e) {
     echo '查詢財政部配號結果失敗：' . $e->getMessage() . PHP_EOL;
 }
-

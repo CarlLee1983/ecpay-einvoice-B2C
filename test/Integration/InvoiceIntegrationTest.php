@@ -126,4 +126,3 @@ class InvoiceIntegrationTest extends IntegrationTestCase
         $this->assertTrue($response->success(), '發票開立失敗: ' . $response->getMessage());
     }
 }
-

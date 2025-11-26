@@ -78,5 +78,4 @@ final class RqHeaderDto
             'Timestamp' => $this->timestamp,
         ];
     }
-
 }

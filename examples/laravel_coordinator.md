@@ -28,4 +28,3 @@ $queryResponse = EcPayQuery::coordinate('get_invoice', function ($query) {
 ```
 
 協調器會自動從 `OperationFactory` 取得對應 operation，執行回呼設定，再交給 `EcPayClient` 發送並回傳 `Response` 實例。只要專案已正確設定 `config/ecpay-einvoice.php`，即可在任意呼叫點統一使用上述流程。***
-

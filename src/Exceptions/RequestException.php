@@ -15,4 +15,3 @@ namespace CarlLee\EcPayB2C\Exceptions;
 class RequestException extends EcPayException
 {
 }
-

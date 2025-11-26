@@ -27,4 +27,3 @@ try {
 } catch (Exception $e) {
     echo '查詢多筆發票失敗：' . $e->getMessage() . PHP_EOL;
 }
-
