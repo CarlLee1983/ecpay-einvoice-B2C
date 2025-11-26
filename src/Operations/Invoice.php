@@ -31,7 +31,7 @@ class Invoice extends Content
      *
      * @var string
      */
-    protected $taxType = TaxType::DUTIABLE;
+    protected $taxType = TaxType::DUTIABLE->value;
 
     /**
      * The invoice content.
@@ -67,17 +67,17 @@ class Invoice extends Content
             'CustomerPhone' => '',
             'CustomerEmail' => '',
             'ClearanceMark' => '',
-            'Print' => PrintMark::NO,
-            'Donation' => Donation::NO,
+            'Print' => PrintMark::NO->value,
+            'Donation' => Donation::NO->value,
             'LoveCode' => '',
-            'CarrierType' => CarrierType::NONE,
+            'CarrierType' => CarrierType::NONE->value,
             'CarrierNum' => '',
             'TaxType' => $this->taxType,
             'SalesAmount' => 0,
             'InvoiceRemark' => '',
             'Items' => [],
-            'InvType' => InvType::GENERAL,
-            'vat' => VatType::YES,
+            'InvType' => InvType::GENERAL->value,
+            'vat' => VatType::YES->value,
         ];
     }
 
@@ -154,7 +154,7 @@ class Invoice extends Content
      */
     public function setClearanceMark(string $mark): self
     {
-        if (!in_array($mark, [ClearanceMark::YES, ClearanceMark::NO])) {
+        if (!in_array($mark, [ClearanceMark::YES->value, ClearanceMark::NO->value])) {
             throw new Exception('Invoice clearance mark format is invalid.');
         }
 
@@ -171,7 +171,7 @@ class Invoice extends Content
      */
     public function setPrintMark(string $mark): self
     {
-        if ($mark != PrintMark::YES && $mark != PrintMark::NO) {
+        if ($mark != PrintMark::YES->value && $mark != PrintMark::NO->value) {
             throw new Exception('Invoice print mark format is wrong.');
         }
 
@@ -188,7 +188,7 @@ class Invoice extends Content
      */
     public function setDonation(string $donation): self
     {
-        if (!in_array($donation, [Donation::YES, Donation::NO])) {
+        if (!in_array($donation, [Donation::YES->value, Donation::NO->value])) {
             throw new Exception('Invoice donation format is wrong.');
         }
 
@@ -225,10 +225,10 @@ class Invoice extends Content
     public function setCarrierType(string $type): self
     {
         $carrierType = [
-            CarrierType::NONE,
-            CarrierType::MEMBER,
-            CarrierType::CITIZEN,
-            CarrierType::CELLPHONE,
+            CarrierType::NONE->value,
+            CarrierType::MEMBER->value,
+            CarrierType::CITIZEN->value,
+            CarrierType::CELLPHONE->value,
         ];
 
         if (!in_array($type, $carrierType)) {
@@ -279,10 +279,10 @@ class Invoice extends Content
     public function setTaxType(string $type): self
     {
         $taxType = [
-            TaxType::DUTIABLE,
-            TaxType::ZERO,
-            TaxType::FREE,
-            TaxType::MIX,
+            TaxType::DUTIABLE->value,
+            TaxType::ZERO->value,
+            TaxType::FREE->value,
+            TaxType::MIX->value,
         ];
 
         if (!in_array($type, $taxType)) {

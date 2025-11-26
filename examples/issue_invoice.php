@@ -20,9 +20,9 @@ echo "正在開立發票 (RelateNumber: {$relateNumber})...\n";
 $invoice->setRelateNumber($relateNumber)
     ->setCustomerEmail('test@example.com') // 客戶 Email (若有設定則會收到通知)
     ->setCustomerPhone('0912345678')       // 客戶電話
-    ->setPrintMark(PrintMark::NO)          // 是否列印 (NO: 不列印, YES: 列印)
-    ->setDonation(Donation::NO)            // 是否捐贈 (NO: 不捐贈, YES: 捐贈)
-    ->setTaxType(TaxType::DUTIABLE)        // 課稅類別 (DUTIABLE: 應稅)
+    ->setPrintMark(PrintMark::NO->value)          // 是否列印 (NO: 不列印, YES: 列印)
+    ->setDonation(Donation::NO->value)            // 是否捐贈 (NO: 不捐贈, YES: 捐贈)
+    ->setTaxType(TaxType::DUTIABLE->value)        // 課稅類別 (DUTIABLE: 應稅)
     ->setSalesAmount(100)                  // 發票總金額
     ->setItems([
         InvoiceItemDto::fromArray([
@@ -51,9 +51,9 @@ $invoice2 = new Invoice($merchantId, $hashKey, $hashIV);
 
 $invoice2->setRelateNumber($relateNumber2)
     ->setCustomerEmail('test@example.com')
-    ->setPrintMark(PrintMark::NO)
-    ->setDonation(Donation::NO)
-    ->setCarrierType(CarrierType::CELLPHONE) // 設定載具類別為手機條碼
+    ->setPrintMark(PrintMark::NO->value)
+    ->setDonation(Donation::NO->value)
+    ->setCarrierType(CarrierType::CELLPHONE->value) // 設定載具類別為手機條碼
     ->setCarrierNum('/3.14159')              // 手機條碼 (需為真實格式，此為測試用)
     ->setSalesAmount(200)
     ->setItems([

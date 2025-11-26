@@ -14,7 +14,7 @@ $operation = new AddInvoiceWordSetting($merchantId, $hashKey, $hashIV);
 $operation
     ->setInvoiceYear((int) date('Y'))
     ->setInvoiceTerm($currentTerm)
-    ->setInvType(InvType::GENERAL)
+    ->setInvType(InvType::GENERAL->value)
     ->setInvoiceHeader('AB')
     ->setInvoiceStart('10000000')
     ->setInvoiceEnd('10000049')

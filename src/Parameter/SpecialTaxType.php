@@ -4,17 +4,20 @@ declare(strict_types=1);
 
 namespace CarlLee\EcPayB2C\Parameter;
 
-class SpecialTaxType
+/**
+ * 特種稅類型。
+ */
+enum SpecialTaxType: string
 {
-    // 陪酒業
-    public const string BAR = '1';
+    /** 陪酒業 */
+    case BAR = '1';
 
-    // 夜總會
-    public const string NIGHTCLUB = '2';
+    /** 夜總會 */
+    case NIGHTCLUB = '2';
 
-    // 銀行業
-    public const string BANK = '3';
+    /** 銀行業 */
+    case BANK = '3';
 
-    // 保險業業內收入
-    public const string INSURANCE = '4';
+    /** 保險業業內收入 */
+    case INSURANCE = '4';
 }

@@ -4,9 +4,14 @@ declare(strict_types=1);
 
 namespace CarlLee\EcPayB2C\Parameter;
 
-class Donation
+/**
+ * 捐贈註記。
+ */
+enum Donation: string
 {
-    public const string NO = '0';
+    /** 不捐贈 */
+    case NO = '0';
 
-    public const string YES = '1';
+    /** 捐贈 */
+    case YES = '1';
 }

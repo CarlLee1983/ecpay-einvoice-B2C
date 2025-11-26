@@ -85,7 +85,7 @@ class GetInvoiceWordSettingTest extends TestCase
             ->setInvoiceTerm(0)
             ->setUseStatus(0)
             ->setInvoiceCategory(1)
-            ->setInvType(InvType::GENERAL)
+            ->setInvType(InvType::GENERAL->value)
             ->setProductServiceId('SERVICE1')
             ->setInvoiceHeader('AB')
             ->getContent();

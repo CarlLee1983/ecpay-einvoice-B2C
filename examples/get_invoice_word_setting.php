@@ -10,7 +10,7 @@ $query
     ->setInvoiceYear((int) date('Y'))
     ->setInvoiceTerm(0)   // 0: 全部期別
     ->setUseStatus(0)     // 0: 全部狀態
-    ->setInvType(InvType::GENERAL)
+    ->setInvType(InvType::GENERAL->value)
     ->setInvoiceCategory(1);
 
 try {

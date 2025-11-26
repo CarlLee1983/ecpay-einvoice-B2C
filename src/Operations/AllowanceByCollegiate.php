@@ -41,7 +41,7 @@ class AllowanceByCollegiate extends Content
             'MerchantID' => $this->merchantID,
             'InvoiceNo' => '',
             'InvoiceDate' => '',
-            'AllowanceNotify' => AllowanceNotifyType::EMAIL,
+            'AllowanceNotify' => AllowanceNotifyType::EMAIL->value,
             'CustomerName' => '',
             'NotifyMail' => '',
             'ReturnURL' => '',
@@ -172,7 +172,7 @@ class AllowanceByCollegiate extends Content
             throw new Exception('InvoiceDate 不可為空。');
         }
 
-        if ($this->content['Data']['AllowanceNotify'] !== AllowanceNotifyType::EMAIL) {
+        if ($this->content['Data']['AllowanceNotify'] !== AllowanceNotifyType::EMAIL->value) {
             throw new Exception('AllowanaceNotify 僅支援電子郵件 (E)。');
         }
 

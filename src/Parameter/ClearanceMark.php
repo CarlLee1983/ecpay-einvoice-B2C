@@ -4,11 +4,14 @@ declare(strict_types=1);
 
 namespace CarlLee\EcPayB2C\Parameter;
 
-class ClearanceMark
+/**
+ * 通關方式。
+ */
+enum ClearanceMark: string
 {
-    // 經海關出口
-    public const string YES = '1';
+    /** 經海關出口 */
+    case YES = '1';
 
-    // 非經海關出口
-    public const string NO = '2';
+    /** 非經海關出口 */
+    case NO = '2';
 }

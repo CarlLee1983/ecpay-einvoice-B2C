@@ -100,7 +100,8 @@ class InvoiceNotify extends Content
     public function setPhone(string $number): self
     {
         if (strlen($number) > self::PHONE_MAX_LENGTH) {
-            throw new Exception('Notify phone number should be less than ' . (self::PHONE_MAX_LENGTH + 1) . ' characters');
+            $max = self::PHONE_MAX_LENGTH + 1;
+            throw new Exception('Notify phone number should be less than ' . $max . ' characters');
         }
 
         $this->content['Data']['Phone'] = $number;
@@ -138,9 +139,9 @@ class InvoiceNotify extends Content
     public function setNotify(string $type): self
     {
         $notifyType = [
-            NotifyType::SMS,
-            NotifyType::EMAIL,
-            NotifyType::ALL,
+            NotifyType::SMS->value,
+            NotifyType::EMAIL->value,
+            NotifyType::ALL->value,
         ];
 
         if (!in_array($type, $notifyType)) {
@@ -161,11 +162,11 @@ class InvoiceNotify extends Content
     public function setInvoiceTag(string $tag): self
     {
         $invoiceTag = [
-            InvoiceTagType::INVOICE,
-            InvoiceTagType::INVOICE_VOID,
-            InvoiceTagType::ALLOWANCE,
-            InvoiceTagType::ALLOWANCE_VOID,
-            InvoiceTagType::INVOICE_WINNING,
+            InvoiceTagType::INVOICE->value,
+            InvoiceTagType::INVOICE_VOID->value,
+            InvoiceTagType::ALLOWANCE->value,
+            InvoiceTagType::ALLOWANCE_VOID->value,
+            InvoiceTagType::INVOICE_WINNING->value,
         ];
 
         if (!in_array($tag, $invoiceTag)) {
@@ -186,9 +187,9 @@ class InvoiceNotify extends Content
     public function setNotified(string $target): self
     {
         $targetList = [
-            NotifiedType::CUSTOMER,
-            NotifiedType::VENDOR,
-            NotifiedType::ALL,
+            NotifiedType::CUSTOMER->value,
+            NotifiedType::VENDOR->value,
+            NotifiedType::ALL->value,
         ];
 
         if (!in_array($target, $targetList)) {
@@ -216,8 +217,8 @@ class InvoiceNotify extends Content
 
         if (
             in_array($data['InvoiceTag'], [
-                InvoiceTagType::ALLOWANCE,
-                InvoiceTagType::ALLOWANCE_VOID,
+                InvoiceTagType::ALLOWANCE->value,
+                InvoiceTagType::ALLOWANCE_VOID->value,
             ])
         ) {
             if (empty($data['AllowanceNo'])) {

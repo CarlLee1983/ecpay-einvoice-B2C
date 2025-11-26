@@ -103,7 +103,7 @@ class GetInvoiceWordSetting extends Content
      */
     public function setInvType(string $type): self
     {
-        if (!in_array($type, [InvType::GENERAL, InvType::SPECIAL], true)) {
+        if (!in_array($type, [InvType::GENERAL->value, InvType::SPECIAL->value], true)) {
             throw new Exception('InvType only supports 07 or 08.');
         }
 
@@ -184,7 +184,7 @@ class GetInvoiceWordSetting extends Content
 
         if (
             !empty($this->content['Data']['InvType']) &&
-            !in_array($this->content['Data']['InvType'], [InvType::GENERAL, InvType::SPECIAL], true)
+            !in_array($this->content['Data']['InvType'], [InvType::GENERAL->value, InvType::SPECIAL->value], true)
         ) {
             throw new Exception('InvType only supports 07 or 08.');
         }

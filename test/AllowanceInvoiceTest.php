@@ -89,11 +89,11 @@ class AllowanceInvoiceTest extends TestCase
      */
     public function testSetAllowanceNotifyTypeSms()
     {
-        $result = $this->allowance->setAllowanceNotify(AllowanceNotifyType::SMS);
+        $result = $this->allowance->setAllowanceNotify(AllowanceNotifyType::SMS->value);
 
         $this->assertInstanceOf(AllowanceInvoice::class, $result);
         $content = $this->getContentWithoutValidation();
-        $this->assertEquals(AllowanceNotifyType::SMS, $content['Data']['AllowanceNotify']);
+        $this->assertEquals(AllowanceNotifyType::SMS->value, $content['Data']['AllowanceNotify']);
     }
 
     /**
@@ -101,11 +101,11 @@ class AllowanceInvoiceTest extends TestCase
      */
     public function testSetAllowanceNotifyTypeEmail()
     {
-        $result = $this->allowance->setAllowanceNotify(AllowanceNotifyType::EMAIL);
+        $result = $this->allowance->setAllowanceNotify(AllowanceNotifyType::EMAIL->value);
 
         $this->assertInstanceOf(AllowanceInvoice::class, $result);
         $content = $this->getContentWithoutValidation();
-        $this->assertEquals(AllowanceNotifyType::EMAIL, $content['Data']['AllowanceNotify']);
+        $this->assertEquals(AllowanceNotifyType::EMAIL->value, $content['Data']['AllowanceNotify']);
     }
 
     /**
@@ -113,11 +113,11 @@ class AllowanceInvoiceTest extends TestCase
      */
     public function testSetAllowanceNotifyTypeAll()
     {
-        $result = $this->allowance->setAllowanceNotify(AllowanceNotifyType::ALL);
+        $result = $this->allowance->setAllowanceNotify(AllowanceNotifyType::ALL->value);
 
         $this->assertInstanceOf(AllowanceInvoice::class, $result);
         $content = $this->getContentWithoutValidation();
-        $this->assertEquals(AllowanceNotifyType::ALL, $content['Data']['AllowanceNotify']);
+        $this->assertEquals(AllowanceNotifyType::ALL->value, $content['Data']['AllowanceNotify']);
     }
 
     /**
@@ -336,7 +336,7 @@ class AllowanceInvoiceTest extends TestCase
         /** @var AllowanceInvoice $invoice */
         $invoice = $this->allowance;
         $invoice->setInvoiceNo('AB12345678');
-        $invoice->setAllowanceNotify(AllowanceNotifyType::EMAIL);
+        $invoice->setAllowanceNotify(AllowanceNotifyType::EMAIL->value);
         $invoice->setItems($this->buildItems());
 
         $this->allowance->validation();
@@ -355,7 +355,7 @@ class AllowanceInvoiceTest extends TestCase
         /** @var AllowanceInvoice $invoice */
         $invoice = $this->allowance;
         $invoice->setInvoiceNo('AB12345678');
-        $invoice->setAllowanceNotify(AllowanceNotifyType::SMS);
+        $invoice->setAllowanceNotify(AllowanceNotifyType::SMS->value);
         $invoice->setItems($this->buildItems());
 
         $this->allowance->validation();
@@ -407,7 +407,7 @@ class AllowanceInvoiceTest extends TestCase
         /** @var AllowanceInvoice $invoice */
         $invoice = $this->allowance;
         $invoice->setInvoiceNo('AB12345678');
-        $invoice->setAllowanceNotify(AllowanceNotifyType::EMAIL);
+        $invoice->setAllowanceNotify(AllowanceNotifyType::EMAIL->value);
         $invoice->setNotifyMail('test@example.com');
         $invoice->setCustomerName('測試客戶');
         $invoice->setItems($this->buildItems());
@@ -443,7 +443,7 @@ class AllowanceInvoiceTest extends TestCase
         /** @var AllowanceInvoice $invoice */
         $invoice = $this->allowance;
         $invoice->setInvoiceNo('AB12345678');
-        $invoice->setAllowanceNotify(AllowanceNotifyType::EMAIL);
+        $invoice->setAllowanceNotify(AllowanceNotifyType::EMAIL->value);
         $invoice->setCustomerName('測試客戶');
         $invoice->setNotifyMail('test@example.com');
         $result = $invoice->setItems($this->buildItems());
@@ -467,7 +467,7 @@ class AllowanceInvoiceTest extends TestCase
         /** @var AllowanceInvoice $invoice */
         $invoice = $this->allowance;
         $invoice->setInvoiceNo('AB12345678');
-        $invoice->setAllowanceNotify(AllowanceNotifyType::NONE);
+        $invoice->setAllowanceNotify(AllowanceNotifyType::NONE->value);
         $invoice->setCustomerName('測試客戶');
         $invoice->setItems($this->buildItems([
                 ['name' => '商品A', 'quantity' => 2, 'unit' => '個', 'price' => 100],

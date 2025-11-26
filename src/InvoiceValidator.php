@@ -51,7 +51,7 @@ class InvoiceValidator
             throw new Exception('The invoice RelateNumber is empty.');
         }
 
-        if ($data['TaxType'] == TaxType::ZERO) {
+        if ($data['TaxType'] == TaxType::ZERO->value) {
             if (empty($data['ClearanceMark'])) {
                 throw new Exception('Invoice is duty free, clearance mark can not be empty.');
             }
@@ -66,7 +66,7 @@ class InvoiceValidator
      */
     private static function validateCustomer(array $data)
     {
-        if ($data['Print'] == PrintMark::YES) {
+        if ($data['Print'] == PrintMark::YES->value) {
             if (empty($data['CustomerName']) || empty($data['CustomerAddr'])) {
                 throw new Exception('Because print mark is yes. Customer name and address can not be empty.');
             }
@@ -77,11 +77,11 @@ class InvoiceValidator
         }
 
         if (!empty($data['CustomerIdentifier'])) {
-            if ($data['Print'] == PrintMark::NO) {
+            if ($data['Print'] == PrintMark::NO->value) {
                 throw new Exception('Because customer identifier not empty, print mark must be Yes');
             }
 
-            if ($data['Donation'] == Donation::YES) {
+            if ($data['Donation'] == Donation::YES->value) {
                 throw new Exception('Customer identifier not empty, donation can not be yes.');
             }
         }
@@ -95,12 +95,12 @@ class InvoiceValidator
      */
     private static function validateDonation(array $data)
     {
-        if ($data['Donation'] == Donation::YES) {
+        if ($data['Donation'] == Donation::YES->value) {
             if (empty($data['LoveCode'])) {
                 throw new Exception('Donation is yes, love code required.');
             }
 
-            if ($data['Print'] == PrintMark::YES) {
+            if ($data['Print'] == PrintMark::YES->value) {
                 throw new Exception('Donation is yes, invoice can not be print.');
             }
         }
@@ -114,25 +114,29 @@ class InvoiceValidator
      */
     private static function validateCarrier(array $data)
     {
-        if ($data['CarrierType'] == CarrierType::NONE) {
+        if ($data['CarrierType'] == CarrierType::NONE->value) {
             if ($data['CarrierNum'] != '') {
                 throw new Exception('Invoice carrier type is empty, carrier number must be empty.');
             }
         } else {
-            if ($data['Print'] == PrintMark::YES) {
+            if ($data['Print'] == PrintMark::YES->value) {
                 throw new Exception('Carrier type is not empty, invoice can not be print.');
             }
 
-            if ($data['CarrierType'] == CarrierType::MEMBER && $data['CarrierNum'] != '') {
+            if ($data['CarrierType'] == CarrierType::MEMBER->value && $data['CarrierNum'] != '') {
                 throw new Exception('Invoice carrier type is member, carrier number must be empty.');
             }
 
-            if ($data['CarrierType'] == CarrierType::CITIZEN && strlen($data['CarrierNum']) != self::CARRIER_CITIZEN_LENGTH) {
-                throw new Exception('Invoice carrier type is citizen, carrier number length must be ' . self::CARRIER_CITIZEN_LENGTH . '.');
+            $isCitizen = $data['CarrierType'] == CarrierType::CITIZEN->value;
+            if ($isCitizen && strlen($data['CarrierNum']) != self::CARRIER_CITIZEN_LENGTH) {
+                $len = self::CARRIER_CITIZEN_LENGTH;
+                throw new Exception("Invoice carrier type is citizen, carrier number length must be {$len}.");
             }
 
-            if ($data['CarrierType'] == CarrierType::CELLPHONE && strlen($data['CarrierNum']) != self::CARRIER_CELLPHONE_LENGTH) {
-                throw new Exception('Invoice carrier type is Cellphone, carrier number length must be ' . self::CARRIER_CELLPHONE_LENGTH . '.');
+            $isCellphone = $data['CarrierType'] == CarrierType::CELLPHONE->value;
+            if ($isCellphone && strlen($data['CarrierNum']) != self::CARRIER_CELLPHONE_LENGTH) {
+                $len = self::CARRIER_CELLPHONE_LENGTH;
+                throw new Exception("Invoice carrier type is Cellphone, carrier number length must be {$len}.");
             }
         }
     }

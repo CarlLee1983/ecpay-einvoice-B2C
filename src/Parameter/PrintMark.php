@@ -4,9 +4,14 @@ declare(strict_types=1);
 
 namespace CarlLee\EcPayB2C\Parameter;
 
-class PrintMark
+/**
+ * 列印註記。
+ */
+enum PrintMark: string
 {
-    public const string NO = '0';
+    /** 不列印 */
+    case NO = '0';
 
-    public const string YES = '1';
+    /** 列印 */
+    case YES = '1';
 }

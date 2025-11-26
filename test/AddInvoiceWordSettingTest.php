@@ -81,7 +81,7 @@ class AddInvoiceWordSettingTest extends TestCase
         $this->instance
             ->setInvoiceYear((int) date('Y'))
             ->setInvoiceTerm($currentTerm - 1)
-            ->setInvType(InvType::GENERAL)
+            ->setInvType(InvType::GENERAL->value)
             ->setInvoiceHeader('AB')
             ->setInvoiceStart('10000000')
             ->setInvoiceEnd('10000049');
@@ -122,7 +122,7 @@ class AddInvoiceWordSettingTest extends TestCase
         $this->instance
             ->setInvoiceYear($nextYear)
             ->setInvoiceTerm(1)
-            ->setInvType(InvType::GENERAL)
+            ->setInvType(InvType::GENERAL->value)
             ->setInvoiceHeader('AB')
             ->setInvoiceStart('10000000')
             ->setInvoiceEnd('10000049')

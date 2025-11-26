@@ -39,7 +39,7 @@ class AddInvoiceWordSetting extends Content
             'MerchantID' => $this->merchantID,
             'InvoiceTerm' => null,
             'InvoiceYear' => '',
-            'InvType' => InvType::GENERAL,
+            'InvType' => InvType::GENERAL->value,
             'InvoiceCategory' => '1',
             'ProductServiceId' => '',
             'InvoiceHeader' => '',
@@ -83,7 +83,7 @@ class AddInvoiceWordSetting extends Content
      */
     public function setInvType(string $type): self
     {
-        if (!in_array($type, [InvType::GENERAL, InvType::SPECIAL], true)) {
+        if (!in_array($type, [InvType::GENERAL->value, InvType::SPECIAL->value], true)) {
             throw new Exception('InvType only supports 07 or 08.');
         }
 
@@ -212,7 +212,7 @@ class AddInvoiceWordSetting extends Content
             throw new Exception('Invoice number range must be aligned to 50-number batches.');
         }
 
-        if (!in_array($this->content['Data']['InvType'], [InvType::GENERAL, InvType::SPECIAL], true)) {
+        if (!in_array($this->content['Data']['InvType'], [InvType::GENERAL->value, InvType::SPECIAL->value], true)) {
             throw new Exception('InvType only supports 07 or 08.');
         }
 

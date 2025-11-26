@@ -33,13 +33,13 @@ class InvoiceValidatorTest extends TestCase
 
         $data = [
             'RelateNumber' => '',
-            'TaxType' => TaxType::DUTIABLE,
-            'Print' => PrintMark::NO,
+            'TaxType' => TaxType::DUTIABLE->value,
+            'Print' => PrintMark::NO->value,
             'CustomerPhone' => '0912345678',
             'CustomerEmail' => '',
             'CustomerIdentifier' => '',
-            'Donation' => Donation::NO,
-            'CarrierType' => CarrierType::MEMBER,
+            'Donation' => Donation::NO->value,
+            'CarrierType' => CarrierType::MEMBER->value,
             'CarrierNum' => '',
         ];
 
@@ -56,14 +56,14 @@ class InvoiceValidatorTest extends TestCase
 
         $data = [
             'RelateNumber' => 'TEST123',
-            'TaxType' => TaxType::ZERO,
+            'TaxType' => TaxType::ZERO->value,
             'ClearanceMark' => '',
-            'Print' => PrintMark::NO,
+            'Print' => PrintMark::NO->value,
             'CustomerPhone' => '0912345678',
             'CustomerEmail' => '',
             'CustomerIdentifier' => '',
-            'Donation' => Donation::NO,
-            'CarrierType' => CarrierType::MEMBER,
+            'Donation' => Donation::NO->value,
+            'CarrierType' => CarrierType::MEMBER->value,
             'CarrierNum' => '',
         ];
 
@@ -80,15 +80,15 @@ class InvoiceValidatorTest extends TestCase
 
         $data = [
             'RelateNumber' => 'TEST123',
-            'TaxType' => TaxType::DUTIABLE,
-            'Print' => PrintMark::YES,
+            'TaxType' => TaxType::DUTIABLE->value,
+            'Print' => PrintMark::YES->value,
             'CustomerName' => '',
             'CustomerAddr' => '',
             'CustomerPhone' => '0912345678',
             'CustomerEmail' => '',
             'CustomerIdentifier' => '',
-            'Donation' => Donation::NO,
-            'CarrierType' => CarrierType::NONE,
+            'Donation' => Donation::NO->value,
+            'CarrierType' => CarrierType::NONE->value,
             'CarrierNum' => '',
         ];
 
@@ -105,13 +105,13 @@ class InvoiceValidatorTest extends TestCase
 
         $data = [
             'RelateNumber' => 'TEST123',
-            'TaxType' => TaxType::DUTIABLE,
-            'Print' => PrintMark::NO,
+            'TaxType' => TaxType::DUTIABLE->value,
+            'Print' => PrintMark::NO->value,
             'CustomerPhone' => '',
             'CustomerEmail' => '',
             'CustomerIdentifier' => '',
-            'Donation' => Donation::NO,
-            'CarrierType' => CarrierType::MEMBER,
+            'Donation' => Donation::NO->value,
+            'CarrierType' => CarrierType::MEMBER->value,
             'CarrierNum' => '',
         ];
 
@@ -128,15 +128,15 @@ class InvoiceValidatorTest extends TestCase
 
         $data = [
             'RelateNumber' => 'TEST123',
-            'TaxType' => TaxType::DUTIABLE,
-            'Print' => PrintMark::NO,
+            'TaxType' => TaxType::DUTIABLE->value,
+            'Print' => PrintMark::NO->value,
             'CustomerName' => '測試公司',
             'CustomerAddr' => '測試地址',
             'CustomerPhone' => '0912345678',
             'CustomerEmail' => '',
             'CustomerIdentifier' => '12345678',
-            'Donation' => Donation::NO,
-            'CarrierType' => CarrierType::NONE,
+            'Donation' => Donation::NO->value,
+            'CarrierType' => CarrierType::NONE->value,
             'CarrierNum' => '',
         ];
 
@@ -153,16 +153,16 @@ class InvoiceValidatorTest extends TestCase
 
         $data = [
             'RelateNumber' => 'TEST123',
-            'TaxType' => TaxType::DUTIABLE,
-            'Print' => PrintMark::YES,
+            'TaxType' => TaxType::DUTIABLE->value,
+            'Print' => PrintMark::YES->value,
             'CustomerName' => '測試公司',
             'CustomerAddr' => '測試地址',
             'CustomerPhone' => '0912345678',
             'CustomerEmail' => '',
             'CustomerIdentifier' => '12345678',
-            'Donation' => Donation::YES,
+            'Donation' => Donation::YES->value,
             'LoveCode' => '123456',
-            'CarrierType' => CarrierType::NONE,
+            'CarrierType' => CarrierType::NONE->value,
             'CarrierNum' => '',
         ];
 
@@ -179,14 +179,14 @@ class InvoiceValidatorTest extends TestCase
 
         $data = [
             'RelateNumber' => 'TEST123',
-            'TaxType' => TaxType::DUTIABLE,
-            'Print' => PrintMark::NO,
+            'TaxType' => TaxType::DUTIABLE->value,
+            'Print' => PrintMark::NO->value,
             'CustomerPhone' => '0912345678',
             'CustomerEmail' => '',
             'CustomerIdentifier' => '',
-            'Donation' => Donation::YES,
+            'Donation' => Donation::YES->value,
             'LoveCode' => '',
-            'CarrierType' => CarrierType::NONE,
+            'CarrierType' => CarrierType::NONE->value,
             'CarrierNum' => '',
         ];
 
@@ -203,16 +203,16 @@ class InvoiceValidatorTest extends TestCase
 
         $data = [
             'RelateNumber' => 'TEST123',
-            'TaxType' => TaxType::DUTIABLE,
-            'Print' => PrintMark::YES,
+            'TaxType' => TaxType::DUTIABLE->value,
+            'Print' => PrintMark::YES->value,
             'CustomerName' => '測試公司',
             'CustomerAddr' => '測試地址',
             'CustomerPhone' => '0912345678',
             'CustomerEmail' => '',
             'CustomerIdentifier' => '',
-            'Donation' => Donation::YES,
+            'Donation' => Donation::YES->value,
             'LoveCode' => '123456',
-            'CarrierType' => CarrierType::NONE,
+            'CarrierType' => CarrierType::NONE->value,
             'CarrierNum' => '',
         ];
 
@@ -229,13 +229,13 @@ class InvoiceValidatorTest extends TestCase
 
         $data = [
             'RelateNumber' => 'TEST123',
-            'TaxType' => TaxType::DUTIABLE,
-            'Print' => PrintMark::NO,
+            'TaxType' => TaxType::DUTIABLE->value,
+            'Print' => PrintMark::NO->value,
             'CustomerPhone' => '0912345678',
             'CustomerEmail' => '',
             'CustomerIdentifier' => '',
-            'Donation' => Donation::NO,
-            'CarrierType' => CarrierType::NONE,
+            'Donation' => Donation::NO->value,
+            'CarrierType' => CarrierType::NONE->value,
             'CarrierNum' => '1234567890',
         ];
 
@@ -252,15 +252,15 @@ class InvoiceValidatorTest extends TestCase
 
         $data = [
             'RelateNumber' => 'TEST123',
-            'TaxType' => TaxType::DUTIABLE,
-            'Print' => PrintMark::YES,
+            'TaxType' => TaxType::DUTIABLE->value,
+            'Print' => PrintMark::YES->value,
             'CustomerName' => '測試公司',
             'CustomerAddr' => '測試地址',
             'CustomerPhone' => '0912345678',
             'CustomerEmail' => '',
             'CustomerIdentifier' => '',
-            'Donation' => Donation::NO,
-            'CarrierType' => CarrierType::MEMBER,
+            'Donation' => Donation::NO->value,
+            'CarrierType' => CarrierType::MEMBER->value,
             'CarrierNum' => '',
         ];
 
@@ -277,13 +277,13 @@ class InvoiceValidatorTest extends TestCase
 
         $data = [
             'RelateNumber' => 'TEST123',
-            'TaxType' => TaxType::DUTIABLE,
-            'Print' => PrintMark::NO,
+            'TaxType' => TaxType::DUTIABLE->value,
+            'Print' => PrintMark::NO->value,
             'CustomerPhone' => '0912345678',
             'CustomerEmail' => '',
             'CustomerIdentifier' => '',
-            'Donation' => Donation::NO,
-            'CarrierType' => CarrierType::MEMBER,
+            'Donation' => Donation::NO->value,
+            'CarrierType' => CarrierType::MEMBER->value,
             'CarrierNum' => '1234567890',
         ];
 
@@ -300,13 +300,13 @@ class InvoiceValidatorTest extends TestCase
 
         $data = [
             'RelateNumber' => 'TEST123',
-            'TaxType' => TaxType::DUTIABLE,
-            'Print' => PrintMark::NO,
+            'TaxType' => TaxType::DUTIABLE->value,
+            'Print' => PrintMark::NO->value,
             'CustomerPhone' => '0912345678',
             'CustomerEmail' => '',
             'CustomerIdentifier' => '',
-            'Donation' => Donation::NO,
-            'CarrierType' => CarrierType::CITIZEN,
+            'Donation' => Donation::NO->value,
+            'CarrierType' => CarrierType::CITIZEN->value,
             'CarrierNum' => '123456789',
         ];
 
@@ -323,13 +323,13 @@ class InvoiceValidatorTest extends TestCase
 
         $data = [
             'RelateNumber' => 'TEST123',
-            'TaxType' => TaxType::DUTIABLE,
-            'Print' => PrintMark::NO,
+            'TaxType' => TaxType::DUTIABLE->value,
+            'Print' => PrintMark::NO->value,
             'CustomerPhone' => '0912345678',
             'CustomerEmail' => '',
             'CustomerIdentifier' => '',
-            'Donation' => Donation::NO,
-            'CarrierType' => CarrierType::CELLPHONE,
+            'Donation' => Donation::NO->value,
+            'CarrierType' => CarrierType::CELLPHONE->value,
             'CarrierNum' => '12345',
         ];
 
@@ -346,13 +346,13 @@ class InvoiceValidatorTest extends TestCase
 
         $data = [
             'RelateNumber' => 'TEST123',
-            'TaxType' => TaxType::DUTIABLE,
-            'Print' => PrintMark::NO,
+            'TaxType' => TaxType::DUTIABLE->value,
+            'Print' => PrintMark::NO->value,
             'CustomerPhone' => '0912345678',
             'CustomerEmail' => '',
             'CustomerIdentifier' => '',
-            'Donation' => Donation::NO,
-            'CarrierType' => CarrierType::MEMBER,
+            'Donation' => Donation::NO->value,
+            'CarrierType' => CarrierType::MEMBER->value,
             'CarrierNum' => '',
         ];
 
@@ -366,13 +366,13 @@ class InvoiceValidatorTest extends TestCase
     {
         $data = [
             'RelateNumber' => 'TEST123',
-            'TaxType' => TaxType::DUTIABLE,
-            'Print' => PrintMark::NO,
+            'TaxType' => TaxType::DUTIABLE->value,
+            'Print' => PrintMark::NO->value,
             'CustomerPhone' => '0912345678',
             'CustomerEmail' => '',
             'CustomerIdentifier' => '',
-            'Donation' => Donation::NO,
-            'CarrierType' => CarrierType::MEMBER,
+            'Donation' => Donation::NO->value,
+            'CarrierType' => CarrierType::MEMBER->value,
             'CarrierNum' => '',
         ];
 
@@ -387,13 +387,13 @@ class InvoiceValidatorTest extends TestCase
     {
         $data = [
             'RelateNumber' => 'TEST123',
-            'TaxType' => TaxType::DUTIABLE,
-            'Print' => PrintMark::NO,
+            'TaxType' => TaxType::DUTIABLE->value,
+            'Print' => PrintMark::NO->value,
             'CustomerPhone' => '0912345678',
             'CustomerEmail' => '',
             'CustomerIdentifier' => '',
-            'Donation' => Donation::NO,
-            'CarrierType' => CarrierType::CELLPHONE,
+            'Donation' => Donation::NO->value,
+            'CarrierType' => CarrierType::CELLPHONE->value,
             'CarrierNum' => '/YC+RROR',
         ];
 
@@ -408,13 +408,13 @@ class InvoiceValidatorTest extends TestCase
     {
         $data = [
             'RelateNumber' => 'TEST123',
-            'TaxType' => TaxType::DUTIABLE,
-            'Print' => PrintMark::NO,
+            'TaxType' => TaxType::DUTIABLE->value,
+            'Print' => PrintMark::NO->value,
             'CustomerPhone' => '0912345678',
             'CustomerEmail' => '',
             'CustomerIdentifier' => '',
-            'Donation' => Donation::NO,
-            'CarrierType' => CarrierType::CITIZEN,
+            'Donation' => Donation::NO->value,
+            'CarrierType' => CarrierType::CITIZEN->value,
             'CarrierNum' => '1234567890123456',
         ];
 
@@ -429,15 +429,15 @@ class InvoiceValidatorTest extends TestCase
     {
         $data = [
             'RelateNumber' => 'TEST123',
-            'TaxType' => TaxType::DUTIABLE,
-            'Print' => PrintMark::YES,
+            'TaxType' => TaxType::DUTIABLE->value,
+            'Print' => PrintMark::YES->value,
             'CustomerName' => '測試公司',
             'CustomerAddr' => '測試地址',
             'CustomerPhone' => '0912345678',
             'CustomerEmail' => '',
             'CustomerIdentifier' => '12345678',
-            'Donation' => Donation::NO,
-            'CarrierType' => CarrierType::NONE,
+            'Donation' => Donation::NO->value,
+            'CarrierType' => CarrierType::NONE->value,
             'CarrierNum' => '',
         ];
 
@@ -452,14 +452,14 @@ class InvoiceValidatorTest extends TestCase
     {
         $data = [
             'RelateNumber' => 'TEST123',
-            'TaxType' => TaxType::DUTIABLE,
-            'Print' => PrintMark::NO,
+            'TaxType' => TaxType::DUTIABLE->value,
+            'Print' => PrintMark::NO->value,
             'CustomerPhone' => '0912345678',
             'CustomerEmail' => '',
             'CustomerIdentifier' => '',
-            'Donation' => Donation::YES,
+            'Donation' => Donation::YES->value,
             'LoveCode' => '123456',
-            'CarrierType' => CarrierType::NONE,
+            'CarrierType' => CarrierType::NONE->value,
             'CarrierNum' => '',
         ];
 

@@ -40,7 +40,7 @@ class AllowanceInvoice extends Content
             'MerchantID' => $this->merchantID,
             'InvoiceNo' => '',
             'InvoiceDate' => '',
-            'AllowanceNotify' => AllowanceNotifyType::NONE,
+            'AllowanceNotify' => AllowanceNotifyType::NONE->value,
             'CustomerName' => '',
             'NotifyMail' => '',
             'NotifyPhone' => '',
@@ -75,10 +75,10 @@ class AllowanceInvoice extends Content
     public function setAllowanceNotify(string $type): self
     {
         $allownaceType = [
-            AllowanceNotifyType::SMS,
-            AllowanceNotifyType::EMAIL,
-            AllowanceNotifyType::ALL,
-            AllowanceNotifyType::NONE,
+            AllowanceNotifyType::SMS->value,
+            AllowanceNotifyType::EMAIL->value,
+            AllowanceNotifyType::ALL->value,
+            AllowanceNotifyType::NONE->value,
         ];
 
         if (!in_array($type, $allownaceType)) {
@@ -208,7 +208,7 @@ class AllowanceInvoice extends Content
     public function validation()
     {
         $this->validatorBaseParam();
-        
+
         // Auto-generate ItemSeq for items
         $itemsPayload = $this->items->toArray();
         foreach ($itemsPayload as $index => &$item) {
@@ -225,14 +225,14 @@ class AllowanceInvoice extends Content
         }
 
         if (
-            $this->content['Data']['AllowanceNotify'] == AllowanceNotifyType::EMAIL
+            $this->content['Data']['AllowanceNotify'] == AllowanceNotifyType::EMAIL->value
             && empty($this->content['Data']['NotifyMail'])
         ) {
             throw new Exception('The allowance notify is mail, email should be setting.');
         }
 
         if (
-            $this->content['Data']['AllowanceNotify'] == AllowanceNotifyType::SMS
+            $this->content['Data']['AllowanceNotify'] == AllowanceNotifyType::SMS->value
             && empty($this->content['Data']['NotifyPhone'])
         ) {
             throw new Exception('The allowance notify is SMS, phone number should be setting.');
