@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace CarlLee\EcPayB2C\Queries;
 
 use CarlLee\EcPayB2C\Content;
-use CarlLee\EcPayB2C\InvoiceInterface;
 use Exception;
 
 class GetInvalidInvoice extends Content
@@ -36,7 +35,7 @@ class GetInvalidInvoice extends Content
      * Setting the invoice no.
      *
      * @param string $invoiceNo
-     * @return InvoiceInterface
+     * @return self
      */
     public function setInvoiceNo(string $invoiceNo): self
     {

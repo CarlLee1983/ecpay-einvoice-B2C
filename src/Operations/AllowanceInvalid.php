@@ -1,9 +1,10 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CarlLee\EcPayB2C\Operations;
 
 use CarlLee\EcPayB2C\Content;
-use CarlLee\EcPayB2C\InvoiceInterface;
 use Exception;
 
 class AllowanceInvalid extends Content
@@ -34,7 +35,7 @@ class AllowanceInvalid extends Content
      * Setting the invoice no.
      *
      * @param string $invoiceNo
-     * @return InvoiceInterface
+     * @return self
      */
     public function setInvoiceNo(string $invoiceNo): self
     {
@@ -51,7 +52,7 @@ class AllowanceInvalid extends Content
      * Setting invoice allowance no.
      *
      * @param string $number
-     * @return InvoiceInterface
+     * @return self
      */
     public function setAllowanceNo(string $number): self
     {
@@ -68,7 +69,7 @@ class AllowanceInvalid extends Content
      * Setting invoice invalid reason.
      *
      * @param string $reason
-     * @return InvoiceInterface
+     * @return self
      */
     public function setReason(string $reason): self
     {

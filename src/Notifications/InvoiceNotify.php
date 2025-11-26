@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace CarlLee\EcPayB2C\Notifications;
 
 use CarlLee\EcPayB2C\Content;
-use CarlLee\EcPayB2C\InvoiceInterface;
 use CarlLee\EcPayB2C\Parameter\InvoiceTagType;
 use CarlLee\EcPayB2C\Parameter\NotifiedType;
 use CarlLee\EcPayB2C\Parameter\NotifyType;
@@ -61,7 +60,7 @@ class InvoiceNotify extends Content
      * Setting the invoice no.
      *
      * @param string $invoiceNo
-     * @return InvoiceInterface
+     * @return self
      */
     public function setInvoiceNo(string $invoiceNo): self
     {
@@ -78,7 +77,7 @@ class InvoiceNotify extends Content
      * Setting invoice allowance no.
      *
      * @param string $number
-     * @return InvoiceInterface
+     * @return self
      */
     public function setAllowanceNo(string $number): self
     {
@@ -95,7 +94,7 @@ class InvoiceNotify extends Content
      * Set notify phone number.
      *
      * @param string $number
-     * @return InvoiceInterface
+     * @return self
      */
     public function setPhone(string $number): self
     {
@@ -113,7 +112,7 @@ class InvoiceNotify extends Content
      * Setting allowance notify email.
      *
      * @param string $email
-     * @return InvoiceInterface
+     * @return self
      */
     public function setNotifyMail(string $email): self
     {
@@ -134,7 +133,7 @@ class InvoiceNotify extends Content
      * Setting the invoice notify type.
      *
      * @param string $type
-     * @return InvoiceInterface
+     * @return self
      */
     public function setNotify(string $type): self
     {
@@ -157,7 +156,7 @@ class InvoiceNotify extends Content
      * Setting the invoice notify tag.
      *
      * @param string $tag
-     * @return InvoiceInterface
+     * @return self
      */
     public function setInvoiceTag(string $tag): self
     {
@@ -182,7 +181,7 @@ class InvoiceNotify extends Content
      * Setting Notify target.
      *
      * @param string $target
-     * @return InvoiceInterface
+     * @return self
      */
     public function setNotified(string $target): self
     {

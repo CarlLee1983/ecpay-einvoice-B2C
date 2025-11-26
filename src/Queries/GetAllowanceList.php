@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace CarlLee\EcPayB2C\Queries;
 
 use CarlLee\EcPayB2C\Content;
-use CarlLee\EcPayB2C\InvoiceInterface;
 use Exception;
 
 class GetAllowanceList extends Content
@@ -37,7 +36,7 @@ class GetAllowanceList extends Content
      * 設定查詢方式。
      *
      * @param string $type
-     * @return InvoiceInterface
+     * @return self
      */
     public function setSearchType(string $type): self
     {
@@ -54,7 +53,7 @@ class GetAllowanceList extends Content
      * 設定折讓單號。
      *
      * @param string $allowanceNo
-     * @return InvoiceInterface
+     * @return self
      */
     public function setAllowanceNo(string $allowanceNo): self
     {
@@ -71,7 +70,7 @@ class GetAllowanceList extends Content
      * 設定發票號碼。
      *
      * @param string $invoiceNo
-     * @return InvoiceInterface
+     * @return self
      */
     public function setInvoiceNo(string $invoiceNo): self
     {
@@ -88,7 +87,7 @@ class GetAllowanceList extends Content
      * 設定查詢日期。
      *
      * @param string $date
-     * @return InvoiceInterface
+     * @return self
      */
     public function setDate(string $date): self
     {

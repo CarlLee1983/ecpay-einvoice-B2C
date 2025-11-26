@@ -7,7 +7,6 @@ namespace CarlLee\EcPayB2C\Operations;
 use CarlLee\EcPayB2C\Content;
 use CarlLee\EcPayB2C\DTO\AllowanceCollegiateItemDto;
 use CarlLee\EcPayB2C\DTO\ItemCollection;
-use CarlLee\EcPayB2C\InvoiceInterface;
 use CarlLee\EcPayB2C\Parameter\AllowanceNotifyType;
 use Exception;
 
@@ -54,7 +53,7 @@ class AllowanceByCollegiate extends Content
      * 設定發票號碼。
      *
      * @param string $invoiceNo
-     * @return InvoiceInterface
+     * @return self
      */
     public function setInvoiceNo(string $invoiceNo): self
     {
@@ -71,7 +70,7 @@ class AllowanceByCollegiate extends Content
      * 設定客戶名稱。
      *
      * @param string $name
-     * @return InvoiceInterface
+     * @return self
      */
     public function setCustomerName(string $name): self
     {
@@ -88,7 +87,7 @@ class AllowanceByCollegiate extends Content
      * 設定通知信箱，可接受多組以分號分隔。
      *
      * @param string $emails
-     * @return InvoiceInterface
+     * @return self
      */
     public function setNotifyMail(string $emails): self
     {
@@ -113,7 +112,7 @@ class AllowanceByCollegiate extends Content
      * 設定折讓完成後回傳 URL。
      *
      * @param string $url
-     * @return InvoiceInterface
+     * @return self
      */
     public function setReturnURL(string $url): self
     {

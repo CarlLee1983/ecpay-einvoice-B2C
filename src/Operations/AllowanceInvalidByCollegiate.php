@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace CarlLee\EcPayB2C\Operations;
 
 use CarlLee\EcPayB2C\Content;
-use CarlLee\EcPayB2C\InvoiceInterface;
 use Exception;
 
 class AllowanceInvalidByCollegiate extends Content
@@ -34,7 +33,7 @@ class AllowanceInvalidByCollegiate extends Content
      * 設定發票號碼。
      *
      * @param string $invoiceNo
-     * @return InvoiceInterface
+     * @return self
      */
     public function setInvoiceNo(string $invoiceNo): self
     {
@@ -51,7 +50,7 @@ class AllowanceInvalidByCollegiate extends Content
      * 設定折讓編號。
      *
      * @param string $allowanceNo
-     * @return InvoiceInterface
+     * @return self
      */
     public function setAllowanceNo(string $allowanceNo): self
     {
@@ -68,7 +67,7 @@ class AllowanceInvalidByCollegiate extends Content
      * 設定取消原因。
      *
      * @param string $reason
-     * @return InvoiceInterface
+     * @return self
      */
     public function setReason(string $reason): self
     {

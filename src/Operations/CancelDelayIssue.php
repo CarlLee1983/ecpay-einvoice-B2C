@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace CarlLee\EcPayB2C\Operations;
 
 use CarlLee\EcPayB2C\Content;
-use CarlLee\EcPayB2C\InvoiceInterface;
 use Exception;
 
 class CancelDelayIssue extends Content
@@ -34,7 +33,7 @@ class CancelDelayIssue extends Content
      * 設定交易單號。
      *
      * @param string $tsr
-     * @return InvoiceInterface
+     * @return self
      */
     public function setTsr(string $tsr): self
     {

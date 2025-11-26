@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace CarlLee\EcPayB2C\Queries;
 
 use CarlLee\EcPayB2C\Content;
-use CarlLee\EcPayB2C\InvoiceInterface;
 use Exception;
 
 class GetCompanyNameByTaxID extends Content
@@ -34,7 +33,7 @@ class GetCompanyNameByTaxID extends Content
      * 設定統一編號。
      *
      * @param string $taxId
-     * @return InvoiceInterface
+     * @return self
      */
     public function setUnifiedBusinessNo(string $taxId): self
     {

@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace CarlLee\EcPayB2C\Queries;
 
 use CarlLee\EcPayB2C\Content;
-use CarlLee\EcPayB2C\InvoiceInterface;
 use CarlLee\EcPayB2C\Parameter\InvType;
 use Exception;
 
@@ -41,7 +40,7 @@ class GetInvoiceWordSetting extends Content
      * Set the invoice year (supports input in Gregorian or ROC format).
      *
      * @param int|string $year
-     * @return InvoiceInterface
+     * @return self
      */
     public function setInvoiceYear(int|string $year): self
     {
@@ -54,7 +53,7 @@ class GetInvoiceWordSetting extends Content
      * Set the invoice term (0 represents all terms).
      *
      * @param int $term
-     * @return InvoiceInterface
+     * @return self
      */
     public function setInvoiceTerm(int $term): self
     {
@@ -68,7 +67,7 @@ class GetInvoiceWordSetting extends Content
      * Set the track usage status (0 represents all statuses).
      *
      * @param int $status
-     * @return InvoiceInterface
+     * @return self
      */
     public function setUseStatus(int $status): self
     {
@@ -82,7 +81,7 @@ class GetInvoiceWordSetting extends Content
      * Set the invoice category (only 1 is allowed).
      *
      * @param int $category
-     * @return InvoiceInterface
+     * @return self
      */
     public function setInvoiceCategory(int $category): self
     {
@@ -99,7 +98,7 @@ class GetInvoiceWordSetting extends Content
      * Set the invoice track type.
      *
      * @param string $type
-     * @return InvoiceInterface
+     * @return self
      */
     public function setInvType(string $type): self
     {
@@ -116,7 +115,7 @@ class GetInvoiceWordSetting extends Content
      * Set the product service identifier.
      *
      * @param string $productServiceId
-     * @return InvoiceInterface
+     * @return self
      */
     public function setProductServiceId(string $productServiceId): self
     {
@@ -141,7 +140,7 @@ class GetInvoiceWordSetting extends Content
      * Set the track header.
      *
      * @param string $header
-     * @return InvoiceInterface
+     * @return self
      */
     public function setInvoiceHeader(string $header): self
     {

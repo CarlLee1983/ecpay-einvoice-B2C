@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace CarlLee\EcPayB2C\Operations;
 
 use CarlLee\EcPayB2C\Content;
-use CarlLee\EcPayB2C\InvoiceInterface;
 use Exception;
 
 class InvoicePrint extends Content
@@ -36,7 +35,7 @@ class InvoicePrint extends Content
      * 設定發票號碼。
      *
      * @param string $invoiceNo
-     * @return InvoiceInterface
+     * @return self
      */
     public function setInvoiceNo(string $invoiceNo): self
     {
@@ -53,7 +52,7 @@ class InvoicePrint extends Content
      * 設定發票日期。
      *
      * @param string $date
-     * @return InvoiceInterface
+     * @return self
      */
     public function setInvoiceDate(string $date): self
     {
@@ -66,7 +65,7 @@ class InvoicePrint extends Content
      * 設定列印格式。
      *
      * @param int $style
-     * @return InvoiceInterface
+     * @return self
      */
     public function setPrintStyle(int $style): self
     {
@@ -83,7 +82,7 @@ class InvoicePrint extends Content
      * 設定是否標示補印。
      *
      * @param bool $reprint
-     * @return InvoiceInterface
+     * @return self
      */
     public function setReprint(bool $reprint): self
     {
@@ -96,7 +95,7 @@ class InvoicePrint extends Content
      * 設定是否顯示明細。
      *
      * @param int $value
-     * @return InvoiceInterface
+     * @return self
      */
     public function setShowingDetail(int $value): self
     {

@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace CarlLee\EcPayB2C\Queries;
 
 use CarlLee\EcPayB2C\Content;
-use CarlLee\EcPayB2C\InvoiceInterface;
 use Exception;
 
 class CheckLoveCode extends Content
@@ -32,7 +31,7 @@ class CheckLoveCode extends Content
      * Setting donate code.
      *
      * @param string $code
-     * @return InvoiceInterface
+     * @return self
      */
     public function setLoveCode(string $code): self
     {

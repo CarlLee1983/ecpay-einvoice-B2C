@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace CarlLee\EcPayB2C\Operations;
 
 use CarlLee\EcPayB2C\Content;
-use CarlLee\EcPayB2C\InvoiceInterface;
 use CarlLee\EcPayB2C\Parameter\InvType;
 use Exception;
 
@@ -52,7 +51,7 @@ class AddInvoiceWordSetting extends Content
      * Set the invoice term.
      *
      * @param int $term
-     * @return InvoiceInterface
+     * @return self
      */
     public function setInvoiceTerm(int $term): self
     {
@@ -66,7 +65,7 @@ class AddInvoiceWordSetting extends Content
      * Set the invoice year (supports ROC or Gregorian input).
      *
      * @param int|string $year
-     * @return InvoiceInterface
+     * @return self
      */
     public function setInvoiceYear(int|string $year): self
     {
@@ -79,7 +78,7 @@ class AddInvoiceWordSetting extends Content
      * Set the invoice type.
      *
      * @param string $type
-     * @return InvoiceInterface
+     * @return self
      */
     public function setInvType(string $type): self
     {
@@ -96,7 +95,7 @@ class AddInvoiceWordSetting extends Content
      * Set the product service identifier.
      *
      * @param string $productServiceId
-     * @return InvoiceInterface
+     * @return self
      */
     public function setProductServiceId(string $productServiceId): self
     {
@@ -121,7 +120,7 @@ class AddInvoiceWordSetting extends Content
      * Set the invoice track header.
      *
      * @param string $header
-     * @return InvoiceInterface
+     * @return self
      */
     public function setInvoiceHeader(string $header): self
     {
@@ -140,7 +139,7 @@ class AddInvoiceWordSetting extends Content
      * Set the starting invoice number.
      *
      * @param string|int $number
-     * @return InvoiceInterface
+     * @return self
      */
     public function setInvoiceStart(string|int $number): self
     {
@@ -157,7 +156,7 @@ class AddInvoiceWordSetting extends Content
      * Set the ending invoice number.
      *
      * @param string|int $number
-     * @return InvoiceInterface
+     * @return self
      */
     public function setInvoiceEnd(string|int $number): self
     {

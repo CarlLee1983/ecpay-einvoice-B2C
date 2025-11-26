@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace CarlLee\EcPayB2C\Queries;
 
 use CarlLee\EcPayB2C\Content;
-use CarlLee\EcPayB2C\InvoiceInterface;
 use Exception;
 
 class GetGovInvoiceWordSetting extends Content
@@ -34,7 +33,7 @@ class GetGovInvoiceWordSetting extends Content
      * Set the invoice year (ROC year; Gregorian years are auto-converted).
      *
      * @param int|string $year
-     * @return InvoiceInterface
+     * @return self
      */
     public function setInvoiceYear(int|string $year): self
     {

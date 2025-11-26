@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace CarlLee\EcPayB2C\Operations;
 
 use CarlLee\EcPayB2C\Content;
-use CarlLee\EcPayB2C\InvoiceInterface;
 use Exception;
 
 class TriggerIssue extends Content
@@ -35,7 +34,7 @@ class TriggerIssue extends Content
      * 設定交易單號。
      *
      * @param string $tsr
-     * @return InvoiceInterface
+     * @return self
      */
     public function setTsr(string $tsr): self
     {
@@ -52,7 +51,7 @@ class TriggerIssue extends Content
      * 設定交易類別。
      *
      * @param string $type
-     * @return InvoiceInterface
+     * @return self
      */
     public function setPayType(string $type): self
     {

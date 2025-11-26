@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace CarlLee\EcPayB2C\Queries;
 
 use CarlLee\EcPayB2C\Content;
-use CarlLee\EcPayB2C\InvoiceInterface;
 use Exception;
 
 class GetIssueList extends Content
@@ -38,7 +37,7 @@ class GetIssueList extends Content
      * 設定查詢起始日期。
      *
      * @param string $date
-     * @return InvoiceInterface
+     * @return self
      */
     public function setBeginDate(string $date): self
     {
@@ -51,7 +50,7 @@ class GetIssueList extends Content
      * 設定查詢結束日期。
      *
      * @param string $date
-     * @return InvoiceInterface
+     * @return self
      */
     public function setEndDate(string $date): self
     {
@@ -64,7 +63,7 @@ class GetIssueList extends Content
      * 設定單頁顯示數量。
      *
      * @param int $number
-     * @return InvoiceInterface
+     * @return self
      */
     public function setNumPerPage(int $number): self
     {
@@ -78,7 +77,7 @@ class GetIssueList extends Content
      * 設定顯示頁數。
      *
      * @param int $page
-     * @return InvoiceInterface
+     * @return self
      */
     public function setShowingPage(int $page): self
     {
@@ -95,7 +94,7 @@ class GetIssueList extends Content
      * 設定回傳格式。
      *
      * @param string $format
-     * @return InvoiceInterface
+     * @return self
      */
     public function setFormat(string $format): self
     {

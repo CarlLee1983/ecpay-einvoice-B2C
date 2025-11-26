@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace CarlLee\EcPayB2C\Operations;
 
 use CarlLee\EcPayB2C\Content;
-use CarlLee\EcPayB2C\InvoiceInterface;
 use Exception;
 
 class UpdateInvoiceWordStatus extends Content
@@ -35,7 +34,7 @@ class UpdateInvoiceWordStatus extends Content
      * Set the track identifier.
      *
      * @param string $trackId
-     * @return InvoiceInterface
+     * @return self
      */
     public function setTrackID(string $trackId): self
     {
@@ -58,7 +57,7 @@ class UpdateInvoiceWordStatus extends Content
      * Set the track status.
      *
      * @param int $status
-     * @return InvoiceInterface
+     * @return self
      */
     public function setInvoiceStatus(int $status): self
     {
