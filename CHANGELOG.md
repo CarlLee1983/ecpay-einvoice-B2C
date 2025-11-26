@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/lang/zh-TW/
 
 ## [Unreleased]
 
+## [4.0.1] - 2025-11-26
+
 ### Removed (移除)
 - 移除 `src/AES.php` trait（已由 `Infrastructure\CipherService` 取代）
 - 移除 `RqHeaderDto::toArray()` 方法（已由 `toPayload()` 取代）
@@ -161,7 +163,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/lang/zh-TW/
 ### Added (新增)
 - 初始功能實作
 
-[Unreleased]: https://github.com/CarlLee1983/ecpay-einvoice-B2C/compare/v4.0.0...HEAD
+[Unreleased]: https://github.com/CarlLee1983/ecpay-einvoice-B2C/compare/v4.0.1...HEAD
+[4.0.1]: https://github.com/CarlLee1983/ecpay-einvoice-B2C/compare/v4.0.0...v4.0.1
 [4.0.0]: https://github.com/CarlLee1983/ecpay-einvoice-B2C/compare/v3.0.0...v4.0.0
 [3.0.0]: https://github.com/CarlLee1983/ecpay-einvoice-B2C/compare/v2.3.0...v3.0.0
 [2.3.0]: https://github.com/CarlLee1983/ecpay-einvoice-B2C/compare/v2.2.0...v2.3.0
