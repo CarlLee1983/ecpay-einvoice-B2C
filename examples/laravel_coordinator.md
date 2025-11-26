@@ -3,20 +3,21 @@
 以下程式片段假設執行於 Laravel 專案中，並已在 `config/app.php` 或 auto-discovery 中載入 `EcPayServiceProvider`。
 
 ```php
-use EcPayInvoice;
-use EcPayQuery;
+use CarlLee\EcPayB2C\DTO\InvoiceItemDto;
+use CarlLee\EcPayB2C\Laravel\Facades\EcPayInvoice;
+use CarlLee\EcPayB2C\Laravel\Facades\EcPayQuery;
 
 // 1) 開立發票
 $response = EcPayInvoice::issue(function ($invoice) {
     $invoice->setRelateNumber('INV' . now()->format('YmdHis'))
         ->setCustomerEmail('demo@example.com')
         ->setItems([
-            [
+            InvoiceItemDto::fromArray([
                 'name' => '商品Ａ',
                 'quantity' => 1,
                 'unit' => '組',
                 'price' => 500,
-            ],
+            ]),
         ]);
 });
 

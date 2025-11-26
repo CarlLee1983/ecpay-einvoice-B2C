@@ -46,8 +46,8 @@ cp .env.example .env
    ```php
    'server' => env('ECPAY_EINVOICE_SERVER', 'https://einvoice-stage.ecpay.com.tw'),
    'merchant_id' => env('ECPAY_EINVOICE_MERCHANT_ID', '2000132'),
-   'hash_key' => env('ECPAY_EINVOICE_HASH_KEY', 'StageHashKey'),
-   'hash_iv' => env('ECPAY_EINVOICE_HASH_IV', 'StageHashIV'),
+   'hash_key' => env('ECPAY_EINVOICE_HASH_KEY', 'ejCk326UnaZWKisg'),
+   'hash_iv' => env('ECPAY_EINVOICE_HASH_IV', 'q9jcZX8Ib9LM8wYk'),
    ```
 5. `.env` 補上對應的 `ECPAY_EINVOICE_*` 變數，確保開發與 sandbox 分離。
 

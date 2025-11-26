@@ -68,18 +68,19 @@
 在 Laravel 專案中，套件會註冊 `OperationCoordinator`，可透過 Facade 直接完成「建立 → 設定 → 送出」的流程：
 
 ```php
-use EcPayInvoice;
+use CarlLee\EcPayB2C\DTO\InvoiceItemDto;
+use CarlLee\EcPayB2C\Laravel\Facades\EcPayInvoice;
 
 $response = EcPayInvoice::issue(function ($invoice) {
     $invoice->setRelateNumber('INV' . now()->format('YmdHis'))
         ->setCustomerEmail('demo@example.com')
         ->setItems([
-            [
+            InvoiceItemDto::fromArray([
                 'name' => '商品Ａ',
                 'quantity' => 1,
                 'unit' => '個',
                 'price' => 100,
-            ],
+            ]),
         ]);
 });
 
@@ -106,7 +107,7 @@ if ($response->success()) {
 | Operations | `AllowanceInvalid` | `/B2CInvoice/AllowanceInvalid` | 作廢折讓 |
 | Operations | `AddInvoiceWordSetting` | `/B2CInvoice/AddInvoiceWordSetting` | 設定字軌與配號 |
 | Operations | `UpdateInvoiceWordStatus` | `/B2CInvoice/UpdateInvoiceWordStatus` | 更新字軌啟用狀態 |
-| Printing | `InvoicePrint` | `/B2CInvoice/InvoicePrint` | 取得發票列印頁 |
+| Operations | `InvoicePrint` | `/B2CInvoice/InvoicePrint` | 取得發票列印頁 |
 | Queries | `GetInvoice` | `/B2CInvoice/GetIssue` | 查詢已開立發票 |
 | Queries | `GetIssueList` | `/B2CInvoice/GetIssueList` | 查詢特定多筆發票 |
 | Queries | `GetAllowanceList` | `/B2CInvoice/GetAllowanceList` | 查詢折讓明細 |
@@ -116,8 +117,8 @@ if ($response->success()) {
 | Queries | `GetGovInvoiceWordSetting` | `/B2CInvoice/GetGovInvoiceWordSetting` | 查詢財政部字軌配號結果 |
 | Queries | `CheckBarcode` | `/B2CInvoice/CheckBarcode` | 驗證手機條碼載具 |
 | Queries | `CheckLoveCode` | `/B2CInvoice/CheckLoveCode` | 驗證愛心碼 |
+| Queries | `GetCompanyNameByTaxID` | `/B2CInvoice/GetCompanyNameByTaxID` | 依統一編號查詢公司名稱 |
 | Notifications | `InvoiceNotify` | `/B2CInvoice/InvoiceNotify` | 發送開立/折讓/中獎通知 |
-| Printing | （預留） | — | 未來列印相關 API |
 
 ## 3. 共用欄位與請求格式
 
