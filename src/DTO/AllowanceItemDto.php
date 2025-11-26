@@ -68,6 +68,7 @@ final class AllowanceItemDto implements ItemDtoInterface
      * @param array $item
      * @return self
      */
+    #[\Override]
     public static function fromArray(array $item): self
     {
         foreach (['name', 'quantity', 'unit', 'price'] as $field) {
@@ -87,6 +88,7 @@ final class AllowanceItemDto implements ItemDtoInterface
     /**
      * @return array
      */
+    #[\Override]
     public function toPayload(): array
     {
         return [
@@ -101,6 +103,7 @@ final class AllowanceItemDto implements ItemDtoInterface
     /**
      * @return float
      */
+    #[\Override]
     public function getAmount(): float
     {
         return (float) ($this->quantity * $this->price);

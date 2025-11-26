@@ -73,6 +73,7 @@ final class ItemCollection implements IteratorAggregate, \Countable
     /**
      * @return Traversable<int,ItemDtoInterface>
      */
+    #[\Override]
     public function getIterator(): Traversable
     {
         return new ArrayIterator($this->items);
@@ -83,6 +84,7 @@ final class ItemCollection implements IteratorAggregate, \Countable
      *
      * @return int
      */
+    #[\Override]
     public function count(): int
     {
         return count($this->items);

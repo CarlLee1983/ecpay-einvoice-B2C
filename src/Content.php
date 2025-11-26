@@ -122,6 +122,7 @@ abstract class Content implements InvoiceInterface, CommandInterface
      *
      * @return string
      */
+    #[\Override]
     public function getRequestPath(): string
     {
         return $this->requestPath;
@@ -146,6 +147,7 @@ abstract class Content implements InvoiceInterface, CommandInterface
      * @param string $key
      * @return $this
      */
+    #[\Override]
     public function setHashKey($key): self
     {
         $this->hashKey = $key;
@@ -159,6 +161,7 @@ abstract class Content implements InvoiceInterface, CommandInterface
      * @param string $iv
      * @return $this
      */
+    #[\Override]
     public function setHashIV($iv): self
     {
         $this->hashIV = $iv;
@@ -289,6 +292,7 @@ abstract class Content implements InvoiceInterface, CommandInterface
     /**
      * 取得純領域欄位，不包含加密處理。
      */
+    #[\Override]
     public function getPayload(): array
     {
         $this->validation();
@@ -357,6 +361,7 @@ abstract class Content implements InvoiceInterface, CommandInterface
     /**
      * 取得當前命令可用的 PayloadEncoder。
      */
+    #[\Override]
     public function getPayloadEncoder(): PayloadEncoder
     {
         return $this->payloadEncoder ?: $this->buildPayloadEncoder();
