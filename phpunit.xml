@@ -10,7 +10,6 @@
         <!-- 單元測試：不需要網路，可快速執行 -->
         <testsuite name="unit">
             <directory>test/Unit</directory>
-            <file>test/AESTest.php</file>
             <file>test/ContentTest.php</file>
             <file>test/EcPayClientTest.php</file>
             <file>test/InvoiceValidatorTest.php</file>

@@ -13,7 +13,6 @@ use CarlLee\EcPayB2C\Infrastructure\PayloadEncoder;
 
 abstract class Content implements InvoiceInterface, CommandInterface
 {
-    use AES;
 
     /**
      * The relate number max length.

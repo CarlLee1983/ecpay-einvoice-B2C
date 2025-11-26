@@ -79,13 +79,4 @@ final class RqHeaderDto
         ];
     }
 
-    /**
-     * @deprecated 改用 toPayload()
-     *
-     * @return array<string,int>
-     */
-    public function toArray(): array
-    {
-        return $this->toPayload();
-    }
 }

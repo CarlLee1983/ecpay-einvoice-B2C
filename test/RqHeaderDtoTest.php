@@ -10,7 +10,7 @@ class RqHeaderDtoTest extends TestCase
         $dto = new RqHeaderDto();
 
         $this->assertGreaterThan(0, $dto->getTimestamp());
-        $this->assertArrayHasKey('Timestamp', $dto->toArray());
+        $this->assertArrayHasKey('Timestamp', $dto->toPayload());
     }
 
     public function testSetTimestamp()
