@@ -17,12 +17,12 @@ abstract class Content implements InvoiceInterface, CommandInterface
     /**
      * The relate number max length.
      */
-    public const RELATE_NUMBER_MAX_LENGTH = 30;
+    public const int RELATE_NUMBER_MAX_LENGTH = 30;
 
     /**
      * The RqID random string length.
      */
-    public const RQID_RANDOM_LENGTH = 5;
+    public const int RQID_RANDOM_LENGTH = 5;
 
     /**
      * The request server.
@@ -176,7 +176,10 @@ abstract class Content implements InvoiceInterface, CommandInterface
         list($usec, $sec) = explode(' ', microtime());
         $usec = str_replace('.', '', $usec);
 
-        return $sec . $this->randomString(self::RQID_RANDOM_LENGTH) . $usec . $this->randomString(self::RQID_RANDOM_LENGTH);
+        return $sec
+            . $this->randomString(self::RQID_RANDOM_LENGTH)
+            . $usec
+            . $this->randomString(self::RQID_RANDOM_LENGTH);
     }
 
     /**
