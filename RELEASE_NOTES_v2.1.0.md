@@ -162,7 +162,7 @@ vendor/bin/phpunit --coverage-html coverage/
 
 ## 📚 文件
 
-- [README.md](readme.md) - 基本使用說明
+- [README.md](README.md) - 基本使用說明
 - [examples/](examples/) - 完整範例程式碼
 - [CHANGELOG.md](CHANGELOG.md) - 完整變更日誌
 

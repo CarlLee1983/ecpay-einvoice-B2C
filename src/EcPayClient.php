@@ -9,8 +9,6 @@ use CarlLee\EcPayB2C\Contracts\CommandInterface;
 use CarlLee\EcPayB2C\Contracts\EncryptableCommandInterface;
 use CarlLee\EcPayB2C\Exceptions\ApiException;
 use CarlLee\EcPayB2C\Exceptions\EcPayException;
-use CarlLee\EcPayB2C\Infrastructure\CipherService;
-use CarlLee\EcPayB2C\Infrastructure\PayloadEncoder;
 
 class EcPayClient
 {
@@ -30,35 +28,20 @@ class EcPayClient
     protected string $hashIV = '';
 
     /**
-     * Cipher service for encryption/decryption.
-     */
-    protected CipherService $cipherService;
-
-    /**
-     * Payload encoder for encoding/decoding.
-     */
-    protected PayloadEncoder $payloadEncoder;
-
-    /**
      * __construct
      *
      * @param string $server
      * @param string $hashKey
      * @param string $hashIV
-     * @param PayloadEncoder|null $payloadEncoder
      */
     public function __construct(
         string $server,
         string $hashKey,
-        string $hashIV,
-        ?PayloadEncoder $payloadEncoder = null
+        string $hashIV
     ) {
         $this->requestServer = $server;
         $this->hashKey = $hashKey;
         $this->hashIV = $hashIV;
-
-        $this->cipherService = new CipherService($hashKey, $hashIV);
-        $this->payloadEncoder = $payloadEncoder ?: new PayloadEncoder($this->cipherService);
     }
 
     /**

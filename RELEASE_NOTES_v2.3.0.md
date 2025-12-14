@@ -72,7 +72,7 @@ composer update ecpay/einvoice
 ## 📚 文件
 
 - [docs/laravel-sandbox-guide.md](docs/laravel-sandbox-guide.md) – Orchestra Testbench / Laravel Sandbox 實作指南
-- [README.md](readme.md) – 快速開始與純 PHP + Laravel 例子
+- [README.md](README.md) – 快速開始與純 PHP + Laravel 例子
 - [docs/README.md](docs/README.md) – 文件索引與流程圖
 - [CHANGELOG.md](CHANGELOG.md) – 完整變更記錄
 
@@ -94,4 +94,3 @@ git push origin master --tags
 ## 🙏 致謝
 
 感謝所有使用者對多商店、多伺服器情境與 Laravel 整合的回饋，促成本次協調器、DTO 與 Sandbox 指南的完善。歡迎持續透過 issue 或 PR 分享建議。
-

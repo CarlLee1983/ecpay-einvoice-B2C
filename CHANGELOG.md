@@ -105,7 +105,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/lang/zh-TW/
 ### Changed (變更)
 - 更新 `composer.json` 中的 PSR-4 autoload 配置
 - 更新 `docs/README.md` 與 `docs/laravel-sandbox-guide.md` 中的 namespace 引用
-- 更新 `readme.md` 中的使用範例
+- 更新 `README.md` 中的使用範例
 - 更新 `examples/` 目錄中所有範例檔案的 namespace 引用
 - 更新 `OperationFactory::BASE_NAMESPACE` 常量
 

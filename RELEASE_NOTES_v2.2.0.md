@@ -100,7 +100,7 @@ vendor/bin/phpunit test/OperationFactoryTest.php
 
 ## 📚 文件
 
-- [README.md](readme.md) – 快速開始與範例
+- [README.md](README.md) – 快速開始與範例
 - [docs/README.md](docs/README.md) – 文檔索引與流程圖
 - [CHANGELOG.md](CHANGELOG.md) – 完整變更記錄
 
@@ -117,4 +117,3 @@ vendor/bin/phpunit test/OperationFactoryTest.php
 詳情請參閱 [CHANGELOG.md](CHANGELOG.md)。
 
 ---
-
