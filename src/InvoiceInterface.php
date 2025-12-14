@@ -4,26 +4,21 @@ declare(strict_types=1);
 
 namespace CarlLee\EcPayB2C;
 
+use CarlLee\EcPayB2C\Contracts\CommandInterface;
+
 /**
  * 電子發票介面。
  *
- * 定義電子發票物件必須實作的方法。
- * 注意：validation() 已移至 AbstractContent 作為 protected 方法，
- * 由 getPayload() 內部呼叫，不再暴露於介面。
+ * 定義可送往綠界 API 的內容物件必須提供的額外能力。
+ *
+ * `getPayload()`、`getRequestPath()`、金鑰注入與編碼器等基本契約，來自 `CommandInterface`。
  */
-interface InvoiceInterface
+interface InvoiceInterface extends CommandInterface
 {
     /**
-     * 取得加密後的發票內容。
+     * 取得可傳輸的加密內容（通常包含加密後的 `Data`）。
      *
      * @return array<string, mixed>
      */
     public function getContent(): array;
-
-    /**
-     * 取得未加密的領域層資料。
-     *
-     * @return array<string, mixed>
-     */
-    public function getPayload(): array;
 }

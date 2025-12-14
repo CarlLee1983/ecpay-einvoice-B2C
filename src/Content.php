@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace CarlLee\EcPayB2C;
 
 use CarlLee\EcPay\Core\AbstractContent;
-use CarlLee\EcPayB2C\Contracts\CommandInterface;
 use CarlLee\EcPayB2C\Exceptions\ValidationException;
 
 /**
@@ -13,7 +12,7 @@ use CarlLee\EcPayB2C\Exceptions\ValidationException;
  *
  * 繼承自 Core 的 AbstractContent，提供 B2C 特有的功能。
  */
-abstract class Content extends AbstractContent implements InvoiceInterface, CommandInterface
+abstract class Content extends AbstractContent implements InvoiceInterface
 {
     /**
      * 設定關聯單號。
