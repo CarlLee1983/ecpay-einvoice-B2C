@@ -83,7 +83,7 @@ class EcPayClient
         $response = new Response();
 
         if (!empty($body['Data'])) {
-            $decodedData = $this->payloadEncoder->decodeData($body['Data']);
+            $decodedData = $payloadEncoder->decodeData($body['Data']);
             $response->setData($decodedData);
         } else {
             $data = [

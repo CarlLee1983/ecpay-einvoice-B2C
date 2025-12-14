@@ -66,12 +66,14 @@ class EcPayClientTest extends TestCase
         Request::setHttpClient($client);
 
         // Test EcPayClient
-        $ecPayClient = new EcPayClient($this->server, $this->hashKey, $this->hashIV);
+        $wrongKey = '1234567890ABCDEF';
+        $wrongIV = 'FEDCBA0987654321';
+        $ecPayClient = new EcPayClient($this->server, $wrongKey, $wrongIV);
 
         // Mock Command
         $invoice = Mockery::mock(CommandInterface::class);
-        $invoice->shouldReceive('setHashKey')->with($this->hashKey);
-        $invoice->shouldReceive('setHashIV')->with($this->hashIV);
+        $invoice->shouldReceive('setHashKey')->with($wrongKey);
+        $invoice->shouldReceive('setHashIV')->with($wrongIV);
         $invoice->shouldReceive('getPayload')->andReturn([
             'MerchantID' => 'TEST_MERCHANT_ID',
             'RqHeader' => ['Timestamp' => time()],

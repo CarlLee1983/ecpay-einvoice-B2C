@@ -47,8 +47,8 @@ class AllowanceInvoice extends Content
             'CustomerName' => '',
             'NotifyMail' => '',
             'NotifyPhone' => '',
-            'setAllowanceAmount' => 0,
-            'items' => [],
+            'AllowanceAmount' => 0,
+            'Items' => [],
         ];
     }
 
