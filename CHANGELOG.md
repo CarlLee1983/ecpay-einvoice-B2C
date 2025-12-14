@@ -12,6 +12,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/lang/zh-TW/
 
 ### Changed (變更)
 - `EcPayClient::send()` 若命令物件為 `EncryptableCommandInterface`，將優先使用 `getContent()` 產生傳輸內容
+- 新增 `EcPayClient::sendEncrypted()`，提供明確的 Encryptable 命令傳送入口
 - `Content` 新增 `getTransportBody()` 作為 `getContent()` 的語意化別名
 
 ### Deprecated (已棄用)

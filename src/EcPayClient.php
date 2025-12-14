@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace CarlLee\EcPayB2C;
 
+use CarlLee\EcPay\Core\Contracts\PayloadEncoderInterface;
 use CarlLee\EcPayB2C\Contracts\CommandInterface;
 use CarlLee\EcPayB2C\Contracts\EncryptableCommandInterface;
 use CarlLee\EcPayB2C\Exceptions\ApiException;
@@ -70,17 +71,50 @@ class EcPayClient
      */
     public function send(CommandInterface $command): Response
     {
+        if ($command instanceof EncryptableCommandInterface) {
+            return $this->sendEncrypted($command);
+        }
+
         // 將金鑰同步給命令，以保留既有運作方式
         $command->setHashKey($this->hashKey);
         $command->setHashIV($this->hashIV);
 
         $requestPath = $command->getRequestPath();
         $payloadEncoder = $command->getPayloadEncoder();
+        $transportBody = $payloadEncoder->encodePayload($command->getPayload());
 
-        $transportBody = $command instanceof EncryptableCommandInterface
-            ? $command->getContent()
-            : $payloadEncoder->encodePayload($command->getPayload());
+        return $this->sendRaw($requestPath, $payloadEncoder, $transportBody);
+    }
 
+    /**
+     * Send request to ECPay (encryptable command).
+     *
+     * @param EncryptableCommandInterface $command
+     * @return Response
+     * @throws EcPayException
+     * @throws ApiException
+     */
+    public function sendEncrypted(EncryptableCommandInterface $command): Response
+    {
+        // 將金鑰同步給命令，以保留既有運作方式
+        $command->setHashKey($this->hashKey);
+        $command->setHashIV($this->hashIV);
+
+        $requestPath = $command->getRequestPath();
+        $payloadEncoder = $command->getPayloadEncoder();
+        $transportBody = $command->getContent();
+
+        return $this->sendRaw($requestPath, $payloadEncoder, $transportBody);
+    }
+
+    /**
+     * @param array<string, mixed> $transportBody
+     */
+    private function sendRaw(
+        string $requestPath,
+        PayloadEncoderInterface $payloadEncoder,
+        array $transportBody
+    ): Response {
         $body = (new Request($this->requestServer . $requestPath, $transportBody))->send();
 
         $response = new Response();

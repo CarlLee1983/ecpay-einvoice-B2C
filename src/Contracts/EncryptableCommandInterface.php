@@ -15,6 +15,14 @@ namespace CarlLee\EcPayB2C\Contracts;
 interface EncryptableCommandInterface extends CommandInterface
 {
     /**
+     * 取得未加密的請求 payload。
+     *
+     * @return array<string, mixed>
+     * @phpstan-return ApiPayload
+     */
+    public function getPayload(): array;
+
+    /**
      * 取得可傳輸的加密內容（`Data` 已加密）。
      *
      * @return array<string, mixed>
@@ -22,4 +30,3 @@ interface EncryptableCommandInterface extends CommandInterface
      */
     public function getContent(): array;
 }
-
