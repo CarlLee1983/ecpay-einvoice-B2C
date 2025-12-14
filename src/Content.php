@@ -15,6 +15,18 @@ use CarlLee\EcPayB2C\Exceptions\ValidationException;
 abstract class Content extends AbstractContent implements InvoiceInterface
 {
     /**
+     * 取得可傳輸的加密內容（`Data` 已加密）。
+     *
+     * 這是 `getContent()` 的語意化別名，用於避免「Content」與「payload」概念混淆。
+     *
+     * @return array<string, mixed>
+     */
+    public function getTransportBody(): array
+    {
+        return $this->getContent();
+    }
+
+    /**
      * 設定關聯單號。
      *
      * @param string $relateNumber 關聯單號

@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace CarlLee\EcPayB2C;
 
 use CarlLee\EcPayB2C\Contracts\CommandInterface;
+use CarlLee\EcPayB2C\Contracts\EncryptableCommandInterface;
 use CarlLee\EcPayB2C\Exceptions\ApiException;
 use CarlLee\EcPayB2C\Exceptions\EcPayException;
 use CarlLee\EcPayB2C\Infrastructure\CipherService;
@@ -73,10 +74,12 @@ class EcPayClient
         $command->setHashKey($this->hashKey);
         $command->setHashIV($this->hashIV);
 
-        $payload = $command->getPayload();
         $requestPath = $command->getRequestPath();
         $payloadEncoder = $command->getPayloadEncoder();
-        $transportBody = $payloadEncoder->encodePayload($payload);
+
+        $transportBody = $command instanceof EncryptableCommandInterface
+            ? $command->getContent()
+            : $payloadEncoder->encodePayload($command->getPayload());
 
         $body = (new Request($this->requestServer . $requestPath, $transportBody))->send();
 

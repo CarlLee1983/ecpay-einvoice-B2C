@@ -10,6 +10,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/lang/zh-TW/
 ### Added (新增)
 - 新增 `Contracts\EncryptableCommandInterface`，用於描述可產生加密 `Data` 傳輸內容的命令物件
 
+### Changed (變更)
+- `EcPayClient::send()` 若命令物件為 `EncryptableCommandInterface`，將優先使用 `getContent()` 產生傳輸內容
+- `Content` 新增 `getTransportBody()` 作為 `getContent()` 的語意化別名
+
 ### Deprecated (已棄用)
 - `InvoiceInterface` 已標記 deprecated，請改用 `Contracts\EncryptableCommandInterface`
 

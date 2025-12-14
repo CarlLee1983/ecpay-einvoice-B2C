@@ -60,6 +60,8 @@ $data = $response->getData();
 ```
 
 > 提示：自本次改版起，`setItems()` 應傳入對應的 DTO（例如 `InvoiceItemDto`、`AllowanceItemDto`），可透過 `::fromArray()` 將既有陣列快速轉換。
+>
+> 額外提示：若你需要對「可送往綠界 API 的命令物件」做型別提示（type-hint），建議使用 `CarlLee\EcPayB2C\Contracts\EncryptableCommandInterface`（可取得加密後的 `getContent()`）。
 
 ## 模組分群
 
