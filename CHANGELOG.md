@@ -7,6 +7,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/lang/zh-TW/
 
 ## [Unreleased]
 
+### Added (新增)
+- 新增 `Contracts\EncryptableCommandInterface`，用於描述可產生加密 `Data` 傳輸內容的命令物件
+
+### Deprecated (已棄用)
+- `InvoiceInterface` 已標記 deprecated，請改用 `Contracts\EncryptableCommandInterface`
+
 ## [4.1.0] - 2025-11-26
 
 ### Added (新增)

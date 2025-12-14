@@ -8,7 +8,7 @@ use CarlLee\EcPay\Core\AbstractContent;
 use CarlLee\EcPayB2C\Exceptions\ValidationException;
 
 /**
- * B2C 電子發票 Content 基礎類別。
+ * B2C 綠界電子發票 API Content 基礎類別。
  *
  * 繼承自 Core 的 AbstractContent，提供 B2C 特有的功能。
  */
