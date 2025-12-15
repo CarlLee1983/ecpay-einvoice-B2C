@@ -6,6 +6,7 @@ namespace CarlLee\EcPayB2C\Laravel\Services;
 
 use CarlLee\EcPayB2C\Content;
 use CarlLee\EcPayB2C\EcPayClient;
+use CarlLee\EcPayB2C\Contracts\SendableCommandInterface;
 use CarlLee\EcPayB2C\Factories\OperationFactoryInterface;
 use CarlLee\EcPayB2C\Response;
 use InvalidArgumentException;
@@ -53,11 +54,11 @@ class OperationCoordinator
     /**
      * 直接發送已建構完成的命令。
      *
-     * @param Content $command
+     * @param Content&SendableCommandInterface $command
      * @param callable|null $configure
      * @return Response
      */
-    public function send(Content $command, ?callable $configure = null): Response
+    public function send(Content&SendableCommandInterface $command, ?callable $configure = null): Response
     {
         if ($configure !== null) {
             $result = $configure($command);

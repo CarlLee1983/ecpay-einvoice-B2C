@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace CarlLee\EcPayB2C;
 
 use CarlLee\EcPay\Core\Contracts\PayloadEncoderInterface;
-use CarlLee\EcPayB2C\Contracts\EncryptableCommandInterface;
+use CarlLee\EcPayB2C\Contracts\SendableCommandInterface;
 use CarlLee\EcPayB2C\Exceptions\ApiException;
 use CarlLee\EcPayB2C\Exceptions\EcPayException;
 
@@ -46,12 +46,12 @@ class EcPayClient
     /**
      * Send request to ECPay.
      *
-     * @param EncryptableCommandInterface $command
+     * @param SendableCommandInterface $command
      * @return Response
      * @throws EcPayException
      * @throws ApiException
      */
-    public function send(EncryptableCommandInterface $command): Response
+    public function send(SendableCommandInterface $command): Response
     {
         // 將金鑰同步給命令，以保留既有運作方式
         $command->setHashKey($this->hashKey);
@@ -61,20 +61,20 @@ class EcPayClient
         $payloadEncoder = $command->getPayloadEncoder();
         $transportBody = $command->getContent();
 
-        return $this->sendRaw($requestPath, $payloadEncoder, $transportBody);
+        return $this->sendRaw($command, $requestPath, $payloadEncoder, $transportBody);
     }
 
     /**
      * Send request to ECPay (encryptable command).
      *
-     * @param EncryptableCommandInterface $command
+     * @param SendableCommandInterface $command
      * @return Response
      * @throws EcPayException
      * @throws ApiException
      *
      * @deprecated since 4.1.1 Use `send()` instead.
      */
-    public function sendEncrypted(EncryptableCommandInterface $command): Response
+    public function sendEncrypted(SendableCommandInterface $command): Response
     {
         return $this->send($command);
     }
@@ -83,6 +83,7 @@ class EcPayClient
      * @param array<string, mixed> $transportBody
      */
     private function sendRaw(
+        SendableCommandInterface $command,
         string $requestPath,
         PayloadEncoderInterface $payloadEncoder,
         array $transportBody
@@ -90,17 +91,7 @@ class EcPayClient
         $body = (new Request($this->requestServer . $requestPath, $transportBody))->send();
 
         $response = new Response();
-
-        if (!empty($body['Data'])) {
-            $decodedData = $payloadEncoder->decodeData($body['Data']);
-            $response->setData($decodedData);
-        } else {
-            $data = [
-                'RtnCode' => $body['TransCode'],
-                'RtnMsg' => $body['TransMsg'],
-            ];
-            $response->setData($data);
-        }
+        $response->setData($command->decodeResponse($body, $payloadEncoder));
 
         return $response;
     }

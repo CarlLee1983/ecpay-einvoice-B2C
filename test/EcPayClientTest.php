@@ -1,6 +1,6 @@
 <?php
 
-use CarlLee\EcPayB2C\Contracts\EncryptableCommandInterface;
+use CarlLee\EcPayB2C\Contracts\SendableCommandInterface;
 use CarlLee\EcPayB2C\EcPayClient;
 use CarlLee\EcPayB2C\Infrastructure\CipherService;
 use CarlLee\EcPayB2C\Infrastructure\PayloadEncoder;
@@ -71,7 +71,7 @@ class EcPayClientTest extends TestCase
         $ecPayClient = new EcPayClient($this->server, $wrongKey, $wrongIV);
 
         // Mock Command
-        $invoice = Mockery::mock(EncryptableCommandInterface::class);
+        $invoice = Mockery::mock(SendableCommandInterface::class);
         $invoice->shouldReceive('setHashKey')->with($wrongKey);
         $invoice->shouldReceive('setHashIV')->with($wrongIV);
         $invoice->shouldReceive('getPayloadEncoder')->andReturn(new PayloadEncoder(new CipherService($this->hashKey, $this->hashIV)));
@@ -81,6 +81,16 @@ class EcPayClientTest extends TestCase
             'RqHeader' => ['Timestamp' => time()],
             'Data' => $this->encryptData(['Example' => 'value']),
         ]);
+        $invoice->shouldReceive('decodeResponse')->andReturnUsing(function (array $body, $payloadEncoder) {
+            if (!empty($body['Data']) && is_string($body['Data'])) {
+                return $payloadEncoder->decodeData($body['Data']);
+            }
+
+            return [
+                'RtnCode' => $body['TransCode'] ?? 0,
+                'RtnMsg' => $body['TransMsg'] ?? '',
+            ];
+        });
 
         $response = $ecPayClient->send($invoice);
 
@@ -109,7 +119,7 @@ class EcPayClientTest extends TestCase
 
         $ecPayClient = new EcPayClient($this->server, $this->hashKey, $this->hashIV);
 
-        $invoice = Mockery::mock(EncryptableCommandInterface::class);
+        $invoice = Mockery::mock(SendableCommandInterface::class);
         $invoice->shouldReceive('setHashKey');
         $invoice->shouldReceive('setHashIV');
         $invoice->shouldReceive('getPayloadEncoder')->andReturn(new PayloadEncoder(new CipherService($this->hashKey, $this->hashIV)));
@@ -119,6 +129,16 @@ class EcPayClientTest extends TestCase
             'RqHeader' => ['Timestamp' => time()],
             'Data' => $this->encryptData([]),
         ]);
+        $invoice->shouldReceive('decodeResponse')->andReturnUsing(function (array $body, $payloadEncoder) {
+            if (!empty($body['Data']) && is_string($body['Data'])) {
+                return $payloadEncoder->decodeData($body['Data']);
+            }
+
+            return [
+                'RtnCode' => $body['TransCode'] ?? 0,
+                'RtnMsg' => $body['TransMsg'] ?? '',
+            ];
+        });
 
         $response = $ecPayClient->send($invoice);
         $data = $response->getData();
@@ -146,7 +166,7 @@ class EcPayClientTest extends TestCase
 
         $ecPayClient = new EcPayClient($this->server, $this->hashKey, $this->hashIV);
 
-        $invoice = Mockery::mock(EncryptableCommandInterface::class);
+        $invoice = Mockery::mock(SendableCommandInterface::class);
         $invoice->shouldReceive('setHashKey');
         $invoice->shouldReceive('setHashIV');
         $invoice->shouldReceive('getPayloadEncoder')->andReturn(new PayloadEncoder(new CipherService($this->hashKey, $this->hashIV)));
@@ -156,6 +176,16 @@ class EcPayClientTest extends TestCase
             'RqHeader' => ['Timestamp' => time()],
             'Data' => $this->encryptData([]),
         ]);
+        $invoice->shouldReceive('decodeResponse')->andReturnUsing(function (array $body, $payloadEncoder) {
+            if (!empty($body['Data']) && is_string($body['Data'])) {
+                return $payloadEncoder->decodeData($body['Data']);
+            }
+
+            return [
+                'RtnCode' => $body['TransCode'] ?? 0,
+                'RtnMsg' => $body['TransMsg'] ?? '',
+            ];
+        });
 
         $this->expectException(Exception::class);
         // Note: EcPayClient throws generic Exception for json error after decryption fail (decryption returns false/garbage)

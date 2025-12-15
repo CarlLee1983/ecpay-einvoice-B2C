@@ -8,13 +8,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/lang/zh-TW/
 ## [Unreleased]
 
 ### BREAKING CHANGES (破壞性變更)
-- `EcPayClient::send()` 參數型別改為 `Contracts\EncryptableCommandInterface`（不再接受僅實作 `Contracts\CommandInterface` 的物件）
+- `EcPayClient::send()` 參數型別改為 `Contracts\SendableCommandInterface`（不再接受僅實作 `Contracts\CommandInterface` 或 `Contracts\EncryptableCommandInterface` 的物件）
 
 ### Added (新增)
 - 新增 `Contracts\EncryptableCommandInterface`，用於描述可產生加密 `Data` 傳輸內容的命令物件
+- 新增 `Contracts\SendableCommandInterface`，用於描述可由 Client 發送且能解碼回應的命令物件
 
 ### Changed (變更)
-- `EcPayClient::send()` 統一使用 `EncryptableCommandInterface::getContent()` 產生傳輸內容
+- `EcPayClient::send()` 統一使用 `SendableCommandInterface::getContent()` 產生傳輸內容，並將回應交由 `decodeResponse()` 解碼
 - `EcPayClient::sendEncrypted()` 已標記 deprecated（請改用 `send()`）
 - `Content` 新增 `getTransportBody()` 作為 `getContent()` 的語意化別名
 

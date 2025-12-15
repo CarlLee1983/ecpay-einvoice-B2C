@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace CarlLee\EcPayB2C;
 
 use CarlLee\EcPay\Core\AbstractContent;
+use CarlLee\EcPay\Core\Contracts\PayloadEncoderInterface;
+use CarlLee\EcPayB2C\Contracts\SendableCommandInterface;
 use CarlLee\EcPayB2C\Exceptions\ValidationException;
 
 /**
@@ -12,7 +14,7 @@ use CarlLee\EcPayB2C\Exceptions\ValidationException;
  *
  * 繼承自 Core 的 AbstractContent，提供 B2C 特有的功能。
  */
-abstract class Content extends AbstractContent implements InvoiceInterface
+abstract class Content extends AbstractContent implements InvoiceInterface, SendableCommandInterface
 {
     /**
      * 取得可傳輸的加密內容（`Data` 已加密）。
@@ -24,6 +26,21 @@ abstract class Content extends AbstractContent implements InvoiceInterface
     public function getTransportBody(): array
     {
         return $this->getContent();
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function decodeResponse(array $responseBody, PayloadEncoderInterface $payloadEncoder): array
+    {
+        if (isset($responseBody['Data']) && is_string($responseBody['Data']) && $responseBody['Data'] !== '') {
+            return $payloadEncoder->decodeData($responseBody['Data']);
+        }
+
+        return [
+            'RtnCode' => $responseBody['TransCode'] ?? 0,
+            'RtnMsg' => $responseBody['TransMsg'] ?? '',
+        ];
     }
 
     /**

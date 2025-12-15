@@ -36,7 +36,7 @@ $data = $response->getData();
 ```
 
 ## 命令契約（重要）
-- `EcPayClient::send()` 只接受 `CarlLee\EcPayB2C\Contracts\EncryptableCommandInterface`（通常直接繼承 `CarlLee\EcPayB2C\Content` 即可）。
+- `EcPayClient::send()` 只接受 `CarlLee\EcPayB2C\Contracts\SendableCommandInterface`（通常直接繼承 `CarlLee\EcPayB2C\Content` 即可）。
 - 舊的 `CarlLee\EcPayB2C\InvoiceInterface` 已標記 deprecated（相容層）。
 - 若需自行檢視「實際送出的加密內容」，建議呼叫 `Content::getTransportBody()`（`getContent()` 為相容名稱）。
 
