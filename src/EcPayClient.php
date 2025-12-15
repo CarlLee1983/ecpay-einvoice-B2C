@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace CarlLee\EcPayB2C;
 
 use CarlLee\EcPay\Core\Contracts\PayloadEncoderInterface;
-use CarlLee\EcPayB2C\Contracts\CommandInterface;
 use CarlLee\EcPayB2C\Contracts\EncryptableCommandInterface;
 use CarlLee\EcPayB2C\Exceptions\ApiException;
 use CarlLee\EcPayB2C\Exceptions\EcPayException;
@@ -47,24 +46,20 @@ class EcPayClient
     /**
      * Send request to ECPay.
      *
-     * @param CommandInterface $command
+     * @param EncryptableCommandInterface $command
      * @return Response
      * @throws EcPayException
      * @throws ApiException
      */
-    public function send(CommandInterface $command): Response
+    public function send(EncryptableCommandInterface $command): Response
     {
-        if ($command instanceof EncryptableCommandInterface) {
-            return $this->sendEncrypted($command);
-        }
-
         // 將金鑰同步給命令，以保留既有運作方式
         $command->setHashKey($this->hashKey);
         $command->setHashIV($this->hashIV);
 
         $requestPath = $command->getRequestPath();
         $payloadEncoder = $command->getPayloadEncoder();
-        $transportBody = $payloadEncoder->encodePayload($command->getPayload());
+        $transportBody = $command->getContent();
 
         return $this->sendRaw($requestPath, $payloadEncoder, $transportBody);
     }
@@ -76,18 +71,12 @@ class EcPayClient
      * @return Response
      * @throws EcPayException
      * @throws ApiException
+     *
+     * @deprecated since 4.1.1 Use `send()` instead.
      */
     public function sendEncrypted(EncryptableCommandInterface $command): Response
     {
-        // 將金鑰同步給命令，以保留既有運作方式
-        $command->setHashKey($this->hashKey);
-        $command->setHashIV($this->hashIV);
-
-        $requestPath = $command->getRequestPath();
-        $payloadEncoder = $command->getPayloadEncoder();
-        $transportBody = $command->getContent();
-
-        return $this->sendRaw($requestPath, $payloadEncoder, $transportBody);
+        return $this->send($command);
     }
 
     /**

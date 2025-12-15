@@ -57,8 +57,8 @@
 
 1. **準備店家金鑰**：取得 `MerchantID`、`HashKey`、`HashIV`，與 API Server (測試/正式) URL。
 2. **選擇模組類別**：依作業型態建立 `Operations`, `Queries`, `Notifications` 模組中的類別實例。所有類別都繼承 `Content`，共用 `setMerchantID()`、`setHashKey()`、`setHashIV()` 等方法。
-3. **填入欄位並呼叫 `getPayload()`**：各類別提供 Fluent Interface 設定必填欄位，`RqHeader` 由 `DTO\RqHeaderDto` 管理、商品項目則由 `DTO\ItemCollection` 及各項目 DTO 組成；`getPayload()` 僅回傳純領域資料，若要自行送出可交由 `PayloadEncoder` 產製傳輸用 `Data`。
-4. **透過 `EcPayClient` 發送請求**：`EcPayClient::send(CommandInterface $command)` 只負責送出已封裝的命令；命令（通常為 `Content` 子類）準備好 `getPayload()`/`getPayloadEncoder()`，Client 會注入金鑰後送往 `{Server}{RequestPath}` 並解密回應。
+3. **填入欄位並（可選）檢視 payload**：各類別提供 Fluent Interface 設定必填欄位，`RqHeader` 由 `DTO\RqHeaderDto` 管理、商品項目則由 `DTO\ItemCollection` 及各項目 DTO 組成；你可用 `getPayload()` 檢視未加密的 payload（含 `MerchantID`/`RqHeader`/`Data`），或用 `getContent()` 取得可傳輸的加密內容（`Data` 已加密）。
+4. **透過 `EcPayClient` 發送請求**：`EcPayClient::send(EncryptableCommandInterface $command)` 只接受可產生加密傳輸內容的命令（通常為 `Content` 子類）；Client 會注入金鑰後呼叫 `getContent()`，送往 `{Server}{RequestPath}`，並使用命令提供的 encoder 解密回應。
 5. **解析 `Response`**：`Response::success()` 判斷 `RtnCode == 1` 是否成功，`getData()` 取得解密後的內容。
 
 > 備註：PDF 版本記載更多進階參數（如批次作業、愛心碼維護等），若本摘要未涵蓋請回查官方文件。
