@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace CarlLee\EcPayB2C\Tests\Unit;
 
 use CarlLee\EcPayB2C\EcPayClient;
-use CarlLee\EcPayB2C\Exceptions\InvalidParameterException;
 use CarlLee\EcPayB2C\Exceptions\ValidationException;
 use CarlLee\EcPayB2C\Operations\Invoice;
 use CarlLee\EcPayB2C\Request;
@@ -182,9 +181,9 @@ class InvoiceUnitTest extends UnitTestCase
     /**
      * 測試無效的載具類型時拋出參數例外。
      */
-    public function testThrowsInvalidParameterExceptionWhenInvalidCarrierType(): void
+    public function testThrowsValidationExceptionWhenInvalidCarrierType(): void
     {
-        $this->expectException(InvalidParameterException::class);
+        $this->expectException(ValidationException::class);
         $this->expectExceptionMessage('Invoice carrier type format is wrong.');
 
         $this->invoice->setCarrierType('99');
@@ -193,9 +192,9 @@ class InvoiceUnitTest extends UnitTestCase
     /**
      * 測試無效的稅別時拋出參數例外。
      */
-    public function testThrowsInvalidParameterExceptionWhenInvalidTaxType(): void
+    public function testThrowsValidationExceptionWhenInvalidTaxType(): void
     {
-        $this->expectException(InvalidParameterException::class);
+        $this->expectException(ValidationException::class);
         $this->expectExceptionMessage('Invoice tax type format is invalid.');
 
         $this->invoice->setTaxType('99');
@@ -204,9 +203,9 @@ class InvoiceUnitTest extends UnitTestCase
     /**
      * 測試無效的列印標記時拋出參數例外。
      */
-    public function testThrowsInvalidParameterExceptionWhenInvalidPrintMark(): void
+    public function testThrowsValidationExceptionWhenInvalidPrintMark(): void
     {
-        $this->expectException(InvalidParameterException::class);
+        $this->expectException(ValidationException::class);
         $this->expectExceptionMessage('Invoice print mark format is wrong.');
 
         $this->invoice->setPrintMark('99');
@@ -215,9 +214,9 @@ class InvoiceUnitTest extends UnitTestCase
     /**
      * 測試愛心碼長度錯誤時拋出參數例外。
      */
-    public function testThrowsInvalidParameterExceptionWhenInvalidLoveCode(): void
+    public function testThrowsValidationExceptionWhenInvalidLoveCode(): void
     {
-        $this->expectException(InvalidParameterException::class);
+        $this->expectException(ValidationException::class);
         $this->expectExceptionMessage('Invoice love code is wrong.');
 
         $this->invoice->setLoveCode('12');
@@ -226,9 +225,9 @@ class InvoiceUnitTest extends UnitTestCase
     /**
      * 測試銷售金額無效時拋出參數例外。
      */
-    public function testThrowsInvalidParameterExceptionWhenInvalidSalesAmount(): void
+    public function testThrowsValidationExceptionWhenInvalidSalesAmount(): void
     {
-        $this->expectException(InvalidParameterException::class);
+        $this->expectException(ValidationException::class);
         $this->expectExceptionMessage('Invoice sales amount is invalid.');
 
         $this->invoice->setSalesAmount(0);

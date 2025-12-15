@@ -189,14 +189,14 @@ class EcPayServiceProviderTest extends TestCase
         $this->assertNotSame($defaultClient, $reboundClient);
         $this->assertSame(
             'https://einvoice-stage.ecpay.com.tw',
-            $this->readProperty($defaultClient, 'requestServer')
+            $this->readProperty($defaultClient, 'server')
         );
         $this->assertSame('HashKey', $this->readProperty($defaultClient, 'hashKey'));
         $this->assertSame('HashIV', $this->readProperty($defaultClient, 'hashIV'));
 
         $this->assertSame(
             'https://einvoice-new.ecpay.com.tw',
-            $this->readProperty($reboundClient, 'requestServer')
+            $this->readProperty($reboundClient, 'server')
         );
         $this->assertSame('HashKeyC', $this->readProperty($reboundClient, 'hashKey'));
         $this->assertSame('HashIVC', $this->readProperty($reboundClient, 'hashIV'));

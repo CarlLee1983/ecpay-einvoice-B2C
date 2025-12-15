@@ -187,9 +187,8 @@ class EcPayClientTest extends TestCase
             ];
         });
 
-        $this->expectException(Exception::class);
-        // Note: EcPayClient throws generic Exception for json error after decryption fail (decryption returns false/garbage)
-        // "The response data format is invalid." is thrown if json_decode fails.
+                        $this->expectException(\CarlLee\EcPay\Core\Exceptions\EncryptionException::class);
+        // Note: Core CipherService throws EncryptionException when Base64 decoding fails
 
         $ecPayClient->send($invoice);
     }

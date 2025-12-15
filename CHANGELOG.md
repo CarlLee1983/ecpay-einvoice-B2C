@@ -7,20 +7,28 @@ and this project adheres to [Semantic Versioning](https://semver.org/lang/zh-TW/
 
 ## [Unreleased]
 
+## [5.0.0] - 2025-12-15
+
 ### BREAKING CHANGES (破壞性變更)
 - `EcPayClient::send()` 參數型別改為 `Contracts\SendableCommandInterface`（不再接受僅實作 `Contracts\CommandInterface` 或 `Contracts\EncryptableCommandInterface` 的物件）
+- `EcPayClient` 內部屬性 `$requestServer` 已移除，改用建構子屬性提升 `$server`
+- `InvalidParameterException` 已棄用，所有驗證錯誤現統一使用 `ValidationException`
 
 ### Added (新增)
 - 新增 `Contracts\EncryptableCommandInterface`，用於描述可產生加密 `Data` 傳輸內容的命令物件
 - 新增 `Contracts\SendableCommandInterface`，用於描述可由 Client 發送且能解碼回應的命令物件
 
 ### Changed (變更)
+- 降低 PHP 最低版本需求至 `^8.1`
 - `EcPayClient::send()` 統一使用 `SendableCommandInterface::getContent()` 產生傳輸內容，並將回應交由 `decodeResponse()` 解碼
 - `EcPayClient::sendEncrypted()` 已標記 deprecated（請改用 `send()`）
+- `EcPayClient` 建構子使用 property promotion，簡化程式碼
 - `Content` 新增 `getTransportBody()` 作為 `getContent()` 的語意化別名
+- `Operations\Invoice` 中所有 `InvalidParameterException` 改為拋出 `ValidationException`
 
 ### Deprecated (已棄用)
 - `InvoiceInterface` 已標記 deprecated，請改用 `Contracts\EncryptableCommandInterface`
+- `InvalidParameterException` 已標記 deprecated，請改用 `ValidationException` 或 `PayloadException`
 
 ## [4.1.0] - 2025-11-26
 
@@ -214,7 +222,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/lang/zh-TW/
 ### Added (新增)
 - 初始功能實作
 
-[Unreleased]: https://github.com/CarlLee1983/ecpay-einvoice-B2C/compare/v4.1.0...HEAD
+[Unreleased]: https://github.com/CarlLee1983/ecpay-einvoice-B2C/compare/v5.0.0...HEAD
+[5.0.0]: https://github.com/CarlLee1983/ecpay-einvoice-B2C/compare/v4.1.0...v5.0.0
 [4.1.0]: https://github.com/CarlLee1983/ecpay-einvoice-B2C/compare/v4.0.1...v4.1.0
 [4.0.1]: https://github.com/CarlLee1983/ecpay-einvoice-B2C/compare/v4.0.0...v4.0.1
 [4.0.0]: https://github.com/CarlLee1983/ecpay-einvoice-B2C/compare/v3.0.0...v4.0.0

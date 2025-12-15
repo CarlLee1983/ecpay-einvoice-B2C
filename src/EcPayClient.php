@@ -12,11 +12,6 @@ use CarlLee\EcPayB2C\Exceptions\EcPayException;
 class EcPayClient
 {
     /**
-     * The request server.
-     */
-    protected string $requestServer;
-
-    /**
      * __construct
      *
      * @param string $server The request server.
@@ -81,7 +76,7 @@ class EcPayClient
         PayloadEncoderInterface $payloadEncoder,
         array $transportBody
     ): Response {
-        $body = (new Request($this->requestServer . $requestPath, $transportBody))->send();
+        $body = (new Request($this->server . $requestPath, $transportBody))->send();
 
         $response = new Response();
         $response->setData($command->decodeResponse($body, $payloadEncoder));
