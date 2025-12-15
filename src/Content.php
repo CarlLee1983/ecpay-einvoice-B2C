@@ -17,6 +17,11 @@ use CarlLee\EcPayB2C\Exceptions\ValidationException;
 abstract class Content extends AbstractContent implements InvoiceInterface, SendableCommandInterface
 {
     /**
+     * 關聯單號最大長度。
+     */
+    public const RELATE_NUMBER_MAX_LENGTH = 30;
+
+    /**
      * 取得可傳輸的加密內容（`Data` 已加密）。
      *
      * 這是 `getContent()` 的語意化別名，用於避免「Content」與「payload」概念混淆。
@@ -109,9 +114,4 @@ abstract class Content extends AbstractContent implements InvoiceInterface, Send
             $this->validateCredentials();
         }
     }
-
-    /**
-     * 關聯單號最大長度。
-     */
-    public const int RELATE_NUMBER_MAX_LENGTH = 30;
 }

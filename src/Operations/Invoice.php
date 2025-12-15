@@ -7,7 +7,6 @@ namespace CarlLee\EcPayB2C\Operations;
 use CarlLee\EcPayB2C\Content;
 use CarlLee\EcPayB2C\DTO\InvoiceItemDto;
 use CarlLee\EcPayB2C\DTO\ItemCollection;
-use CarlLee\EcPayB2C\Exceptions\InvalidParameterException;
 use CarlLee\EcPayB2C\Exceptions\ValidationException;
 use CarlLee\EcPayB2C\InvoiceValidator;
 use CarlLee\EcPayB2C\Parameter\CarrierType;
@@ -156,7 +155,7 @@ class Invoice extends Content
     public function setClearanceMark(string $mark): self
     {
         if (!in_array($mark, [ClearanceMark::YES->value, ClearanceMark::NO->value])) {
-            throw new InvalidParameterException('Invoice clearance mark format is invalid.');
+            throw new ValidationException('Invoice clearance mark format is invalid.');
         }
 
         $this->content['Data']['ClearanceMark'] = $mark;
@@ -173,7 +172,7 @@ class Invoice extends Content
     public function setPrintMark(string $mark): self
     {
         if ($mark != PrintMark::YES->value && $mark != PrintMark::NO->value) {
-            throw new InvalidParameterException('Invoice print mark format is wrong.');
+            throw new ValidationException('Invoice print mark format is wrong.');
         }
 
         $this->content['Data']['Print'] = (string) $mark;
@@ -190,7 +189,7 @@ class Invoice extends Content
     public function setDonation(string $donation): self
     {
         if (!in_array($donation, [Donation::YES->value, Donation::NO->value])) {
-            throw new InvalidParameterException('Invoice donation format is wrong.');
+            throw new ValidationException('Invoice donation format is wrong.');
         }
 
         $this->content['Data']['Donation'] = (string) $donation;
@@ -209,7 +208,7 @@ class Invoice extends Content
         $counter = strlen($code);
 
         if ($counter > 7 || $counter < 3) {
-            throw new InvalidParameterException('Invoice love code is wrong.');
+            throw new ValidationException('Invoice love code is wrong.');
         }
 
         $this->content['Data']['LoveCode'] = (string) $code;
@@ -233,7 +232,7 @@ class Invoice extends Content
         ];
 
         if (!in_array($type, $carrierType)) {
-            throw new InvalidParameterException('Invoice carrier type format is wrong.');
+            throw new ValidationException('Invoice carrier type format is wrong.');
         }
 
         $this->content['Data']['CarrierType'] = (string) $type;
@@ -287,7 +286,7 @@ class Invoice extends Content
         ];
 
         if (!in_array($type, $taxType)) {
-            throw new InvalidParameterException('Invoice tax type format is invalid.');
+            throw new ValidationException('Invoice tax type format is invalid.');
         }
 
         $this->taxType = $type;
@@ -318,7 +317,7 @@ class Invoice extends Content
     public function setSalesAmount($amount): self
     {
         if ($amount <= 0) {
-            throw new InvalidParameterException('Invoice sales amount is invalid.');
+            throw new ValidationException('Invoice sales amount is invalid.');
         }
 
         $this->content['Data']['SalesAmount'] = $amount;
@@ -339,7 +338,7 @@ class Invoice extends Content
             }
 
             if (!$item instanceof InvoiceItemDto) {
-                throw new InvalidParameterException('Each invoice item must be an InvoiceItemDto or array definition.');
+                throw new ValidationException('Each invoice item must be an InvoiceItemDto or array definition.');
             }
 
             $collection->add($item);

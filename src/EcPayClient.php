@@ -14,40 +14,27 @@ class EcPayClient
     /**
      * The request server.
      */
-    protected string $requestServer = '';
-
-    /**
-     * Hash key.
-     */
-    protected string $hashKey = '';
-
-    /**
-     * Hash IV.
-     */
-    protected string $hashIV = '';
+    protected string $requestServer;
 
     /**
      * __construct
      *
-     * @param string $server
-     * @param string $hashKey
-     * @param string $hashIV
+     * @param string $server The request server.
+     * @param string $hashKey The hash key.
+     * @param string $hashIV The hash IV.
      */
     public function __construct(
-        string $server,
-        string $hashKey,
-        string $hashIV
+        protected string $server,
+        protected string $hashKey,
+        protected string $hashIV
     ) {
-        $this->requestServer = $server;
-        $this->hashKey = $hashKey;
-        $this->hashIV = $hashIV;
     }
 
     /**
      * Send request to ECPay.
      *
-     * @param SendableCommandInterface $command
-     * @return Response
+     * @param SendableCommandInterface $command The command to send.
+     * @return Response The response from ECPay.
      * @throws EcPayException
      * @throws ApiException
      */
@@ -80,7 +67,13 @@ class EcPayClient
     }
 
     /**
-     * @param array<string, mixed> $transportBody
+     * Send request to ECPay (raw).
+     *
+     * @param SendableCommandInterface $command The command to send.
+     * @param string $requestPath The request path.
+     * @param PayloadEncoderInterface $payloadEncoder The payload encoder.
+     * @param array<string, mixed> $transportBody The transport body.
+     * @return Response The response from ECPay.
      */
     private function sendRaw(
         SendableCommandInterface $command,
