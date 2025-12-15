@@ -13,7 +13,7 @@
 ### 1. DTO 與命令契約全面落地 🧱
 - `InvoiceItemDto`、`AllowanceItemDto`、`AllowanceCollegiateItemDto`、`ItemCollection`、`ItemDtoInterface` 取代舊有陣列，集中欄位驗證並提供 `fromArray()` 轉換。
 - 新增 `RqHeaderDto`，以物件化方式管理 `RqHeader` 欄位與同步。
-- （現行版本）`Contracts\EncryptableCommandInterface` 統一所有可送出的命令，`EcPayClient::send()` 僅接受此介面，並在呼叫時自動灌入 HashKey/HashIV。
+- `Contracts\CommandInterface` 統一所有可送出的命令，`EcPayClient::send()` 僅接受此介面，並在呼叫時自動灌入 HashKey/HashIV。
 - `Content` 與所有 Operation 的 `setItems()`、`validation()`、`getPayload()` 均改寫為使用 DTO 與 `PayloadEncoder`，減少重複邏輯。
 
 ### 2. 基礎設施與傳輸層重構 🔐
@@ -41,7 +41,9 @@
 ## 🔄 遷移指南
 1. **setItems 確認**：呼叫 `setItems()` 時請傳入 `InvoiceItemDto::fromArray([...])` 等 DTO，如果仍使用純陣列可先用 `fromArray()` 轉換。
 2. **Laravel 協調器**：若已透過 Facade `EcPayInvoice::issue()`、`EcPayQuery::coordinate()`，不需額外修改；若自行解析 `EcPayClient`，可考慮注入 `OperationCoordinator` 以共用流程。
-3. **自訂命令**：若自訂 Operation，請實作 `EncryptableCommandInterface`（通常直接繼承 `Content` 即可），並確保 `getPayloadEncoder()` 可回傳預期的 encoder，且可透過 `getContent()` 產生加密後的 `Data`。
+3. **自訂命令**：若自訂 Operation，請實作 `CommandInterface`（通常直接繼承 `Content` 即可），並確保 `getPayloadEncoder()` 可回傳預期的 encoder。
+
+> 後續版本提示：`EcPayClient::send()` 的命令契約已收斂為 `Contracts\EncryptableCommandInterface`，並以 `getContent()`（或語意化別名 `getTransportBody()`）產生傳輸內容，詳見 `CHANGELOG.md` 與 `README.md`。
 
 ---
 
